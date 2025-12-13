@@ -1,0 +1,13 @@
+{
+  "name": "@company/payload-plugin-multisite",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "payload": "^3.0.0"
+  }
+}

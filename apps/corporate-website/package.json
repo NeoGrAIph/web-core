@@ -1,0 +1,21 @@
+{
+  "name": "corporate-website",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "15.0.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "payload": "^3.0.0",
+    "@payloadcms/next": "^3.0.0",
+    "@company/ui": "workspace:*",
+    "@company/cms-core": "workspace:*",
+    "@company/cms-blocks": "workspace:*",
+    "@company/payload-plugin-multisite": "workspace:*"
+  }
+}

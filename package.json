@@ -1,0 +1,15 @@
+{
+  "name": "web-core",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "packages/plugins/*"
+  ],
+  "scripts": {
+    "dev:corp": "npm --workspace apps/corporate-website run dev",
+    "dev:shop": "npm --workspace apps/ecommerce-store run dev",
+    "dev:exp": "npm --workspace apps/experiments run dev"
+  }
+}

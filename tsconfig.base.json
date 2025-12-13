@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@company/ui": ["packages/ui/src/index"],
+      "@company/cms-core": ["packages/cms-core/src/index"],
+      "@company/cms-blocks": ["packages/cms-blocks/src/index"],
+      "@company/cms-ecommerce": ["packages/cms-ecommerce/src/index"],
+      "@company/payload-plugin-multisite": ["packages/plugins/payload-plugin-multisite/src/index"]
+    }
+  },
+  "include": []
+}
