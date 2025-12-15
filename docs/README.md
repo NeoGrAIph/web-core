@@ -19,6 +19,7 @@
   - `docs/research/templates-research.md`
   - `docs/research/templates/payload-website.md`
   - `docs/research/templates/payload-ecommerce.md`
+  - `docs/research/okteto/okteto-official-notes.md`
 - Runbooks
   - `docs/runbooks/runbook-dev.md`
   - `docs/runbooks/runbook-okteto-dev.md`
@@ -26,6 +27,7 @@
   - `docs/runbooks/runbook-platform-integration.md`
   - `docs/runbooks/runbook-ci-dev-to-prod.md`
   - `docs/runbooks/runbook-first-site-corporate.md`
+  - `docs/runbooks/runbook-first-site-synestra-io.md`
   - `docs/runbooks/runbook-dev-deploy-corporate.md`
 - GitOps деплой
   - `deploy/README.md`

@@ -11,6 +11,8 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 3) Okteto временно патчит workload (команда/контейнер/тома) и синхронизирует код.
 4) По завершении dev‑сессии изменения откатываются (либо вручную, либо командами Okteto).
 
+Справка (официальная): Okteto dev‑режим использует Syncthing для file sync и позволяет получить технические детали синка командой `okteto status --info` (см. `https://www.okteto.com/docs/reference/file-synchronization/`).
+
 ## 1) Namespaces
 
 Для dev‑режима поверх ArgoCD рекомендуем:
@@ -68,12 +70,29 @@ ArgoCD/Helm должен уже подать в Pod:
 
 Минимальный “репо‑артефакт” для Okteto (который можно добавить, когда подключаем первый app):
 
-- `apps/<app>/okteto.yml` — описание dev‑сессии (какой workload, какие порты, какие папки синкать, какая команда запуска).
+- Okteto manifest: `okteto.yml` или `.okteto/okteto.yml` (официальный стандарт; см. `https://www.okteto.com/docs/core/okteto-manifest/`).
+  - Для монорепы возможны два подхода:
+    1) **единый** `.okteto/okteto.yml` в корне репозитория (несколько `dev`‑сервисов под разные apps);
+    2) **отдельный** `okteto.yml` рядом с app (например `apps/<app>/okteto.yml`) — удобно для копирования шаблонов, но нужно явно договориться, как Okteto CLI будет его находить/использовать.
 
 Рекомендация по неймингу workload:
 - chart `web-app` создаёт Deployment с именем `"<release>-web-app"` (см. `deploy/charts/web-app/templates/_helpers.tpl`).
 - в ArgoCD Helm release name по умолчанию совпадает с именем `Application` (например `web-corporate-dev`).
 - значит типовое имя Deployment: `web-corporate-dev-web-app`.
+
+## 6.1) `.stignore` (рекомендуемый минимум)
+
+Официально игнорирование файлов для Syncthing делается через `.stignore` в корне синхронизируемой директории (см. `https://www.okteto.com/docs/reference/file-synchronization/`).
+
+Для монорепы `web-core` обычно имеет смысл игнорировать:
+- `**/node_modules/`
+- `**/.next/`
+- `**/.turbo/`
+- `**/dist/`
+- `**/coverage/`
+- `**/.git/`
+
+`okteto init` может сгенерировать стартовый `.stignore`, но мы должны закрепить единый шаблон под Next.js/Payload и монорепу.
 
 ## 7) Чеклист перед подключением первого app
 
@@ -82,4 +101,3 @@ ArgoCD/Helm должен уже подать в Pod:
 - [ ] Секреты подключены через `envFrom.secretRef` (Secret создан платформой).
 - [ ] `selfHeal` для dev выключен (у нас уже в `deploy/argocd/apps/dev/*.yaml`).
 - [ ] Есть план по “dev image” или по установке зависимостей в dev‑контейнере.
-
