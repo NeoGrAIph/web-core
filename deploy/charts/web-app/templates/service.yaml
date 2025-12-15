@@ -4,6 +4,8 @@ metadata:
   name: {{ include "web-app.fullname" . }}
   labels:
     {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ default "2" .Values.argo.syncWaves.app | quote }}
 spec:
   type: {{ .Values.service.type }}
   selector:
@@ -13,4 +15,3 @@ spec:
     - name: http
       port: 80
       targetPort: http
-

@@ -5,6 +5,8 @@ metadata:
   name: {{ .Values.postgres.clusterName | quote }}
   labels:
     {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ default "0" .Values.argo.syncWaves.postgres | quote }}
 spec:
   instances: {{ .Values.postgres.instances }}
   storage:

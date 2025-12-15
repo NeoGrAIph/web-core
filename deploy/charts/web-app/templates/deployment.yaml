@@ -4,6 +4,8 @@ metadata:
   name: {{ include "web-app.fullname" . }}
   labels:
     {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ default "2" .Values.argo.syncWaves.app | quote }}
 spec:
   replicas: 1
   selector:
@@ -50,4 +52,3 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "web-app.fullname" . }}-media
       {{- end }}
-

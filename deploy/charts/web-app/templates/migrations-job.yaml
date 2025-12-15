@@ -8,6 +8,9 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: {{ .Values.migrations.hook | quote }}
     argocd.argoproj.io/hook-delete-policy: {{ .Values.migrations.hookDeletePolicy | quote }}
+    {{- if .Values.migrations.syncWave }}
+    argocd.argoproj.io/sync-wave: {{ .Values.migrations.syncWave | quote }}
+    {{- end }}
 spec:
   template:
     metadata:

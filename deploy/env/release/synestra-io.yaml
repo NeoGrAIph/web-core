@@ -1,5 +1,8 @@
 # Release values for synestra.io deployment (shared between dev and prod).
 
+env:
+  APP_NAME: "@synestra/synestra-io"
+
 image:
   repository: "registry.gitlab.com/synestra/synestra-platform/web-synestra-io"
   tag: "998792c2bb00"

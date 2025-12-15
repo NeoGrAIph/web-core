@@ -5,6 +5,8 @@ metadata:
   name: {{ include "web-app.fullname" . }}-media
   labels:
     {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ default "2" .Values.argo.syncWaves.app | quote }}
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
@@ -14,4 +16,3 @@ spec:
   storageClassName: {{ .Values.persistence.media.storageClassName | quote }}
   {{- end }}
 {{- end }}
-
