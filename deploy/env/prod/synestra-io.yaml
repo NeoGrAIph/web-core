@@ -21,9 +21,4 @@ persistence:
     mountPath: /app/apps/synestra-io/public/media
 
 postgres:
-  enabled: true
-  clusterName: postgres
-  bootstrap:
-    secretName: "web-synestra-io-prod-db-init"
-    database: synestra_io
-    owner: synestra_io
+  enabled: false

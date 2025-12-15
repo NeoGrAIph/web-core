@@ -23,12 +23,7 @@ persistence:
     mountPath: /app/apps/synestra-io/public/media
 
 postgres:
-  enabled: true
-  clusterName: postgres
-  bootstrap:
-    secretName: "web-synestra-io-dev-db-init"
-    database: synestra_io
-    owner: synestra_io
+  enabled: false
 
 # Okteto Resource Manager заметил, что текущие requests слишком малы (throttling/eviction risk).
 # Держим requests чуть выше рекомендаций, чтобы dev был стабильным.
