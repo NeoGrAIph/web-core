@@ -6,4 +6,7 @@
 **/.git/**
 **/*.log
 **/.DS_Store
-apps/**/public/media/**
+.pnpm-store/**
+# PVC mount (must not be touched by sync)
+(?d)apps/synestra-io/public/media
+apps/synestra-io/public/media/**
