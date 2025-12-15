@@ -50,12 +50,14 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 ### 1.1) Важный нюанс: Okteto Namespace ≠ любой Kubernetes namespace
 
 В Okteto есть собственная модель namespaces. На практике это означает:
-- Kubernetes namespace может существовать (создан, например, ArgoCD с `CreateNamespace=true`),
+- Kubernetes namespace может существовать (создан кем угодно),
 - но Okteto CLI может **не** видеть его как Okteto namespace (`okteto namespace use <ns>` → `Namespace not found on context`).
 
 Зафиксированный канон (на текущий момент):
 1) dev namespace для hot‑dev создаёт **Okteto** (как Okteto namespace, non‑personal);
 2) ArgoCD деплоит baseline в этот же namespace (Kubernetes namespace уже существует).
+
+Важно: для dev‑Applications в `web-core` мы **не используем** `CreateNamespace=true`, чтобы ArgoCD не мог “случайно” пересоздать namespace без Okteto‑ownership (после чего Okteto UI/CLI перестанет видеть его).
 
 Диагностика:
 - `okteto namespace list` — список namespaces, известных Okteto
@@ -83,6 +85,16 @@ Okteto dev‑режим обычно вносит изменения в `Deploym
 - `selfHeal: false` в `deploy/argocd/apps/dev/*.yaml`
 
 Это осознанно: `dev` допускает временный drift ради удобства разработки. Для `stage/prod` self-heal остаётся желательным.
+
+## 2.2) Важный нюанс: ограничение Ingress host’ов в Okteto namespaces
+
+В нашей self-hosted установке Okteto есть admission webhook, который может ограничивать host’ы Ingress’ов внутри Okteto namespaces
+(настройка `ingress.forceIngressSubdomain` в Helm values Okteto).
+
+Если включено `forceIngressSubdomain=true`, то Ingress внутри Okteto namespace будет разрешён только для доменов вида:
+`*.<namespace>.services.synestra.tech`, и попытка создать Ingress для `dev.synestra.io` будет отклонена webhook’ом.
+
+Для нашей схемы (Okteto dev‑loop поверх ArgoCD + реальные dev домены сайтов) это ограничение должно быть **выключено** на платформе.
 
 ## 2.1) Как подключать НОВОЕ web‑приложение к Okteto (канон v0)
 
