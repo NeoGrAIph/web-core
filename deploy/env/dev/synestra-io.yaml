@@ -5,6 +5,7 @@ env:
   NEXT_PUBLIC_SERVER_URL: "https://dev.synestra.io"
   # Next.js ожидает стандартные значения NODE_ENV. Для `next dev` это должно быть `development`.
   NODE_ENV: "development"
+  SYNESTRA_DB_SOURCE: "cnpg-databases"
 
 envFrom:
   secretRef: "web-synestra-io-dev-env"

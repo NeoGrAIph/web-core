@@ -3,6 +3,7 @@
 env:
   SYNESTRA_ENV: "prod"
   NEXT_PUBLIC_SERVER_URL: "https://synestra.io"
+  SYNESTRA_DB_SOURCE: "cnpg-databases"
 
 envFrom:
   secretRef: "web-synestra-io-prod-env"
