@@ -15,6 +15,10 @@ ingress:
         - path: /
           pathType: Prefix
 
+persistence:
+  media:
+    mountPath: /app/apps/synestra-io/public/media
+
 postgres:
   enabled: true
   clusterName: postgres

@@ -84,4 +84,4 @@ migrations:
   command:
     - sh
     - -lc
-    - "pnpm payload migrate"
+    - "pnpm --filter \"$APP_NAME\" payload migrate"

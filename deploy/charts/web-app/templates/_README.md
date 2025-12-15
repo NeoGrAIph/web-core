@@ -24,4 +24,3 @@
 
 - `deploy/charts/web-app/README.md` — назначение chart и ключевые принципы.
 - `docs/runbooks/runbook-dev-deploy-corporate.md` — пошаговый dev‑деплой corporate.
-
