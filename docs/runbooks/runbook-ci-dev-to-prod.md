@@ -1,29 +1,27 @@
 # runbook-ci-dev-to-prod.md
 
-Runbook: CI‑контракт для автоматического переноса изменений **dev → prod** без `stage` (на старте проекта).
+Runbook: CI‑контракт для переноса изменений **dev → prod** через promotion (без `stage` на старте).
 
 Контекст:
 - деплой GitOps через ArgoCD;
 - `web-core` хранит chart/values (без секретов);
 - образы собираются в CI и публикуются в registry;
-- CI обновляет `deploy/env/release/<app>.yaml` (image tag), после чего ArgoCD автоматически выкатывает **и dev, и prod** (оба используют release‑слой).
+- CI сначала обновляет `deploy/env/release-dev/<app>.yaml` (dev release), затем после проверки делает promotion в `deploy/env/release-prod/<app>.yaml` (prod release).
 
 ## 1) Что считается “релизом”
 
-Релиз = `image.tag` в `deploy/env/release/<app>.yaml`.
+Релиз = `image.tag` в release‑слое:
+- dev: `deploy/env/release-dev/<app>.yaml`
+- prod: `deploy/env/release-prod/<app>.yaml`
 
-Пример: `deploy/env/release/corporate.yaml`.
+Пример: `deploy/env/release-dev/corporate.yaml`.
 
 ## 2) Какие окружения получат релиз
 
-- `dev` Application подключает:
-  - `deploy/env/release/<app>.yaml`
-  - `deploy/env/dev/<app>.yaml`
-- `prod` Application подключает:
-  - `deploy/env/release/<app>.yaml`
-  - `deploy/env/prod/<app>.yaml`
+- `dev` Application подключает `deploy/env/release-dev/<app>.yaml` + `deploy/env/dev/<app>.yaml`.
+- `prod` Application подключает `deploy/env/release-prod/<app>.yaml` + `deploy/env/prod/<app>.yaml`.
 
-То есть **один tag** → два rollout’а (dev + prod).
+То есть tag сначала попадает в **dev**, и только после проверки — в **prod**.
 
 ## 3) Рекомендуемая стратегия веток
 
@@ -45,9 +43,17 @@ Dockerfile: `docker/Dockerfile.turbo`.
 
 ## 5) Как CI должен обновлять GitOps
 
-После успешной сборки и push в registry CI делает commit в `web-core`:
-- меняет `deploy/env/release/<app>.yaml`:
-  - `image.tag: <immutable-tag>` (обычно SHA коммита)
+После успешной сборки и push в registry CI делает **два шага**:
+
+### 5.1. Dev release
+
+CI делает commit в `web-core`:
+- меняет `deploy/env/release-dev/<app>.yaml:image.tag` на новый immutable tag.
+
+### 5.2. Promotion в prod
+
+После того как dev проверен (автоматически или вручную), CI делает второй commit:
+- меняет `deploy/env/release-prod/<app>.yaml:image.tag` на **тот же** immutable tag.
 
 Важно: это изменение **не содержит секретов**.
 
@@ -55,8 +61,8 @@ Dockerfile: `docker/Dockerfile.turbo`.
 
 Типовые варианты:
 
-- добавлять в коммит с обновлением `deploy/env/release/*` маркер `[skip ci]`;
-- или в правилах CI: “если изменились только `deploy/env/release/*`, не запускать build, только lint/validate”.
+- добавлять в коммит(ы) с обновлением `deploy/env/release-{dev,prod}/*` маркер `[skip ci]`;
+- или в правилах CI: “если изменились только `deploy/env/release-{dev,prod}/*`, не запускать build, только lint/validate”.
 
 ## 7) Минимальный набор проверок перед публикацией в prod
 
@@ -68,5 +74,6 @@ Dockerfile: `docker/Dockerfile.turbo`.
 Позже можно добавить:
 - e2e тесты,
 - smoke‑check URL dev окружения,
-- ручной gate для prod (если понадобится).
+- ручной gate для promotion (если понадобится).
 
+Канон: `docs/architecture/release-promotion.md`.

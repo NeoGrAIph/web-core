@@ -2,8 +2,8 @@
 
 Runbook: какие шаги нужны в `synestra-platform`, чтобы **подключить `web-core`** и получить рабочую схему:
 
-- `dev` (hot через Okteto) на домене `*.dev.synestra.tech`
-- `prod` (GitOps‑строго) на домене `*.synestra.io`
+- `dev` (hot через Okteto) на dev‑домене (обычно `sitename.dev.synestra.tech` или `dev.sitename.synestra.tech`; для корневых доменов — `dev.<root>`, например `dev.synestra.io`)
+- `prod` (GitOps‑строго) на прод‑домене `*.synestra.io`
 
 Этот документ специально “стыкует” два репозитория:
 - `~/repo/web-core` — код и GitOps‑артефакты приложений (values/charts/ArgoCD Applications)
@@ -18,6 +18,7 @@ Runbook: какие шаги нужны в `synestra-platform`, чтобы **п�
 - cert-manager Certificates (namespace `ingress`):
   - `wildcard-dev-synestra-tech-tls` для `*.dev.synestra.tech`
   - `wildcard-synestra-io-tls` для `synestra.io` и `*.synestra.io`
+  - `wildcard-services-synestra-tech-tls` для `*.services.synestra.tech` (Okteto endpoints)
   - см. `infra/cert-manager/resources/certificate-wildcard-*.yaml`
 - Traefik `TLSStore default` содержит эти secrets:
   - `infra/ingress/traefik/resources/tlsstore-default.yaml`
@@ -30,7 +31,8 @@ Runbook: какие шаги нужны в `synestra-platform`, чтобы **п�
 
 Okteto Self‑Hosted уже развернут GitOps’ом:
 - приложение: `argocd/apps/infra-okteto.yaml`
-- домен control‑plane: `okteto.services.synestra.tech`
+- домен control‑plane: `okteto.services.synestra.tech` (также есть `buildkit.services.synestra.tech` и `registry.services.synestra.tech`)
+- в нашей установке отключены `okteto-nginx` и `okteto-ingress` — пользовательские сайты/дев‑домены остаются на наших Ingress’ах/Traefik, Okteto используется как dev‑loop поверх workloads
 - см. `docs/wiki/okteto.md` в `synestra-platform`.
 
 ## 1) DNS (вне Git)
@@ -80,7 +82,7 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 1) `gitlab-regcred` (imagePullSecret), если образы лежат в приватном GitLab Registry  
    - имя: `gitlab-regcred`
    - namespace: `web-<app>-dev` и `web-<app>-prod`
-   - web-core уже ожидает это имя в `deploy/env/release/*.yaml`.
+   - web-core ожидает это имя в `deploy/env/release-{dev,prod}/*.yaml`.
 
 2) Secret с env vars приложения, подключаемый через `envFrom.secretRef`  
    Пример имён:

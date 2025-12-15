@@ -1,4 +1,4 @@
-# Release values for corporate deployment (shared between dev and prod).
+# Release values for corporate deployment (dev).
 
 image:
   repository: "REPLACE_ME_REGISTRY/web-corporate"

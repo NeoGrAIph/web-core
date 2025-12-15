@@ -24,7 +24,8 @@ Runbook: старт разработки **первого сайта (corporate)
 
 В `web-core` уже есть:
 - values:
-  - `deploy/env/release/corporate.yaml`
+  - `deploy/env/release-dev/corporate.yaml`
+  - `deploy/env/release-prod/corporate.yaml`
   - `deploy/env/dev/corporate.yaml`
   - `deploy/env/prod/corporate.yaml`
 - ArgoCD Applications:
@@ -40,7 +41,8 @@ Runbook: старт разработки **первого сайта (corporate)
 Минимально нужно:
 - научить CI собирать образ corporate из монорепы (рекомендуем `turbo prune` + `docker/Dockerfile.turbo`);
 - пушить образ в registry;
-- обновлять `deploy/env/release/corporate.yaml` (image.tag).
+- обновлять `deploy/env/release-dev/corporate.yaml` (dev release),
+- после проверки делать promotion в `deploy/env/release-prod/corporate.yaml`.
 
 ## 5) Hot‑dev через Okteto
 
@@ -58,4 +60,3 @@ Runbook: старт разработки **первого сайта (corporate)
 Референс:
 - `upstream/payload/templates/website` (не деплоить как есть)
 - runbook: `docs/runbooks/runbook-add-app-from-payload-template.md` (про перенос шаблона в `apps/*` и выделение общего в `packages/*`).
-

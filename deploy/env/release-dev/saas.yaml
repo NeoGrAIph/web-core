@@ -1,4 +1,4 @@
-# Release values for saas deployment (shared between dev and prod).
+# Release values for saas deployment (dev).
 
 image:
   repository: "REPLACE_ME_REGISTRY/web-saas"

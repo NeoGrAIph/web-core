@@ -7,7 +7,7 @@
 ## Принципы
 
 - Монорепа для скорости разработки и общего кода, но деплой независимый (несколько deployments).
-- На старте выкатываем только `dev`, но структура сразу готова к `dev` → `stage` → `prod`.
+- На старте используем `dev` + `prod` (а `stage` добавим позже), но структура сразу готова к `dev` → `stage` → `prod`.
 - Изоляция: отдельный namespace и отдельная БД на deployment.
 - Секреты централизованы в `synestra-platform`; в `web-core` — только «не секретные» значения и ссылки на Secret’ы.
 - “Root coordinates, apps implement”: корень репозитория координирует задачи через `turbo run ...`, а внутри `apps/*` остаются стандартные скрипты фреймворков.
@@ -43,7 +43,12 @@ web-core/
       web-app/               # базовый Helm chart-шаблон для веб-приложения (Deployment/Service/Ingress/HPA)
 
     env/
-      release/
+      release-dev/
+        corporate.yaml
+        shop.yaml
+        saas.yaml
+        landings.yaml
+      release-prod/
         corporate.yaml
         shop.yaml
         saas.yaml

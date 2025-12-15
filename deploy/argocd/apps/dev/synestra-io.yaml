@@ -11,7 +11,7 @@ spec:
     path: deploy/charts/web-app
     helm:
       valueFiles:
-        - ../../env/release/synestra-io.yaml
+        - ../../env/release-dev/synestra-io.yaml
         - ../../env/dev/synestra-io.yaml
   destination:
     server: https://kubernetes.default.svc

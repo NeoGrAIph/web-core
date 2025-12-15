@@ -103,17 +103,22 @@
 Для каждого сайта/приложения мы создаём:
 
 - values `deploy/env/dev/<app>.yaml` и `deploy/env/prod/<app>.yaml` (не‑секреты + ссылки на Secret’ы);
-- общий release‑слой `deploy/env/release/<app>.yaml` (image repo + immutable tag);
+- release‑слои:
+  - `deploy/env/release-dev/<app>.yaml` (dev release: image repo + immutable tag),
+  - `deploy/env/release-prod/<app>.yaml` (prod release: image repo + immutable tag);
 - ArgoCD Applications `deploy/argocd/apps/dev/<app>.yaml` и `deploy/argocd/apps/prod/<app>.yaml`.
 
-### 5.2. Release‑слой общий для dev+prod
+### 5.2. Promotion: dev → prod через раздельные release‑слои
 
-На старте мы используем простую схему “один tag → два rollout’а (dev+prod)”:
+На старте используем канон “dev release → проверка → promotion в prod”:
 
-- CI обновляет только `deploy/env/release/<app>.yaml:image.tag`
-- ArgoCD подтягивает обновление сразу в dev и prod
+- CI обновляет `deploy/env/release-dev/<app>.yaml:image.tag`
+- ArgoCD выкатывает **dev**
+- после проверки CI обновляет `deploy/env/release-prod/<app>.yaml:image.tag` тем же tag
+- ArgoCD выкатывает **prod**
 
 Runbook: `docs/runbooks/runbook-ci-dev-to-prod.md`.
+Нормативный канон: `docs/architecture/release-promotion.md`.
 
 ### 5.3. Drift‑политика (dev vs prod)
 
@@ -175,8 +180,10 @@ Runbook: `docs/runbooks/runbook-dev-prod-flow.md`.
    - изменения видны на dev‑домене.
 3. По завершении:
    - изменения фиксируются в Git,
-   - CI собирает новый образ и обновляет `deploy/env/release/<app>.yaml`,
-   - ArgoCD выкатывает в prod и синхронизирует baseline dev.
+   - CI собирает новый образ и обновляет `deploy/env/release-dev/<app>.yaml`,
+   - ArgoCD выкатывает в dev,
+   - после проверки CI делает promotion в `deploy/env/release-prod/<app>.yaml`,
+   - ArgoCD выкатывает в prod.
 
 Сброс dev “как в prod” = завершить Okteto сессию + `argocd app sync` dev‑Application.
 

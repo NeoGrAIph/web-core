@@ -1,6 +1,6 @@
 # Архитектура `web-core` и взаимодействие с `synestra-platform`
 
-Дата актуальности: **2025-12-13**.
+Дата актуальности: **2025-12-15**.
 
 Этот документ фиксирует предлагаемую (целевую) структуру монорепозитория `~/repo/web-core` и описывает, как он должен взаимодействовать с инфраструктурным GitOps‑репозиторием `~/synestra-platform`.
 
@@ -10,7 +10,7 @@
 
 - Обеспечить **быструю разработку** группы сайтов компании в одной монорепе.
 - Обеспечить **безопасный деплой**: сайты живут в одном Git‑репо, но разворачиваются **независимо** (несколько deployments).
-- Сразу заложить поддержку окружений `dev → stage → prod`, но **на старте деплоить только `dev`**.
+- Сразу заложить поддержку окружений `dev → stage → prod`, но **на старте деплоить `dev` + `prod`** (без `stage`).
 - Обеспечить изоляцию: **один namespace + одна БД на deployment**.
 - Обеспечить GitOps‑контракт: Argo CD разворачивает приложения декларативно.
 
@@ -18,7 +18,7 @@
 
 - Версии: **Payload `v3.68.3`**, **Next.js `v15.4.9`**.
 - Секреты: **не храним plaintext‑секреты в `web-core`**. Секреты живут централизованно в `synestra-platform` (SOPS/age).
-- Hot‑разработка в Kubernetes: выбран инструмент **Okteto** (но в `synestra-platform` пока не установлен/не описан).
+- Hot‑разработка в Kubernetes: используем **Okteto** (Self‑Hosted уже развернут в `synestra-platform`; см. `docs/runbooks/runbook-platform-integration.md` и `docs/runbooks/runbook-okteto-dev.md`).
 
 ## 2) Границы ответственности репозиториев
 
@@ -215,7 +215,15 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 
 В `synestra-platform` сейчас есть dev-only “hostPath + build внутри Pod” подход (`infra/webcore/payload/values.dev-hot.yaml`). Он не масштабируется и привязан к одной ноде/пути.
 
-Целевой подход:
+Важно: Okteto Self‑Hosted уже развернут на платформе (через Argo CD) и предоставляет:
+- control‑plane: `okteto.services.synestra.tech`,
+- BuildKit builder: `buildkit.services.synestra.tech`,
+- Registry: `registry.services.synestra.tech`,
+- SSO (OIDC) через Keycloak.
+
+При этом в нашей установке отключены `okteto-nginx` и `okteto-ingress`, поэтому Okteto **не заменяет** ingress‑маршрутизацию сайтов: публичные домены сайтов обслуживаются нашими Ingress’ами/Traefik, а Okteto используется для dev‑loop “поверх” уже развернутых workloads.
+
+Целевой подход (dev‑loop поверх GitOps):
 
 1) ArgoCD разворачивает базовый dev‑деплой (стабильный образ).
 2) Разработчик запускает **Okteto** для конкретного app:
@@ -225,6 +233,8 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
    - запускается `pnpm dev` / `next dev`
 
 Практический итог: “ощущение локальной разработки”, но процесс работает через кластер и не требует хаков с файловой системой ноды.
+
+Открытый вопрос (нужно закрыть перед масштабированием на много сайтов): Okteto namespaces vs Kubernetes namespaces. Сейчас возможна ситуация, когда Kubernetes namespace уже существует (создан ArgoCD), но Okteto CLI не видит его как Okteto Namespace. Канон выбора ownership’а namespace и совместимости с ArgoCD `CreateNamespace` фиксируем в `docs/runbooks/runbook-okteto-dev.md`.
 
 ## 11) CI/CD контракт (GitLab + GitOps)
 
@@ -240,9 +250,14 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 3) ArgoCD подхватывает commit и деплоит.
 
 Примечание (актуальная схема dev+prod на старте):
-- image tag держим в общем release‑слое `deploy/env/release/<app>.yaml`, который подключается и в `dev`, и в `prod`;
+- image tag держим в раздельных release‑слоях:
+  - `deploy/env/release-dev/<app>.yaml` (dev release),
+  - `deploy/env/release-prod/<app>.yaml` (prod release);
+- promotion = обновление `release-prod` на tag, проверенный в dev;
 - env‑специфика (домены, `SYNESTRA_ENV`, Secret refs) остаётся в `deploy/env/<env>/<app>.yaml`.
-Runbook: `docs/runbooks/runbook-dev-prod-flow.md`.
+Runbooks:
+- `docs/runbooks/runbook-dev-prod-flow.md`
+- `docs/runbooks/runbook-ci-dev-to-prod.md`
 
 Альтернатива (позже): ArgoCD Image Updater / иной автоматический image tag updater (уменьшает “commit‑шум”, но требует отдельной настройки и политики безопасности).
 
@@ -254,4 +269,4 @@ Runbook: `docs/runbooks/runbook-dev-prod-flow.md`.
    - добавить AppProject `web-core`
    - добавить root Application `web-core` (указатель на `web-core/deploy/argocd/apps`)
 4) Спроектировать CNPG per-namespace для первого сайта (corporate) и секреты к нему.
-5) Подключить Okteto на платформе и собрать “runbook: hot dev”.
+5) Довести “runbook: hot dev” на базе Okteto (включая канон namespaces и откат dev к baseline при необходимости).

@@ -88,9 +88,9 @@
 - Enterprise patterns: генераторы и Changesets — отложены до выбора/анализа официальных шаблонов (чтобы не расходиться с recommended defaults).
 - `synestra-platform`: ArgoCD корневое app-of-apps — `argocd/apps/synestra-platform.yaml` (синхронизирует `argocd/apps/*`), секреты применяются через `argocd/apps/infra-secrets.yaml` (SOPS plugin).
 - `synestra-platform`: сейчас уже есть деплой Payload в namespace `webcore` — `argocd/apps/infra-payload.yaml` + `infra/webcore/payload/values*.yaml`.
-- `synestra-platform`: `infra/webcore/payload/values.dev-hot.yaml` использует `hostPath` (локальный путь на ноде) и “install/build/start внутри Pod” — это dev-only костыль, который планируем заменить на Okteto.
+- `synestra-platform`: `infra/webcore/payload/values.dev-hot.yaml` использует `hostPath` (локальный путь на ноде) и “install/build/start внутри Pod” — это dev-only костыль, который считаем legacy и планируем заменить на Okteto dev‑loop.
 - `synestra-platform`: CNPG оператор ставится `argocd/apps/infra-cloudnativepg.yaml`; текущий кластер для Payload живёт в namespace `databases` (`infra/databases/cloudnativepg/payload/cluster.yaml`) и использует bootstrap secret `payload-initdb-secret` (SOPS в `secrets/databases/payload-initdb-secret.yaml`).
-- Okteto в `synestra-platform` пока не найден (по репозиторию нет упоминаний `okteto`) — инструмент выбран, но установка/интеграция ещё впереди.
+- Okteto Self‑Hosted **уже развернут** в `synestra-platform` и доступен по `okteto.services.synestra.tech` (также подняты BuildKit и Registry). В chart отключены `okteto-nginx`/`okteto-ingress`, поэтому маршрутизация сайтов остаётся на наших Ingress’ах/Traefik (Okteto даёт dev‑loop поверх уже развёрнутых workloads).
 - Рекомендуемая связка ArgoCD `synestra-platform` ↔ `web-core` (app-of-apps):
   - в `synestra-platform` добавляем один root Application на `web-core` (например `argocd/apps/web-core.yaml`), который синхронизирует `web-core/deploy/argocd/apps`;
   - внутри `web-core` живут ArgoCD Applications на каждый deployment (corporate/shop/saas/landings) и они ссылаются на `web-core/deploy/...` (Helm/Kustomize);
@@ -104,6 +104,7 @@
 
 - Стратегия env‑переменных и “не‑секретов” для GitOps (dev/stage/prod): договориться о контракте ConfigMap/values, именах Secret’ов, правилах NEXT_PUBLIC_* и о том, как это отражать в `turbo` cache (чтобы не ловить неожиданные cache misses).
 - Payload v3 + CNPG: стандартизировать миграции/seed/генерацию артефактов при деплое (Job/initContainer/Argo hook), чтобы деплой был детерминированным и безопасным.
+- Okteto namespaces vs Kubernetes namespaces: определить корректный канон “dev‑режим поверх ArgoCD‑деплоя”, если namespace создаётся ArgoCD (`CreateNamespace=true`), но Okteto видит только свои Okteto namespaces (нужно либо “adopt/import”, либо создавать namespace через Okteto и деплоить туда через ArgoCD).
 - Стратегия стилизации `packages/ui`: Tailwind vs tokens/CSS vars vs (временные) inline‑styles, с учётом того что payload templates расходятся по Tailwind major (website: 3.x, ecommerce: 4.x).
 - Shop/ecommerce: используем ли `@payloadcms/plugin-ecommerce` и Stripe (или иной провайдер), и какие требования это накладывает на ingress/webhooks, секреты и окружения.
 - Какие ещё config packages нужны в `web-core` кроме TS/ESLint — определяем на основании требований актуальной версии Payload (и наших фактических потребностей CI/IDE).

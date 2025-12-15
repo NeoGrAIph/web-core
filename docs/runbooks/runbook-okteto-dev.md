@@ -28,6 +28,13 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 - `okteto build` — сборка через Okteto Build Service / BuildKit (в кластере).
 - `okteto preview` / `okteto pipeline` — управление preview/dev environments (обычно через CI).
 
+## 0.2) Наш Okteto (Synestra): endpoints и auth
+
+- Control‑plane: `https://okteto.services.synestra.tech`
+- Builder (BuildKit): `buildkit.services.synestra.tech`
+- Registry: `registry.services.synestra.tech`
+- Авторизация: через Keycloak/OIDC (логин зависит от настроек платформы; токены и секреты в репо не храним).
+
 ## 1) Namespaces
 
 Для dev‑режима поверх ArgoCD рекомендуем:
@@ -38,6 +45,20 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 - `web-saas-dev`
 
 Не рекомендуем общий namespace типа `web-dev` для всех приложений: он ломает изоляцию “один namespace + одна БД на deployment” и усложняет GitOps.
+
+### 1.1) Важный нюанс: Okteto Namespace ≠ любой Kubernetes namespace
+
+В Okteto есть собственная модель namespaces. На практике это означает:
+- Kubernetes namespace может существовать (создан, например, ArgoCD с `CreateNamespace=true`),
+- но Okteto CLI может **не** видеть его как Okteto namespace (`okteto namespace use <ns>` → `Namespace not found on context`).
+
+Перед тем как планировать hot‑dev “в том же namespace, что и ArgoCD”, нужно выбрать и закрепить канон:
+1) namespace создаёт Okteto (как Okteto namespace), а ArgoCD деплоит в уже существующий namespace,
+2) или найти корректный способ “adopt/import” существующего Kubernetes namespace в Okteto (если поддерживается нашей редакцией/настройками).
+
+Диагностика:
+- `okteto namespace list` — список namespaces, известных Okteto
+- `kubectl get ns` — список namespaces в Kubernetes
 
 ## 2) ArgoCD vs Okteto (важно)
 
@@ -57,6 +78,7 @@ Okteto dev‑режим обычно вносит изменения в `Deploym
    - есть namespace `web-<app>-dev`
    - есть Deployment из chart `web-app` (обычно `web-<app>-dev-web-app`)
    - dev домен работает (`/` открывается)
+   - namespace виден в Okteto (`okteto namespace list` содержит `web-<app>-dev`)
 2) Убедиться, что dev‑Application в ArgoCD допускает drift:
    - `selfHeal: false` для `deploy/argocd/apps/dev/<app>.yaml`
 3) Убедиться, что внутри pod уже доступны нужные env vars и секреты (Helm `env` + `envFrom.secretRef`).

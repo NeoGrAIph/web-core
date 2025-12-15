@@ -11,7 +11,7 @@ spec:
     path: deploy/charts/web-app
     helm:
       valueFiles:
-        - ../../env/release/shop.yaml
+        - ../../env/release-dev/shop.yaml
         - ../../env/dev/shop.yaml
   destination:
     server: https://kubernetes.default.svc

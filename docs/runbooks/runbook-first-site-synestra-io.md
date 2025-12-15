@@ -23,7 +23,9 @@ Namespaces:
 3) Подготовлены values и ArgoCD Application‑манифесты для **двух окружений**:
    - `deploy/env/dev/synestra-io.yaml` + `deploy/argocd/apps/dev/synestra-io.yaml`
    - `deploy/env/prod/synestra-io.yaml` + `deploy/argocd/apps/prod/synestra-io.yaml`
-   - общий релизный слой: `deploy/env/release/synestra-io.yaml`
+   - release‑слои:
+     - `deploy/env/release-dev/synestra-io.yaml`
+     - `deploy/env/release-prod/synestra-io.yaml`
 4) Исправлены проблемы, которые блокировали деплой через ArgoCD/Helm:
    - `deploy/charts/web-app/templates/README.md` переносится в `_README.md`, чтобы Helm не пытался парсить Markdown как YAML‑манифест;
    - команда миграций выполнена через `pnpm --filter "$APP_NAME" payload migrate` (монорепа + сборка из `turbo prune`);
@@ -235,7 +237,9 @@ Namespaces:
 - `ingress.host=synestra.io`,
 - db-init secret другой: `web-synestra-io-db-init`.
 
-**Release values:** `deploy/env/release/synestra-io.yaml`  
+**Release values (dev/prod):**  
+- `deploy/env/release-dev/synestra-io.yaml`  
+- `deploy/env/release-prod/synestra-io.yaml`  
 Содержит:
 - `image.repository`,
 - `image.tag` (это “релиз” в смысле `runbook-ci-dev-to-prod.md`),
@@ -384,7 +388,7 @@ Namespaces:
   - mountPath для media,
   - pnpm override для `tsx` (через `package.json`).
 - `e3261e4 chore(release): set synestra-io image tag`
-  - обновление `deploy/env/release/synestra-io.yaml` (релизный tag).
+  - обновление `deploy/env/release-dev/synestra-io.yaml` (dev релизный tag) + promotion в `deploy/env/release-prod/synestra-io.yaml`.
 
 ### `synestra-platform`
 
@@ -426,7 +430,8 @@ Namespaces:
 - `deploy/charts/web-app/**`
 - `deploy/env/dev/synestra-io.yaml`
 - `deploy/env/prod/synestra-io.yaml`
-- `deploy/env/release/synestra-io.yaml`
+- `deploy/env/release-dev/synestra-io.yaml`
+- `deploy/env/release-prod/synestra-io.yaml`
 - `deploy/argocd/apps/dev/synestra-io.yaml`
 - `deploy/argocd/apps/prod/synestra-io.yaml`
 

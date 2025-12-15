@@ -1,4 +1,4 @@
-# Release values for synestra.io deployment (shared between dev and prod).
+# Release values for synestra.io deployment (prod).
 
 env:
   APP_NAME: "@synestra/synestra-io"

@@ -1,6 +1,6 @@
 # Dev‑деплой (Kubernetes + Argo CD): `corporate` сайт
 
-Дата актуальности: **2025-12-13**.  
+Дата актуальности: **2025-12-15**.  
 Версии: **Payload `v3.68.3`**, **Next.js `v15.4.9`**.
 
 Цель документа — описать пошаговый план, как развернуть **один** сайт (корпоративный) в окружении **dev** через GitOps (Argo CD), учитывая:
@@ -51,7 +51,7 @@
 5. В кластере есть StorageClass по умолчанию (для PVC Postgres и для media‑uploads).
 6. Argo CD имеет доступ к репозиторию `web-core` (repo credentials / deploy key / token).
 7. Есть registry + `imagePullSecret` (если registry приватный).
-8. (Опционально для hot‑dev) Okteto установлен и интегрирован (в `synestra-platform` пока не сделано — см. раздел 9).
+8. (Опционально для hot‑dev) Okteto установлен и интегрирован (Self‑Hosted на платформе); схема “Okteto поверх ArgoCD” описана в `docs/runbooks/runbook-okteto-dev.md`.
 
 ---
 
@@ -364,32 +364,29 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 
 ### 9.1. Важный нюанс: ArgoCD vs Okteto (drift)
 
-Если ArgoCD auto‑sync включён, а Okteto “подменяет” Deployment (image/command/volumes), ArgoCD будет пытаться откатить изменения.
+Okteto dev‑режим временно патчит workload (команда/volume/sync), поэтому при строгом self‑heal ArgoCD будет пытаться откатить изменения.
 
-Нужно выбрать один из паттернов (зафиксировать позже, но для планирования учитывать):
+Текущий канон для `dev` окружения:
+- для web‑приложений `selfHeal: false` (ArgoCD не должен немедленно откатывать временные изменения, которые вносит Okteto dev‑сессия);
+- для `stage/prod` — `selfHeal: true`.
 
-1) **Dev namespace per developer** (рекомендуется для hot‑dev):
-   - ArgoCD деплоит `web-corporate-dev` как “стабильную базу”
-   - разработчик создаёт `web-corporate-dev-<user>` и запускает Okteto там
-   - ArgoCD не мешает, drift не ломает сессию
-2) **Pause auto-sync на время Okteto-сессии**:
-   - быстро, но требует дисциплины (и риск забыть вернуть)
-3) **ignoreDifferences в ArgoCD** (точечно):
-   - сложно правильно настроить и не спрятать реальные дрейфы
+Альтернативы (если позже потребуется жёсткий self‑heal в dev):
+- отдельный dev namespace per developer,
+- временная пауза auto‑sync на время сессии,
+- точечный `ignoreDifferences` (требует высокой дисциплины).
 
 ### 9.2. Что добавить в `web-core`
 
-- `apps/corporate-website/okteto.yml` (или общий шаблон в `deploy/okteto/`)
-  - sync правил (`.:/app`)
-  - forward ports
-  - команда запуска `pnpm dev`
-  - envFrom Secret (чтобы не копировать env)
+- Okteto manifest в `.okteto/okteto.yml` (единая точка входа для монорепы):
+  - sync правил (монорепа целиком),
+  - проброс порта (обычно 3000),
+  - команда запуска `pnpm --filter @synestra/corporate-website dev`.
+- `.stignore` в корне репозитория (исключения для Syncthing).
 
 ### 9.3. Что добавить в `synestra-platform`
 
-- установить Okteto (Helm chart / manifests) через ArgoCD
-- определить RBAC/namespace политики
-- описать “как запускать” в runbook (команды, ограничения)
+- (Уже сделано) поддерживать установку Okteto как платформенного приложения через ArgoCD (Helm chart).
+- Определить и задокументировать канон namespaces (Okteto namespaces vs k8s namespaces) и RBAC, чтобы dev‑сессии можно было запускать “поверх” dev‑деплоя сайта.
 
 ---
 
@@ -404,4 +401,3 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 - отключить seed/cron/preview до следующей итерации
 
 Главное: не нарушать базовые принципы — **изолированный namespace**, **CNPG per-namespace**, **секреты только в synestra-platform**, **GitOps‑истина в web-core**.
-

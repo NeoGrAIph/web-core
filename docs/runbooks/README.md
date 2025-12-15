@@ -11,4 +11,5 @@
 - `docs/runbooks/runbook-ci-dev-to-prod.md` — CI контракт: build image → update release values → ArgoCD rollout
 - `docs/runbooks/runbook-first-site-corporate.md` — чеклист старта первого сайта (dev hot + авто prod)
 - `docs/runbooks/runbook-first-site-synestra-io.md` — bootstrap `synestra.io` + `dev.synestra.io` (что сделано и почему)
+- `docs/runbooks/runbook-synestra-io-release-promotion.md` — привести `synestra.io`/`dev.synestra.io` к канону promotion (release-dev → release-prod)
 - `docs/runbooks/runbook-add-app-from-payload-template.md` — как добавить новый app из официального Payload template

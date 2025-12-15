@@ -1,0 +1,10 @@
+# Release values for synestra.io deployment (dev).
+
+env:
+  APP_NAME: "@synestra/synestra-io"
+
+image:
+  repository: "registry.gitlab.com/synestra/synestra-platform/web-synestra-io"
+  tag: "9183bf7f19c9"
+  pullSecrets:
+    - name: gitlab-regcred

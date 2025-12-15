@@ -1,4 +1,4 @@
-# Release values for landings deployment (shared between dev and prod).
+# Release values for landings deployment (dev).
 
 image:
   repository: "REPLACE_ME_REGISTRY/web-landings"
