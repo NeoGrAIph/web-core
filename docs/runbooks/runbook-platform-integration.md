@@ -62,7 +62,11 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 
 В `synestra-platform` стоит завести отдельный AppProject, например `synestra-web`, который разрешает:
 - destinations: `web-*-dev`, `web-*-prod` (и позже stage)
-- cluster resources: `Namespace` (если используем `CreateNamespace=true`)
+- cluster resources: `Namespace` (если используем `CreateNamespace=true` для stage/prod или отдельных случаев).
+
+Примечание (Okteto dev‑loop):
+- для dev namespaces в нашей схеме обычно **не** используем `CreateNamespace=true`,
+- потому что dev namespace должен быть создан как Okteto namespace, иначе он не появится в Okteto UI/CLI.
 
 Файл: `synestra-platform/argocd/apps/app-projects.yaml`.
 
@@ -134,3 +138,8 @@ Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 Runbook по логике “Okteto поверх ArgoCD” (под монорепу): `docs/runbooks/runbook-okteto-dev.md`.
 
 Важно: чтобы Okteto мог патчить workload в dev, для dev‑Applications обычно нужен режим без self‑heal (см. `docs/runbooks/runbook-dev-prod-flow.md`).
+
+Важно №2 (не повторять прошлую ошибку):
+- dev namespace должен быть создан как **Okteto namespace** (`okteto namespace create web-<app>-dev`),
+- поэтому для dev Applications в `web-core` **не используем** `CreateNamespace=true`,
+- иначе ArgoCD может пересоздать namespace “без Okteto ownership” и он исчезнет из Okteto UI/CLI.

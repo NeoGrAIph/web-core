@@ -63,6 +63,22 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 - `okteto namespace list` — список namespaces, известных Okteto
 - `kubectl get ns` — список namespaces в Kubernetes
 
+### 1.1.1) “Анти‑грабли” (что проверять каждый раз)
+
+1) Namespace создаётся через Okteto, а не через ArgoCD:
+- `okteto namespace list | rg web-<app>-dev` должен видеть `web-<app>-dev`
+- `kubectl get ns web-<app>-dev` должен тоже видеть namespace
+
+2) В dev ArgoCD Applications не должно быть `CreateNamespace=true`:
+- иначе ArgoCD может пересоздать namespace “как обычный k8s ns” → Okteto UI/CLI перестанет видеть его.
+
+3) В Okteto не должно быть включено ограничение `forceIngressSubdomain=true`, если мы хотим реальные dev‑домены (например `dev.synestra.io`):
+- иначе Okteto admission webhook отклонит Ingress по host’у.
+
+4) У одного домена должен быть **ровно один** Ingress в кластере:
+- перед проблемами с роутингом всегда проверь:
+  - `kubectl get ingress -A -o jsonpath='{range .items[*]}{.metadata.namespace}{\"/\"}{.metadata.name}{\"\\t\"}{range .spec.rules[*]}{.host}{\" \"}{end}{\"\\n\"}{end}' | rg '<host>'`
+
 ### 1.2) Как создать dev namespace (канон)
 
 Пример для `synestra.io`:
@@ -95,6 +111,32 @@ Okteto dev‑режим обычно вносит изменения в `Deploym
 `*.<namespace>.services.synestra.tech`, и попытка создать Ingress для `dev.synestra.io` будет отклонена webhook’ом.
 
 Для нашей схемы (Okteto dev‑loop поверх ArgoCD + реальные dev домены сайтов) это ограничение должно быть **выключено** на платформе.
+
+---
+
+## 2.3) Ремедиация: “namespace есть в Kubernetes, но отсутствует в Okteto UI”
+
+Симптом:
+- `kubectl get ns web-<app>-dev` показывает namespace,
+- но `okteto namespace use web-<app>-dev` → `Namespace not found on context`.
+
+Причина:
+- namespace был создан ArgoCD (`CreateNamespace=true`) или вручную, без Okteto‑ownership.
+
+Каноничный фикс (в dev, когда нет критичных данных):
+1) В `web-core` убрать `CreateNamespace=true` из `deploy/argocd/apps/dev/<app>.yaml`.
+2) Синхронизировать `apps-web-core`, чтобы ArgoCD Application обновился.
+3) Удалить dev namespace и дождаться полного удаления.
+   - Важно: ArgoCD hook Job может повесить namespace в `Terminating` из‑за `argocd.argoproj.io/hook-finalizer`.
+     Тогда:
+     - найти зависший Job,
+     - снять `metadata.finalizers`,
+     - дождаться удаления namespace.
+4) Создать namespace через Okteto:
+   - `okteto namespace create web-<app>-dev`
+5) Синхронизировать `infra-secrets` (чтобы вернуть секреты в новый namespace).
+6) Синхронизировать `web-<app>-dev` (baseline деплой).
+
 
 ## 2.1) Как подключать НОВОЕ web‑приложение к Okteto (канон v0)
 
