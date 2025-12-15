@@ -3,6 +3,8 @@
 env:
   SYNESTRA_ENV: "dev"
   NEXT_PUBLIC_SERVER_URL: "https://dev.synestra.io"
+  # Next.js ожидает стандартные значения NODE_ENV. Для `next dev` это должно быть `development`.
+  NODE_ENV: "development"
 
 envFrom:
   secretRef: "web-dev-synestra-io-env"
@@ -26,3 +28,13 @@ postgres:
     secretName: "web-dev-synestra-io-db-init"
     database: synestra_io
     owner: synestra_io
+
+# Okteto Resource Manager заметил, что текущие requests слишком малы (throttling/eviction risk).
+# Держим requests чуть выше рекомендаций, чтобы dev был стабильным.
+resources:
+  requests:
+    cpu: 150m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
