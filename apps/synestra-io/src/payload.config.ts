@@ -22,7 +22,6 @@ const dirname = path.dirname(filename)
 const isProd = process.env.NODE_ENV === 'production'
 
 export default buildConfig({
-  serverURL: env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3003',
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
