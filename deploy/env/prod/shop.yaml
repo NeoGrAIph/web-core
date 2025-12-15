@@ -16,9 +16,4 @@ ingress:
           pathType: Prefix
 
 postgres:
-  enabled: true
-  clusterName: postgres
-  bootstrap:
-    secretName: "web-shop-prod-db-init"
-    database: shop
-    owner: shop
+  enabled: false

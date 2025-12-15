@@ -41,7 +41,7 @@
 
 | Изменение | Эффект | Риск | Миграция |
 |---|---|---|---|
-| Закрепить паттерн миграций Payload в k8s (Job hook vs initContainer) | Детерминированный деплой, меньше “случайных” сбоев | Средний | Начать с dev: ArgoCD PreSync Job (уже есть в chart), затем доработать под stage/prod |
+| Закрепить паттерн миграций Payload в k8s (Job hook vs initContainer) | Детерминированный деплой, меньше “случайных” сбоев | Средний | Начать с dev: ArgoCD Sync hook Job (уже есть в chart), затем доработать под stage/prod |
 | Определить storage для uploads (`public/media`): PVC vs S3 | Готовность к прод‑эксплуатации | Высокий | Dev: PVC; stage/prod: оценить S3‑адаптер и требования |
 | Прописать требования для preview/live preview (secrets, ingress logging) | Безопасность и функциональность preview | Средний | Документировать контракт и ограничения (не логировать querystring; routing) |
 

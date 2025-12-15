@@ -33,7 +33,7 @@ Runbook: как мы одновременно используем **dev (hot)**
 2) **Env‑слой**: `deploy/env/<env>/<app>.yaml`
    - домены/ингресс
    - `SYNESTRA_ENV` (`dev|prod`)
-   - ссылки на Secret’ы и bootstrap секреты БД
+   - ссылки на Secret’ы (в т.ч. `DATABASE_URI`) и настройки подключения к БД (см. `docs/architecture/database-cnpg.md`)
 
 ArgoCD Application подключает оба valueFiles, например:
 - `../../env/release-dev/corporate.yaml` (dev) / `../../env/release-prod/corporate.yaml` (prod)

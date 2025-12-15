@@ -96,13 +96,22 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
    Минимальные ключи (см. `docs/architecture/env-contract.md`):
    - `PAYLOAD_SECRET`
    - `DATABASE_URI`
-   - опционально: `CRON_SECRET`, `PREVIEW_SECRET`
-   - для shop: Stripe keys
+    - опционально: `CRON_SECRET`, `PREVIEW_SECRET`
+    - для shop: Stripe keys
 
-3) CNPG bootstrap secret для initdb (если используем bootstrap через secret)  
-   Пример имён:
-   - dev: `web-corporate-dev-db-init`
-   - prod: `web-corporate-prod-db-init`
+3) База данных Postgres через CloudNativePG (CNPG)
+
+Канон (рекомендуется): **platform-managed DB** в namespace `databases`:
+- initdb secret (SOPS): `secrets/databases/<app-key>-initdb-secret.yaml`
+- CNPG clusters: `infra/databases/cloudnativepg/<app-key>` и `<app-key>-dev`
+- ArgoCD apps: `infra-<app-key>-db` и `infra-<app-key>-dev-db`
+- в web secrets (`web-<app-key>-<env>-env`) хранится готовый `DATABASE_URI`, который указывает на сервис CNPG:
+  - dev: `<app-key>-dev-cnpg-rw.databases.svc.cluster.local`
+  - prod: `<app-key>-cnpg-rw.databases.svc.cluster.local`
+
+Runbook: `docs/runbooks/runbook-database-cnpg.md`.
+
+Альтернатива (только для POC): per-namespace DB, когда CNPG Cluster создаёт chart `deploy/charts/web-app` в namespace приложения (тогда нужны `*-db-init` secrets в web‑namespace и `postgres.enabled=true`).
 
 После добавления секретов:
 - синхронизировать `infra-secrets` в ArgoCD (`synestra-platform/argocd/apps/infra-secrets.yaml`).
@@ -115,6 +124,7 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 
 Далее:
 - проверить, что Ingress’ы создаются в правильных namespaces;
+- если используем platform-managed DB: проверить, что CNPG clusters в namespace `databases` (`infra-*-db` apps) в состоянии `Healthy`;
 - проверить, что открываются домены:
   - dev: `https://corporate.dev.synestra.tech`
   - prod: `https://corporate.synestra.io`

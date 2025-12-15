@@ -16,9 +16,4 @@ ingress:
           pathType: Prefix
 
 postgres:
-  enabled: true
-  clusterName: postgres
-  bootstrap:
-    secretName: "web-landings-prod-db-init"
-    database: landings
-    owner: landings
+  enabled: false

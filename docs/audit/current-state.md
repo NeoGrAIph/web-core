@@ -75,7 +75,7 @@ turbo/       # заготовки под generators и связанные инс
 
 - ArgoCD Applications создают namespace и деплоят Helm chart `deploy/charts/web-app`.
 - Values dev лежат в `deploy/env/dev/*` и содержат ссылки на Secret’ы (имя Secret) без секретных значений.
-- В chart есть Job миграций Payload как ArgoCD hook (PreSync), и PVC для `public/media`.
+- В chart есть Job миграций Payload как ArgoCD hook (Sync + sync-wave), и PVC для `public/media`.
 
 Текущее ограничение: в манифестах присутствуют placeholder’ы (`REPLACE_ME_*`), то есть это пока **шаблон/контракт**, а не подключённый прод/дев‑поток.
 

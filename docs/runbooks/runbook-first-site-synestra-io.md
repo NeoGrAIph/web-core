@@ -38,7 +38,7 @@ Namespaces:
 2) Добавлен root ArgoCD Application **`apps-web-core`** (app‑of‑apps), который подтягивает ArgoCD Applications из `web-core`.
 3) Добавлены wildcard TLS сертификаты (cert-manager) и Traefik `TLSStore default` для автоподбора сертификата по SNI без per-namespace TLS secrets.
 4) Убраны конфликтующие host’ы (`synestra.io`, `synestra.tech`) из legacy ingress приложения `infra-payload`, чтобы освободить домены под новые сайты.
-5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-synestra-io-dev` и `web-synestra-io-prod` (env + db-init + registry pull secret).
+5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-synestra-io-dev` и `web-synestra-io-prod` (env + registry pull secret), а также общий initdb secret для CNPG в namespace `databases` (`synestra-io-initdb-secret`).
 
 ---
 
@@ -62,9 +62,11 @@ Namespaces:
 
 ### 1.3. Namespaces как единицы изоляции
 
-Принцип “one namespace ↔ one deployment ↔ one DB” реализован через:
-- `web-core/deploy/charts/web-app/templates/cnpg-cluster.yaml` (Cluster в namespace приложения),
-- `synestra-platform/argocd/apps/app-projects.yaml` (AppProject ограничивает допустимые namespaces).
+Принцип “one namespace ↔ one deployment ↔ one DB” реализован как:
+- отдельный CNPG Cluster на deployment (для `synestra.io` кластера БД живут в namespace `databases` и управляются платформой),
+- `synestra-platform/argocd/apps/app-projects.yaml` (AppProject ограничивает web‑приложения namespaces `web-*`).
+
+Примечание: chart `deploy/charts/web-app` умеет (опционально) создавать CNPG Cluster в namespace приложения, но для `synestra.io` это отключено (`postgres.enabled=false`), см. `docs/architecture/database-cnpg.md`.
 
 ---
 
@@ -180,7 +182,8 @@ Namespaces:
 
 **Мотивация:**
 - Payload требует миграции схемы БД до запуска приложения.
-- В GitOps‑модели удобно запускать миграции как `PreSync` hook: сначала миграции, затем rollout Deployment.
+- В GitOps‑модели удобно запускать миграции как hook Job **до** rollout Deployment.
+- В нашем chart это сделано как hook **`Sync`** (а не `PreSync`) с более поздней `sync-wave`, чтобы избежать deadlock на первом install (когда БД/приложение появляются в одном sync).
 
 **Команда миграций:**
 - Настроена в `deploy/charts/web-app/values.yaml` как:
@@ -208,8 +211,11 @@ Namespaces:
 **Файл:** `deploy/charts/web-app/templates/cnpg-cluster.yaml`
 
 **Зачем:**
-- быстрый старт без отдельного DB chart на раннем этапе;
-- изоляция: один namespace → одна БД.
+- этот шаблон позволяет (опционально) создавать CNPG Cluster в namespace приложения (режим **per-namespace DB**) для быстрых экспериментов/POC.
+
+**Важно для `synestra.io`:**
+- мы используем канон **platform-managed DB**: CNPG Cluster’ы живут в namespace `databases` и управляются `synestra-platform`,
+- поэтому для `synestra.io` в values выставлено `postgres.enabled=false` (внутренний Postgres в namespaces сайтов отключён).
 
 **Важная валидация values (Helm `required`):**
 - если задан `postgres.bootstrap.secretName`, то обязаны быть заданы:
@@ -227,15 +233,14 @@ Namespaces:
 - `envFrom.secretRef=web-synestra-io-dev-env` (секрет создаётся в platform‑репозитории),
 - `ingress.hosts[0].host=dev.synestra.io`,
 - `persistence.media.mountPath=/app/apps/synestra-io/public/media`,
-- `postgres.bootstrap.secretName=web-synestra-io-dev-db-init` + `database/owner`.
+- `postgres.enabled=false` (БД не создаётся chart’ом, используем CNPG в `databases`).
 
 **Prod values:** `deploy/env/prod/synestra-io.yaml`  
 Аналогично, но:
 - `SYNESTRA_ENV=prod`,
 - `NEXT_PUBLIC_SERVER_URL=https://synestra.io`,
 - `secretRef=web-synestra-io-prod-env`,
-- `ingress.host=synestra.io`,
-- db-init secret другой: `web-synestra-io-prod-db-init`.
+- `ingress.host=synestra.io`.
 
 **Release values (dev/prod):**  
 - `deploy/env/release-dev/synestra-io.yaml`  
@@ -478,7 +483,7 @@ Namespaces:
    - когда включать/выключать `selfHeal`
    - как сочетать hot‑dev (временные патчи) и GitOps‑строгость
 
-4) **Argo CD hooks (PreSync) и миграции БД**
+4) **Argo CD hooks (Sync/PreSync) и миграции БД**
    - корректный паттерн миграций как hook Job
    - управление повторными запусками hook Job (immutability spec, hook-delete-policy)
    - порядок “migrations → deploy” и стратегии отката

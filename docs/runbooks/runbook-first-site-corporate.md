@@ -18,7 +18,13 @@ Runbook: старт разработки **первого сайта (corporate)
 В `synestra-platform` (SOPS) создать секреты для namespace `web-corporate-dev` и `web-corporate-prod`:
 - `gitlab-regcred` (если registry приватный)
 - `web-corporate-<env>-env` (PAYLOAD_SECRET, DATABASE_URI, …)
-- `web-corporate-<env>-db-init` (bootstrap для CNPG, если используем)
+
+База данных (канон: CNPG в namespace `databases`) настраивается отдельно:
+- initdb secret: `secrets/databases/corporate-initdb-secret.yaml`
+- CNPG clusters: `corporate-dev-cnpg` и `corporate-cnpg`
+- ArgoCD apps: `infra-corporate-dev-db` и `infra-corporate-db`
+
+Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 
 ## 3) Включить GitOps apps (dev + prod)
 
@@ -48,7 +54,7 @@ Runbook: старт разработки **первого сайта (corporate)
 
 См. `docs/runbooks/runbook-okteto-dev.md`.
 
-Рекомендация: запускать Okteto поверх `web-corporate-dev` (а не в общем `web-dev`), чтобы сохранить изоляцию “namespace+DB”.
+Рекомендация: запускать Okteto поверх `web-corporate-dev` (а не в общем `web-dev`), чтобы сохранить изоляцию “namespace+БД”.
 
 ## 6) Начать разработку “как конструктор” (Payload blocks)
 

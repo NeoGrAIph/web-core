@@ -168,7 +168,7 @@
   - `env.NEXT_PUBLIC_SERVER_URL`
   - `envFrom.secretRef` (имя k8s Secret, который создаётся в `synestra-platform`)
   - `ingress.hosts` (dev домен)
-  - `postgres.bootstrap.secretName` (bootstrap secret в `synestra-platform`)
+  - `postgres.enabled: false` (канон: БД управляется платформой в namespace `databases`)
 
 2) Values для prod (env‑слой):
 - создать `deploy/env/prod/<app-key>.yaml` (аналогично dev, но с prod доменом и `SYNESTRA_ENV=prod`)
@@ -191,6 +191,7 @@
 5) Важно:
 - `experiments` не добавляем в `deploy/argocd/apps/**`.
 - Dev должен быть “мягким” для Okteto (обычно `selfHeal: false`), prod — GitOps‑строгим (`selfHeal: true`): см. `docs/architecture/release-promotion.md`.
+- Базу данных для нового приложения добавляем через CNPG канон: `docs/runbooks/runbook-database-cnpg.md`.
 
 ---
 

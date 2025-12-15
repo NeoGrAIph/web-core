@@ -61,7 +61,10 @@ persistence:
     storageClassName: ""
 
 postgres:
-  enabled: true
+  # Канон по умолчанию: БД управляется платформой в namespace `databases`,
+  # а приложение получает `DATABASE_URI` через `envFrom.secretRef`.
+  # Включайте `true` только для POC/экспериментов (per-namespace CNPG Cluster).
+  enabled: false
   clusterName: postgres
   instances: 1
   storage:

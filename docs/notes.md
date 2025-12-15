@@ -78,9 +78,8 @@
 - Текущее целевое направление: инфраструктура остаётся в `~/synestra-platform` (GitOps для платформы), а сайты/код/шаблоны деплоя и CI для приложений — в монорепозитории `~/repo/web-core`.
 - Окружения закладываем как `dev` → `stage` → `prod`, но на старте работаем и публикуем только в `dev`, чтобы не перегружаться процессами, пока продукт активно меняется.
 - Принятое решение по изоляции: отдельный namespace и отдельная БД на каждый deployment (корпоративный сайт, интернет‑магазин, SaaS, лендинги).
-- Принятое решение по БД на deployment: CloudNativePG Cluster на каждый namespace.
+- Принятое решение по БД на deployment: Postgres под управлением CloudNativePG (CNPG), **1 CNPG Cluster на deployment** (канон по умолчанию: platform-managed DB в namespace `databases`, см. `docs/architecture/database-cnpg.md`).
 - Принятое решение по окружениям: закладываем `dev → stage → prod`, но пока работаем и публикуем только `dev`.
-- Принятое решение по БД: CNPG кластер на каждый namespace (т.е. “одна БД на deployment” реализуем через отдельный CNPG per-namespace).
 - Принятое решение по лендингам: один deployment на группу лендингов.
 - Принятое решение по секретам: храним централизованно в `synestra-platform` (в т.ч. потому что сборка образов и часть CI сейчас живёт там).
 - Dev-эргономика: добавлен “официальный” VS Code workspace `.vscode/web-core.code-workspace` и короткий runbook `docs/runbooks/runbook-dev.md`.
@@ -95,7 +94,7 @@
   - в `synestra-platform` добавляем один root Application на `web-core` (например `argocd/apps/web-core.yaml`), который синхронизирует `web-core/deploy/argocd/apps`;
   - внутри `web-core` живут ArgoCD Applications на каждый deployment (corporate/shop/saas/landings) и они ссылаются на `web-core/deploy/...` (Helm/Kustomize);
   - секреты остаются в `synestra-platform/secrets/**` (SOPS), а `web-core` оперирует только ссылками на Secret names/keys.
-- Рекомендуемое владение CNPG per-namespace: оператор и “платформенные” дефолты — в `synestra-platform`, а CR’ы кластеров (Cluster/Backups/Pooler) для конкретных веб‑деплоев — в `web-core` (как часть GitOps-деплоя сайта), с ссылками на bootstrap/app Secret’ы, которые создаются в `synestra-platform`.
+- Рекомендуемое владение CNPG: оператор, secrets и CNPG Cluster’ы (по умолчанию) — в `synestra-platform` (namespace `databases`); `web-core` управляет только приложениями и ссылками на secrets/values. Per-namespace CNPG (в namespace приложения) допускаем только для POC.
 - Рекомендуемое место для “не‑секретов” (hosts/ресурсы/HPA/feature flags): хранить в `web-core` как values/overlays per-app/per-env; в `synestra-platform` держать только секреты и кластерные компоненты.
 - Рекомендуемая фиксация toolchain для `web-core`: Node.js `22` (LTS) + pnpm через `packageManager` + `corepack` (синхронизировать с образами сборки в `synestra-platform`).
 - Нейминг workspace‑пакетов в `web-core` фиксируем как scoped packages: `@synestra/<name>` (для `apps/*` и `packages/*`), чтобы стандартизировать импорты/`turbo --filter` и упростить генераторы/CI.

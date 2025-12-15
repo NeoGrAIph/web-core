@@ -16,9 +16,4 @@ ingress:
           pathType: Prefix
 
 postgres:
-  enabled: true
-  clusterName: postgres
-  bootstrap:
-    secretName: "web-corporate-prod-db-init"
-    database: corporate
-    owner: corporate
+  enabled: false

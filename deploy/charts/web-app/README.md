@@ -5,7 +5,9 @@
 Ключевые принципы (GitOps):
 - chart не содержит plaintext‑секретов;
 - один release ↔ один namespace ↔ один deployment;
-- БД разворачивается отдельно на namespace (CNPG Cluster), по умолчанию включена в chart (можно отключить).
+- БД — Postgres под управлением CloudNativePG (CNPG):
+  - **канон по умолчанию**: platform-managed DB в namespace `databases` (тогда `postgres.enabled=false`);
+  - допустимая альтернатива (POC): per-namespace DB, когда chart создаёт CNPG Cluster в namespace приложения (`postgres.enabled=true`).
 
 Что покрывает:
 - `Deployment` / `Service` / `Ingress`
@@ -26,6 +28,9 @@ TLS по умолчанию:
 
 Где описан контракт env vars:
 - `docs/architecture/env-contract.md`
+
+Где описан канон по БД (CNPG):
+- `docs/architecture/database-cnpg.md`
 
 Связанные документы:
 - `docs/runbooks/runbook-dev-deploy-corporate.md` — как делаем первый dev‑деплой.

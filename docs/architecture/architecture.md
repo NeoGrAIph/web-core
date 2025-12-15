@@ -97,7 +97,7 @@ web-core/
         prod/                 # (заготовка)
     charts/
       web-app/                # базовый Helm chart для Next/Payload app
-      cnpg/                   # (опционально) шаблон/фрагменты для CNPG per-namespace
+      cnpg/                   # (опционально) фрагменты CNPG для POC (per-namespace DB)
     env/
       dev/
         corporate.yaml        # values/overlays для corporate-dev (не секреты)
@@ -124,17 +124,20 @@ web-core/
 Рекомендованный нейминг:
 
 - namespace: `web-<app>-<env>` (например `web-corporate-dev`)
-- CNPG Cluster: `<app>-cnpg` (например `corporate-cnpg`)
+- CNPG Cluster:
+  - prod: `<app>-cnpg` (например `corporate-cnpg`)
+  - dev: `<app>-dev-cnpg` (например `corporate-dev-cnpg`)
+  - stage: `<app>-stage-cnpg` (например `corporate-stage-cnpg`)
 - ArgoCD Application: `web-<app>-<env>` (например `web-corporate-dev`)
 
 Примерная таблица:
 
 | App | Deployment | Namespace | БД (CNPG Cluster) | Домен(ы) |
 |---|---|---|---|---|
-| corporate | web-corporate-dev | web-corporate-dev | corporate-cnpg | `corp.dev.synestra.tech` |
-| shop | web-shop-dev | web-shop-dev | shop-cnpg | `shop.dev.synestra.tech` |
-| saas | web-saas-dev | web-saas-dev | saas-cnpg | `app.dev.synestra.tech` |
-| landings | web-landings-dev | web-landings-dev | landings-cnpg | `*.dev.synestra.tech` (или список хостов) |
+| corporate | web-corporate-dev | web-corporate-dev | corporate-dev-cnpg | `corp.dev.synestra.tech` |
+| shop | web-shop-dev | web-shop-dev | shop-dev-cnpg | `shop.dev.synestra.tech` |
+| saas | web-saas-dev | web-saas-dev | saas-dev-cnpg | `app.dev.synestra.tech` |
+| landings | web-landings-dev | web-landings-dev | landings-dev-cnpg | `*.dev.synestra.tech` (или список хостов) |
 
 ## 7) GitOps + Argo CD: как связать два репозитория
 
@@ -195,25 +198,32 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 
 Подробности: `docs/research/templates/`.
 
-## 9) База данных (CNPG) per-namespace
+## 9) База данных (CNPG)
 
-### Роли
+Нормативный канон по БД: `docs/architecture/database-cnpg.md`.
+
+### Роли (по умолчанию: platform-managed DB)
 
 - `synestra-platform`:
-  - ставит CNPG operator (и при необходимости общие StorageClass/backup‑политики)
-  - хранит bootstrap/app secrets (SOPS)
+  - ставит CNPG operator и платформенные дефолты;
+  - описывает CNPG Cluster’ы в namespace `databases` (`infra/databases/cloudnativepg/**`);
+  - хранит initdb secrets в `secrets/databases/**` (SOPS);
+  - хранит runtime env secrets приложений в `secrets/web-*/**` (в т.ч. `DATABASE_URI`).
 - `web-core`:
-  - описывает CNPG Cluster ресурсы **в namespace конкретного сайта**
-  - описывает приложения, которые используют эту БД
+  - **не создаёт БД** по умолчанию (`postgres.enabled=false`);
+  - хранит только ссылки на Secret’ы (`envFrom.secretRef`) и не‑секретные values;
+  - запускает миграции Payload как часть GitOps деплоя (hook Job).
 
-### Миграции Payload
+Допустимая альтернатива (только для POC): per-namespace DB, когда CNPG Cluster создаёт сам chart `deploy/charts/web-app` в namespace приложения (`postgres.enabled=true`).
 
-Единый “правильный” паттерн нужно выбрать и закрепить (см. `docs/notes.md` → открытые вопросы). Практически, в Kubernetes чаще всего используют:
+### Миграции Payload (выбранный паттерн)
 
-- **ArgoCD hook Job** (pre-sync): выполнить миграции до rollout приложения
-- или **initContainer** в Deployment: запускать миграции перед стартом контейнера
+Мы используем ArgoCD hook Job **`Sync`** с `sync-wave`, чтобы:
+- дождаться доступности Postgres,
+- выполнить `payload migrate`,
+- и только затем продолжить rollout приложения.
 
-Для GitOps предпочтительнее Job (легче наблюдать/повторять/катить).
+Реализация: `deploy/charts/web-app/templates/migrations-job.yaml` и `deploy/charts/web-app/values.yaml`.
 
 ## 10) Hot‑разработка: Okteto (вместо hostPath)
 
@@ -272,5 +282,5 @@ Runbooks:
 3) В `synestra-platform`:
    - добавить AppProject `web-core`
    - добавить root Application `web-core` (указатель на `web-core/deploy/argocd/apps`)
-4) Спроектировать CNPG per-namespace для первого сайта (corporate) и секреты к нему.
+4) Спроектировать CNPG для первого сайта (corporate) по канону platform-managed DB (namespace `databases`) и секреты к нему (см. `docs/architecture/database-cnpg.md`).
 5) Довести “runbook: hot dev” на базе Okteto (включая канон namespaces и откат dev к baseline при необходимости).

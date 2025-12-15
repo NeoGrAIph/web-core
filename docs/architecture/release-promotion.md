@@ -117,7 +117,7 @@ Env‑слой хранит:
    - `deploy/env/dev/<site>.yaml`, `deploy/env/prod/<site>.yaml`
    - `deploy/env/release-dev/<site>.yaml`, `deploy/env/release-prod/<site>.yaml`
    - `deploy/argocd/apps/dev/<site>.yaml`, `deploy/argocd/apps/prod/<site>.yaml`
-3) В `synestra-platform` добавляем секреты (SOPS) для обоих namespaces (dev+prod).
+3) В `synestra-platform` добавляем секреты (SOPS) для обоих namespaces (dev+prod) и поднимаем БД по CNPG канону: `docs/runbooks/runbook-database-cnpg.md`.
 
 ### 4.2. Ежедневная разработка (dev‑loop)
 

@@ -12,6 +12,7 @@
 - Архитектура и структура репозитория
   - `docs/architecture/architecture.md`
   - `docs/architecture/canon-v0.md`
+  - `docs/architecture/database-cnpg.md`
   - `docs/architecture/repo-structure.md`
   - `docs/architecture/tooling-turborepo.md`
   - `docs/architecture/env-contract.md`
@@ -29,6 +30,7 @@
   - `docs/runbooks/runbook-dev-prod-flow.md`
   - `docs/runbooks/runbook-platform-integration.md`
   - `docs/runbooks/runbook-ci-dev-to-prod.md`
+  - `docs/runbooks/runbook-database-cnpg.md`
   - `docs/runbooks/runbook-first-site-corporate.md`
   - `docs/runbooks/runbook-first-site-synestra-io.md`
   - `docs/runbooks/runbook-dev-deploy-corporate.md`

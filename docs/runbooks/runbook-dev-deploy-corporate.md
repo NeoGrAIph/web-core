@@ -34,7 +34,7 @@
 - App в монорепе: `apps/corporate-website` (workspace package: `@synestra/corporate-website`)
 - Namespace: `web-corporate-dev`
 - ArgoCD Application (внутри `web-core`): `web-corporate-dev`
-- CNPG Cluster name (в namespace): `postgres` (сервис станет `postgres-rw`)
+- CNPG Cluster (platform-managed, namespace `databases`): `corporate-dev-cnpg` (сервис для записи: `corporate-dev-cnpg-rw.databases.svc.cluster.local`)
 - Hostname (пример): `corporate.dev.<BASE_DOMAIN>`
   - `<BASE_DOMAIN>` выбирается в `synestra-platform` (в зависимости от DNS/ingress)
 
@@ -89,8 +89,8 @@ Upstream `website` использует `mongooseAdapter({ url: process.env.DATA
 
 Для Kubernetes‑цели нам нужно **перевести app на Postgres adapter**, чтобы:
 
-- БД была “per-namespace” через CNPG
-- деплой был типовой для всех сайтов (CNPG везде)
+- БД была Postgres под управлением CNPG (CloudNativePG)
+- деплой использовал единый контракт `DATABASE_URI` (dev/prod одинаково; где именно живёт CNPG Cluster — зависит от выбранного режима, см. `docs/architecture/database-cnpg.md`)
 
 Минимальный результат:
 
@@ -184,37 +184,34 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 - `env` (non-secret) и `envFrom.secretRef` (secret)
 - `persistence.media.enabled`, `persistence.media.mountPath`
 
-### 5.2. БД: CNPG Cluster “per namespace”
+### 5.2. БД: Postgres через CloudNativePG (CNPG)
 
-Есть два рабочих подхода (выберите один, чтобы не плодить “зоопарк”):
+Канон для новых web‑приложений: **platform-managed DB**.
 
-**Подход 1 (рекомендуется на старте): DB ресурсы в том же chart’e**
+Это значит:
+- CNPG Cluster’ы живут в namespace `databases` и управляются репозиторием `synestra-platform`;
+- в `web-core` для приложения ставим `postgres.enabled: false`;
+- приложение подключается к Postgres через `DATABASE_URI` из runtime Secret (через `envFrom.secretRef`).
 
-- chart создаёт `postgresql.cnpg.io/v1 Cluster` в namespace приложения
-- плюс: один ArgoCD Application = один deployment (и app, и DB)
-- минус: нужно аккуратно разрулить sync‑порядок + миграции
+Почему так:
+- web‑приложения не должны владеть “платформенными” ресурсами и случайно удалять БД через `--prune`;
+- упрощаем сопровождение (backup/restore/мониторинг/политики) централизованно на платформе;
+- naming становится единообразным и шаблонным.
 
-**Подход 2: DB как отдельный chart/manifest, но в том же ArgoCD Application**
+Операционный runbook: `docs/runbooks/runbook-database-cnpg.md`.  
+Архитектурный канон: `docs/architecture/database-cnpg.md`.
 
-- `deploy/charts/cnpg-cluster` + `deploy/charts/web-app`
-- ArgoCD Application может указывать на umbrella chart или app‑of‑apps внутри `web-core`
-
-Для первого dev‑деплоя проще начать с **Подхода 1**, но обязательно:
-
-- создать initdb secret в `synestra-platform` (SOPS)
-- выбрать размер storage
-- явно задать имя кластера (например `postgres`), чтобы строка подключения была предсказуемой
+Допустимая альтернатива (только для экспериментов/POC): **per-namespace DB**, когда CNPG Cluster создаёт сам chart `deploy/charts/web-app` при `postgres.enabled: true` (тогда нужны `*-db-init` secrets в web‑namespace).
 
 ### 5.3. Миграции Payload (GitOps‑паттерн)
 
 Для Postgres миграции нужно запускать **до** rollout приложения.
 
-Практичный GitOps‑вариант:
+Практичный GitOps‑вариант (и то, как уже устроен наш chart `deploy/charts/web-app`):
 
-- `Job` с аннотациями ArgoCD hook:
-  - `argocd.argoproj.io/hook: PreSync`
-  - `argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded`
-- Job запускает `payload migrate` (или эквивалент), используя **тот же образ**, что и приложение, и тот же Secret с env vars.
+- `Job` миграций запускается как ArgoCD hook **`Sync`** (а не `PreSync`), чтобы избежать deadlock на первом install, когда БД поднимается параллельно.
+- `sync-wave` миграций должен быть **позже**, чем волна БД (если БД создаётся chart’ом), и **раньше**, чем волна приложения.
+- Job запускает `pnpm payload migrate`, используя **тот же образ**, что и приложение, и тот же Secret с env vars (`DATABASE_URI`, `PAYLOAD_SECRET`, ...).
 
 Для dev достаточно:
 
@@ -256,11 +253,15 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 - `CRON_SECRET` (если jobs/cron)
 - `PREVIEW_SECRET` (если preview)
 
-2) Secret для CNPG bootstrap (initdb), если используем `bootstrap.initdb.secret`:
+2) База данных (канон: CNPG в namespace `databases`)
 
-- `username`
-- `password`
-- `database`
+- initdb secret (SOPS) в `secrets/databases/`:
+  - имя: `corporate-initdb-secret`
+  - namespace: `databases`
+  - ключи: `username`, `password` (тип обычно `kubernetes.io/basic-auth`)
+- runtime `DATABASE_URI` лежит в `web-corporate-<env>-env` (в web‑namespace), и указывает на сервис CNPG вида:
+  - dev: `corporate-dev-cnpg-rw.databases.svc.cluster.local`
+  - prod: `corporate-cnpg-rw.databases.svc.cluster.local`
 
 3) `imagePullSecret` (если registry приватный).
 
@@ -330,7 +331,7 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 Проверки:
 
 - namespace `web-corporate-dev` создан
-- CNPG Cluster `postgres` в namespace `Ready`
+- CNPG Cluster `corporate-dev-cnpg` в namespace `databases` в состоянии `Cluster in healthy state`
 - миграции Job (если включён) выполнен успешно
 - Deployment `web-corporate` в `Available`
 - Ingress выдал адрес/сертификат (если TLS)
@@ -351,7 +352,7 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 
 - `web-corporate-dev` ArgoCD Application в `Synced` и `Healthy`
 - `web-corporate-dev` namespace существует
-- CNPG Cluster `postgres` в `Ready`
+- CNPG Cluster `corporate-dev-cnpg` (namespace `databases`) в `Cluster in healthy state`
 - приложение отвечает по домену и открывается `/admin`
 - медиа‑файлы переживают перезапуск pod’а (PVC подключён правильно)
 - секреты не хранятся в `web-core` и не попали в git
@@ -400,4 +401,4 @@ Okteto dev‑режим временно патчит workload (команда/v
 - media storage через PVC RWO (без S3)
 - отключить seed/cron/preview до следующей итерации
 
-Главное: не нарушать базовые принципы — **изолированный namespace**, **CNPG per-namespace**, **секреты только в synestra-platform**, **GitOps‑истина в web-core**.
+Главное: не нарушать базовые принципы — **изолированный namespace**, **1 БД на deployment (CNPG)**, **секреты только в synestra-platform**, **GitOps‑истина в web-core**.
