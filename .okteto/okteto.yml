@@ -1,0 +1,32 @@
+name: web-core
+
+# Okteto manifest (v0, template-like).
+# This repo uses ArgoCD for the baseline deploy; Okteto is used only for "dev mode on top".
+#
+# Usage example (after ArgoCD deploy of dev env):
+#   okteto context use <our-okteto-instance>
+#   okteto namespace web-dev-synestra-io
+#   okteto up web-dev-synestra-io
+#   # ... develop ...
+#   okteto down web-dev-synestra-io
+#
+# Notes:
+# - We run `next dev` on port 3000 so the existing Service/Ingress continues to work.
+# - File sync ignores are controlled by the repo root `.stignore`.
+
+dev:
+  web-dev-synestra-io:
+    # Target the ArgoCD-managed Deployment in namespace `web-dev-synestra-io`.
+    # Chart `deploy/charts/web-app` labels:
+    # - app.kubernetes.io/name=web-app
+    # - app.kubernetes.io/instance=<release>
+    selector:
+      app.kubernetes.io/name: web-app
+      app.kubernetes.io/instance: web-dev-synestra-io
+    container: app
+    workdir: /app
+    command: sh -lc 'pnpm --filter @synestra/synestra-io exec next dev --hostname 0.0.0.0 --port 3000'
+    sync:
+      - .:/app
+    forward:
+      - 3000:3000
