@@ -2,6 +2,6 @@
 
 image:
   repository: "registry.gitlab.com/synestra/synestra-platform/web-synestra-io"
-  tag: "18a4b4b5f65d"
+  tag: "998792c2bb00"
   pullSecrets:
     - name: gitlab-regcred
