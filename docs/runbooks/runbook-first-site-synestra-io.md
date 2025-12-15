@@ -449,3 +449,58 @@ Namespaces:
 - `secrets/web-dev-synestra-io/*`
 - `secrets/web-synestra-io/*`
 
+---
+
+## 8) Тематики для дальнейшего исследования (по официальной документации Okteto и Argo CD)
+
+Ниже — список тематик, которые напрямую соответствуют уже выполненным шагам/артефактам (GitOps, dev+prod, TLS, секреты, migrations, монорепа).
+Цель: по каждой теме сверить, как **официально** рекомендуют делать Okteto и Argo CD, и при необходимости скорректировать наш подход.
+
+1) **Argo CD app-of-apps / “directory” applications**
+   - root Application, `directory.recurse`, `directory.include`
+   - стратегии безопасного инкрементального rollout (включать только выбранные apps)
+
+2) **Argo CD AppProject и модели изоляции**
+   - `sourceRepos`, `destinations` (namespace patterns), `clusterResourceWhitelist`
+   - best practice по разграничению прав между platform и app repos
+
+3) **Argo CD Sync Policy (automated/prune/selfHeal) для dev vs prod**
+   - когда включать/выключать `selfHeal`
+   - как сочетать hot‑dev (временные патчи) и GitOps‑строгость
+
+4) **Argo CD hooks (PreSync) и миграции БД**
+   - корректный паттерн миграций как hook Job
+   - управление повторными запусками hook Job (immutability spec, hook-delete-policy)
+   - порядок “migrations → deploy” и стратегии отката
+
+5) **Okteto “dev” поверх существующего деплоя (ArgoCD-managed workloads)**
+   - рекомендуемая модель: dev-окружения, dev‑контейнеры, sync, forward, dev commands
+   - как Okteto патчит Deployment/Pod и как корректно возвращаться к baseline
+
+6) **Сосуществование Argo CD и Okteto**
+   - как избегать “гонок” между reconcile ArgoCD и изменениями Okteto
+   - практики маркировки/ignoreDifferences (если применимо) vs отключение selfHeal на dev
+
+7) **TLS и Ingress в GitOps: wildcard сертификаты и SNI-выбор**
+   - best practice для Traefik + cert-manager + wildcard домены
+   - подход “TLSStore default / без ingress.tls.secretName” и его ограничения
+
+8) **Управление секретами в GitOps**
+   - хранение секретов отдельно от app‑репозитория (SOPS/External Secrets/Vault и т.п.)
+   - рекомендации Argo CD по генерации/подстановке секретов и multi-repo flows
+
+9) **Namespace lifecycle: CreateNamespace=true vs управляемые Namespace манифесты**
+   - что рекомендуют Argo CD и Okteto
+   - риски “CreateNamespace” для прод‑окружений и альтернативы
+
+10) **Database per namespace / operator-managed DB (CloudNativePG)**
+   - паттерны bootstrap/initdb secrets
+   - миграции и права доступа (db owner/app user), и как это “правильно” описывать в GitOps
+
+11) **Монорепозитории и деплой одного приложения**
+   - как официально рекомендуют собирать/публиковать образы из монореп (prune/partial checkouts)
+   - минимизация контекста сборки, воспроизводимость и кеширование
+
+12) **CI→GitOps релизный процесс (image tag как “релиз”)**
+   - best practice Argo CD (Image Updater/commit-based tags) и Okteto (если задействуется)
+   - подход “один release values слой, подключённый dev+prod”
