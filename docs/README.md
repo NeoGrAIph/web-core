@@ -19,7 +19,9 @@
   - `docs/research/templates-research.md`
   - `docs/research/templates/payload-website.md`
   - `docs/research/templates/payload-ecommerce.md`
+  - `docs/research/payload/payload-v3-official-notes.md`
   - `docs/research/okteto/okteto-official-notes.md`
+  - `docs/research/argocd/argocd-official-notes.md`
 - Runbooks
   - `docs/runbooks/runbook-dev.md`
   - `docs/runbooks/runbook-okteto-dev.md`
