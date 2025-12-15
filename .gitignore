@@ -146,3 +146,6 @@ vite.config.ts.timestamp-*
 
 # Turborepo (remote cache config, local artifacts)
 .turbo/
+
+# PNPM store (dev-only local artifact; for Okteto we move store outside sync-root)
+.pnpm-store/

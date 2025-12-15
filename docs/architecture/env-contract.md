@@ -28,6 +28,10 @@
 - `development` в локальном `next dev`,
 - `production` в `next build` и в Kubernetes (и для `stage`, и для `prod`).
 
+Примечание про Okteto hot‑dev:
+- когда мы запускаем `next dev` **внутри кластера** через Okteto, `NODE_ENV` должен быть `development` (иначе Next.js ругается на нестандартные значения и могут быть странные эффекты).
+- это относится только к dev‑сессии/окружению `dev`, и не меняет принцип “в prod — production”.
+
 Поэтому для различения `dev|stage|prod` используем отдельную переменную:
 
 - `SYNESTRA_ENV=dev|stage|prod`
@@ -92,4 +96,3 @@ Helm chart: `deploy/charts/web-app`.
 
 Если миграции запускаются как `Job` (ArgoCD hook), то этот Job должен получать тот же набор env vars,
 что и основной `Deployment` (включая `SYNESTRA_ENV`), иначе валидация может “думать”, что это `dev`.
-

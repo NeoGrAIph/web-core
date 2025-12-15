@@ -104,7 +104,7 @@
 
 - Стратегия env‑переменных и “не‑секретов” для GitOps (dev/stage/prod): договориться о контракте ConfigMap/values, именах Secret’ов, правилах NEXT_PUBLIC_* и о том, как это отражать в `turbo` cache (чтобы не ловить неожиданные cache misses).
 - Payload v3 + CNPG: стандартизировать миграции/seed/генерацию артефактов при деплое (Job/initContainer/Argo hook), чтобы деплой был детерминированным и безопасным.
-- Okteto namespaces vs Kubernetes namespaces: определить корректный канон “dev‑режим поверх ArgoCD‑деплоя”, если namespace создаётся ArgoCD (`CreateNamespace=true`), но Okteto видит только свои Okteto namespaces (нужно либо “adopt/import”, либо создавать namespace через Okteto и деплоить туда через ArgoCD).
+- Okteto namespaces vs Kubernetes namespaces: канон на текущий момент — dev namespaces для hot‑dev создаём через Okteto (`okteto namespace create ...`), а ArgoCD деплоит baseline в уже существующий namespace. Дальше уточним это по официальной доке и политике RBAC.
 - Стратегия стилизации `packages/ui`: Tailwind vs tokens/CSS vars vs (временные) inline‑styles, с учётом того что payload templates расходятся по Tailwind major (website: 3.x, ecommerce: 4.x).
 - Shop/ecommerce: используем ли `@payloadcms/plugin-ecommerce` и Stripe (или иной провайдер), и какие требования это накладывает на ingress/webhooks, секреты и окружения.
 - Какие ещё config packages нужны в `web-core` кроме TS/ESLint — определяем на основании требований актуальной версии Payload (и наших фактических потребностей CI/IDE).

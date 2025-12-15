@@ -508,4 +508,4 @@ Namespaces:
 
 12) **CI→GitOps релизный процесс (image tag как “релиз”)**
    - best practice Argo CD (Image Updater/commit-based tags) и Okteto (если задействуется)
-   - подход “один release values слой, подключённый dev+prod”
+   - канон promotion: `release-dev` → `release-prod` (два GitOps-коммита, prod получает только проверенный tag)

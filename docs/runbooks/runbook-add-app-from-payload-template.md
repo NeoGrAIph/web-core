@@ -26,6 +26,12 @@
 5) **deployment/namespace для dev**:
    - namespace: `web-<app-key>-dev` (пример: `web-blog-dev`)
    - ArgoCD Application name: `web-<app-key>-dev`
+6) **deployment/namespace для prod**:
+   - namespace: `web-<app-key>-prod` (пример: `web-blog-prod`)
+   - ArgoCD Application name: `web-<app-key>-prod`
+
+Примечание (важно): на старте мы ведём разработку в `dev`, а в `prod` попадают только проверенные изменения через promotion (GitOps-коммит).
+Канон: `docs/architecture/release-promotion.md`.
 
 ---
 
@@ -153,22 +159,51 @@
 
 ## 8) GitOps‑скелет dev‑деплоя (после локального запуска)
 
-1) Values для dev:
+0) Release-слои (обязательны для канона promotion):
+- `deploy/env/release-dev/<app-key>.yaml` (dev release: `image.repository` + `image.tag`)
+- `deploy/env/release-prod/<app-key>.yaml` (prod release: `image.repository` + `image.tag`)
+
+1) Values для dev (env‑слой):
 - создать `deploy/env/dev/<app-key>.yaml` (только non-secret + ссылки на Secret’ы)
-  - `image.repository`, `image.tag` (placeholder под CI)
   - `env.NEXT_PUBLIC_SERVER_URL`
   - `envFrom.secretRef` (имя k8s Secret, который создаётся в `synestra-platform`)
   - `ingress.hosts` (dev домен)
   - `postgres.bootstrap.secretName` (bootstrap secret в `synestra-platform`)
 
-2) ArgoCD Application для dev:
+2) Values для prod (env‑слой):
+- создать `deploy/env/prod/<app-key>.yaml` (аналогично dev, но с prod доменом и `SYNESTRA_ENV=prod`)
+
+3) ArgoCD Application для dev:
 - создать `deploy/argocd/apps/dev/<app-key>.yaml`
   - отдельный namespace `web-<app-key>-dev`
-  - helm values file: `../../env/dev/<app-key>.yaml`
+  - helm valueFiles:
+    - `../../env/release-dev/<app-key>.yaml`
+    - `../../env/dev/<app-key>.yaml`
   - `repoURL` пока может быть placeholder и заполняется при интеграции с `synestra-platform`
 
-3) Важно:
+4) ArgoCD Application для prod:
+- создать `deploy/argocd/apps/prod/<app-key>.yaml`
+  - отдельный namespace `web-<app-key>-prod`
+  - helm valueFiles:
+    - `../../env/release-prod/<app-key>.yaml`
+    - `../../env/prod/<app-key>.yaml`
+
+5) Важно:
 - `experiments` не добавляем в `deploy/argocd/apps/**`.
+- Dev должен быть “мягким” для Okteto (обычно `selfHeal: false`), prod — GitOps‑строгим (`selfHeal: true`): см. `docs/architecture/release-promotion.md`.
+
+---
+
+## 8.1) Миграции Payload (обязательная дисциплина)
+
+Правило: изменения схемы БД **не** выкатываем “только кодом”.
+
+- Для локальной разработки допустим быстрый режим (push/быстрые итерации), но для `dev/prod` контуров должны существовать **migration files в git** (`apps/<app-dir>/src/migrations/**`).
+- Если менялась схема (коллекции/поля/relations/access), в PR должны быть добавлены миграции:
+  - создать миграцию: `pnpm --filter @synestra/<app-dir> payload migrate:create`
+  - применить миграции (локально): `pnpm --filter @synestra/<app-dir> payload migrate`
+
+Runbook по k8s/GitOps паттерну миграций (hook Job): `docs/runbooks/runbook-dev-deploy-corporate.md`.
 
 ---
 
@@ -195,9 +230,12 @@
 
 - [ ] Создан `apps/<app-dir>` и он запускается локально
 - [ ] Есть `apps/<app-dir>/.env.example` без секретов
+- [ ] Добавлены миграции в git (`apps/<app-dir>/src/migrations/**`) и их запуск воспроизводим (`payload migrate`)
 - [ ] `apps/<app-dir>/tsconfig.json` расширяет `@synestra/typescript-config/nextjs.json`
 - [ ] `apps/<app-dir>/eslint.config.mjs` использует `@synestra/eslint-config`
 - [ ] `apps/<app-dir>/next.config.mjs` содержит `withPayload` и `transpilePackages` (по необходимости)
 - [ ] `pnpm lint`, `pnpm test`, `pnpm build` проходят в корне
-- [ ] (опционально) добавлены `deploy/env/dev/<app-key>.yaml` и `deploy/argocd/apps/dev/<app-key>.yaml`
-
+- [ ] Добавлены GitOps артефакты dev+prod:
+  - `deploy/env/{dev,prod}/<app-key>.yaml`
+  - `deploy/env/release-{dev,prod}/<app-key>.yaml`
+  - `deploy/argocd/apps/{dev,prod}/<app-key>.yaml`

@@ -6,8 +6,9 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 
 ## 0) Принципиальная схема
 
-1) ArgoCD разворачивает приложение в `web-<app>-dev` (через `deploy/argocd/apps/dev/<app>.yaml` + `deploy/env/dev/<app>.yaml`).
-2) Разработчик запускает Okteto dev‑режим для этого же namespace и workload’а.
+1) Создаём dev namespace как **Okteto namespace** (non‑personal), чтобы Okteto CLI мог работать в нём.
+2) ArgoCD разворачивает baseline‑приложение в этот же namespace (через `deploy/argocd/apps/dev/<app>.yaml` + `deploy/env/dev/<app>.yaml`).
+3) Разработчик запускает Okteto dev‑режим для этого же namespace и workload’а.
 3) Okteto временно патчит workload (команда/контейнер/тома) и синхронизирует код.
 4) По завершении dev‑сессии изменения откатываются (либо вручную, либо командами Okteto).
 
@@ -52,13 +53,27 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 - Kubernetes namespace может существовать (создан, например, ArgoCD с `CreateNamespace=true`),
 - но Okteto CLI может **не** видеть его как Okteto namespace (`okteto namespace use <ns>` → `Namespace not found on context`).
 
-Перед тем как планировать hot‑dev “в том же namespace, что и ArgoCD”, нужно выбрать и закрепить канон:
-1) namespace создаёт Okteto (как Okteto namespace), а ArgoCD деплоит в уже существующий namespace,
-2) или найти корректный способ “adopt/import” существующего Kubernetes namespace в Okteto (если поддерживается нашей редакцией/настройками).
+Зафиксированный канон (на текущий момент):
+1) dev namespace для hot‑dev создаёт **Okteto** (как Okteto namespace, non‑personal);
+2) ArgoCD деплоит baseline в этот же namespace (Kubernetes namespace уже существует).
 
 Диагностика:
 - `okteto namespace list` — список namespaces, известных Okteto
 - `kubectl get ns` — список namespaces в Kubernetes
+
+### 1.2) Как создать dev namespace (канон)
+
+Пример для `synestra.io`:
+
+```bash
+okteto context use https://okteto.services.synestra.tech
+okteto namespace create web-dev-synestra-io
+okteto namespace web-dev-synestra-io
+```
+
+Важно:
+- если namespace уже был создан “не‑Okteto способом”, Okteto может отказать в `namespace create` (конфликт имен);
+- в ранней стадии проекта (без ценных данных) проще пересоздать namespace корректно (Okteto‑ownership).
 
 ## 2) ArgoCD vs Okteto (важно)
 
@@ -74,23 +89,23 @@ Okteto dev‑режим обычно вносит изменения в `Deploym
 Важно: Okteto **не заменяет** GitOps‑деплой. Он работает “поверх” уже развернутого dev‑окружения.
 
 Шаги:
-1) Сначала развернуть dev‑deployment через ArgoCD:
-   - есть namespace `web-<app>-dev`
+1) Сначала подготовить dev namespace как Okteto namespace:
+   - `okteto namespace list` содержит `web-<app>-dev`
+2) Развернуть dev‑deployment через ArgoCD:
    - есть Deployment из chart `web-app` (обычно `web-<app>-dev-web-app`)
    - dev домен работает (`/` открывается)
-   - namespace виден в Okteto (`okteto namespace list` содержит `web-<app>-dev`)
-2) Убедиться, что dev‑Application в ArgoCD допускает drift:
+3) Убедиться, что dev‑Application в ArgoCD допускает drift:
    - `selfHeal: false` для `deploy/argocd/apps/dev/<app>.yaml`
-3) Убедиться, что внутри pod уже доступны нужные env vars и секреты (Helm `env` + `envFrom.secretRef`).
-4) Добавить/обновить Okteto manifest (см. раздел 6) так, чтобы `okteto up` мог:
+4) Убедиться, что внутри pod уже доступны нужные env vars и секреты (Helm `env` + `envFrom.secretRef`).
+5) Добавить/обновить Okteto manifest (см. раздел 6) так, чтобы `okteto up` мог:
    - найти нужный Deployment (через selector/имя),
    - запустить `next dev`,
    - синхронизировать код и пробросить порт.
-5) Запустить dev‑сессию:
+6) Запустить dev‑сессию:
    - `okteto context use <our-self-hosted>`
    - `okteto namespace web-<app>-dev`
-   - `okteto up <dev-container>`
-6) После завершения:
+   - `okteto up <dev-container>` (если sync “ломается” → `okteto up <dev-container> --reset`)
+7) После завершения:
    - `okteto down <dev-container>`
    - при необходимости “вернуть baseline как в Git” → `argocd app sync web-<app>-dev`
 
@@ -144,7 +159,10 @@ ArgoCD/Helm должен уже подать в Pod:
 
 На текущем этапе фиксируем подход (1):
 - `.okteto/okteto.yml` в корне репозитория как единая точка входа для monorepo.
-- `.stignore` в корне репозитория как базовый набор исключений для Syncthing.
+- `.stignore` (и/или `.okteto/.stignore`) как базовый набор исключений для Syncthing.
+
+Практическая деталь (по опыту):
+- если manifest лежит в `.okteto/okteto.yml`, Okteto будет ожидать `.stignore` в **той же директории**, т.е. `.okteto/.stignore` (иначе CLI предложит “infer defaults” интерактивно).
 
 Рекомендация по неймингу workload:
 - chart `web-app` создаёт Deployment с именем `"<release>-web-app"` (см. `deploy/charts/web-app/templates/_helpers.tpl`).
@@ -162,6 +180,10 @@ ArgoCD/Helm должен уже подать в Pod:
 - `**/dist/`
 - `**/coverage/`
 - `**/.git/`
+- `.pnpm-store/**` (если pnpm store попадает в sync‑root)
+
+Важно для нашей схемы (по опыту): **PVC mount нельзя синкать**.
+Например, для `synestra-io` media‑директория смонтирована как PVC в `apps/synestra-io/public/media`, и Syncthing будет падать с `device or resource busy`, если пытаться её удалять/перезаписывать. Поэтому эту папку нужно исключать в `.stignore`.
 
 Примечание: в текущей версии Okteto CLI у нас нет команды `okteto init`, поэтому `.stignore` держим как явный артефакт в репозитории (или шаблон) и дополняем по факту.
 

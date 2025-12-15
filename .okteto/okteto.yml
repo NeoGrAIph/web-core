@@ -12,7 +12,7 @@ name: web-core
 #
 # Notes:
 # - We run `next dev` on port 3000 so the existing Service/Ingress continues to work.
-# - File sync ignores are controlled by the repo root `.stignore`.
+# - Because the manifest lives in `.okteto/okteto.yml`, Okteto expects `.okteto/.stignore` (otherwise it prompts interactively).
 
 dev:
   web-dev-synestra-io:

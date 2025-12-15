@@ -11,3 +11,6 @@ Values/overlays для Helm/Kustomize, разложенные по окруже�
 - `deploy/env/release-dev/*` и `deploy/env/release-prod/*` — release‑слой (какой `image.tag` разворачиваем в dev/prod).
 
 Канон promotion: `docs/architecture/release-promotion.md`.
+
+Примечание: директория `deploy/env/release/` исторически оставлена как заготовка/legacy и **не является каноничным путём**.
+Для dev+prod используем только `deploy/env/release-dev/*` и `deploy/env/release-prod/*`.

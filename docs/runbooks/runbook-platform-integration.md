@@ -35,6 +35,10 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 - в нашей установке отключены `okteto-nginx` и `okteto-ingress` — пользовательские сайты/дев‑домены остаются на наших Ingress’ах/Traefik, Okteto используется как dev‑loop поверх workloads
 - см. `docs/wiki/okteto.md` в `synestra-platform`.
 
+Важный практический нюанс для работы Okteto CLI:
+- параметр `cluster.endpoint` в Helm values Okteto должен совпадать с SAN сертификата Kubernetes API server, иначе `okteto up` будет падать с ошибкой `x509: certificate is valid for ... not <host>`.
+- это настраивается в `synestra-platform/infra/okteto/values.yaml` (и относится именно к платформенной установке Okteto).
+
 ## 1) DNS (вне Git)
 
 Нужно, чтобы DNS указывал на публичный IP Traefik LoadBalancer (в `synestra-platform` это `212.237.216.94`).
