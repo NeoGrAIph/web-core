@@ -1,14 +1,33 @@
 {
-  "name": "@company/ui",
+  "name": "@synestra/ui",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./button": "./src/button.tsx",
+    "./card": "./src/card.tsx"
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest run",
+    "dev:test": "vitest"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@synestra/typescript-config": "workspace:*",
+    "@types/react": "19.2.1",
+    "@types/react-dom": "19.2.1",
+    "jsdom": "^26.1.0",
+    "typescript": "5.7.3",
+    "vitest": "^3.2.4"
   }
 }

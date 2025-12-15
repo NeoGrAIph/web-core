@@ -1,0 +1,11 @@
+{
+  "folders": [
+    { "path": "apps", "name": "apps" },
+    { "path": "docs", "name": "docs" },
+    { "path": "packages", "name": "packages" },
+    { "path": "deploy", "name": "deploy" }
+  ],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib"
+  }
+}

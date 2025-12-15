@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web-landings-dev
+  namespace: argo
+spec:
+  project: synestra-web
+  source:
+    repoURL: https://github.com/NeoGrAIph/web-core.git
+    targetRevision: main
+    path: deploy/charts/web-app
+    helm:
+      valueFiles:
+        - ../../env/release/landings.yaml
+        - ../../env/dev/landings.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: web-landings-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

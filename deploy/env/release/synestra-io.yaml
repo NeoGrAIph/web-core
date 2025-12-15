@@ -1,0 +1,8 @@
+# Release values for synestra.io deployment (shared between dev and prod).
+
+image:
+  repository: "REPLACE_ME_REGISTRY/web-synestra-io"
+  tag: "REPLACE_ME_TAG"
+  pullSecrets:
+    - name: gitlab-regcred
+

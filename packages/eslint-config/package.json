@@ -1,0 +1,13 @@
+{
+  "name": "@synestra/eslint-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "eslint-config-next": "15.4.9"
+  }
+}

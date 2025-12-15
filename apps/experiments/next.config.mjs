@@ -1,11 +1,20 @@
-import { withPayload } from '@payloadcms/next/config'
+import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  webpack: (webpackConfig) => {
+    webpackConfig.resolve.extensionAlias = {
+      '.cjs': ['.cts', '.cjs'],
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.mjs': ['.mts', '.mjs'],
+    }
+
+    return webpackConfig
+  },
   transpilePackages: [
-    '@company/ui',
-    '@company/cms-core'
+    '@synestra/ui',
+    '@synestra/cms-core'
   ]
 }
 

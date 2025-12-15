@@ -1,0 +1,38 @@
+{{- if .Values.migrations.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "web-app.fullname" . }}-migrate
+  labels:
+    {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/hook: {{ .Values.migrations.hook | quote }}
+    argocd.argoproj.io/hook-delete-policy: {{ .Values.migrations.hookDeletePolicy | quote }}
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "web-app.labels" . | nindent 8 }}
+    spec:
+      restartPolicy: OnFailure
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: migrate
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            {{- toYaml .Values.migrations.command | nindent 12 }}
+          env:
+            {{- range $k, $v := .Values.env }}
+            - name: {{ $k | quote }}
+              value: {{ $v | quote }}
+            {{- end }}
+          {{- if .Values.envFrom.secretRef }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.envFrom.secretRef | quote }}
+          {{- end }}
+{{- end }}

@@ -1,8 +1,2 @@
-export const collections: any[] = []
-export const globals: any[] = []
+export { Users } from './collections/users'
 
-// default export with collections and globals
-export default {
-  collections,
-  globals
-}

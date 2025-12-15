@@ -1,18 +1,28 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
     "strict": true,
-    "noEmit": true,
     "jsx": "preserve",
     "baseUrl": ".",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "isolatedModules": true,
     "paths": {
-      "@company/ui": ["packages/ui/src/index"],
-      "@company/cms-core": ["packages/cms-core/src/index"],
-      "@company/cms-blocks": ["packages/cms-blocks/src/index"],
-      "@company/cms-ecommerce": ["packages/cms-ecommerce/src/index"],
-      "@company/payload-plugin-multisite": ["packages/plugins/payload-plugin-multisite/src/index"]
+      "@synestra/ui": ["packages/ui/src/index"],
+      "@synestra/cms-core": ["packages/cms-core/src/index"],
+      "@synestra/cms-blocks": ["packages/cms-blocks/src/index"],
+      "@synestra/cms-ecommerce": ["packages/cms-ecommerce/src/index"],
+      "@synestra/utils": ["packages/utils/src/index"],
+      "@synestra/payload-plugin-multisite": ["packages/plugins/payload-plugin-multisite/src/index"]
     }
   },
   "include": []

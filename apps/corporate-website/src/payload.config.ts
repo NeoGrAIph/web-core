@@ -1,22 +1,41 @@
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import path from 'path'
 import { buildConfig } from 'payload'
-import multisitePlugin from '@company/payload-plugin-multisite'
+import sharp from 'sharp'
+import { fileURLToPath } from 'url'
+import { Users } from '@synestra/cms-core'
+import multisitePlugin from '@synestra/payload-plugin-multisite'
+import { env } from './env'
 
-// Import shared schemas from core packages (currently empty placeholders)
-// import coreCollections from '@company/cms-core'
-// import coreGlobals from '@company/cms-core'
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+
+const isProd = process.env.NODE_ENV === 'production'
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  serverURL: env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  secret: env.PAYLOAD_SECRET || 'dev-secret',
+  db: postgresAdapter({
+    pool: {
+      connectionString:
+        env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/web_corporate',
+    },
+    migrationDir: path.resolve(dirname, 'migrations'),
+    push: !isProd,
+  }),
   admin: {
-    user: 'users'
+    user: Users.slug,
   },
   collections: [
-    // ...coreCollections,
+    Users,
   ],
   globals: [
-    // ...coreGlobals,
   ],
   plugins: [
     multisitePlugin()
-  ]
+  ],
+  sharp,
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
 })

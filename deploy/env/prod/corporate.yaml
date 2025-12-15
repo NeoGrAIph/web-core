@@ -1,0 +1,24 @@
+# Prod values for corporate deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "prod"
+  NEXT_PUBLIC_SERVER_URL: "https://corporate.synestra.io"
+
+envFrom:
+  secretRef: "web-corporate-prod-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "corporate.synestra.io"
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgres:
+  enabled: true
+  clusterName: postgres
+  bootstrap:
+    secretName: "web-corporate-prod-db-init"
+    database: corporate
+    owner: corporate

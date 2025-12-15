@@ -1,0 +1,24 @@
+# Prod values for landings deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "prod"
+  NEXT_PUBLIC_SERVER_URL: "https://landings.synestra.io"
+
+envFrom:
+  secretRef: "web-landings-prod-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "landings.synestra.io"
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgres:
+  enabled: true
+  clusterName: postgres
+  bootstrap:
+    secretName: "web-landings-prod-db-init"
+    database: landings
+    owner: landings

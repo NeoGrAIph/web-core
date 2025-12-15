@@ -1,0 +1,24 @@
+# Dev values for synestra.io deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "dev"
+  NEXT_PUBLIC_SERVER_URL: "https://dev.synestra.io"
+
+envFrom:
+  secretRef: "web-dev-synestra-io-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "dev.synestra.io"
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgres:
+  enabled: true
+  clusterName: postgres
+  bootstrap:
+    secretName: "web-dev-synestra-io-db-init"
+    database: synestra_io
+    owner: synestra_io

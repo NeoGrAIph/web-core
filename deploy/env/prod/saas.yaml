@@ -1,0 +1,24 @@
+# Prod values for saas deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "prod"
+  NEXT_PUBLIC_SERVER_URL: "https://saas.synestra.io"
+
+envFrom:
+  secretRef: "web-saas-prod-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "saas.synestra.io"
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgres:
+  enabled: true
+  clusterName: postgres
+  bootstrap:
+    secretName: "web-saas-prod-db-init"
+    database: saas
+    owner: saas

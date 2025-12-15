@@ -2,7 +2,7 @@
 
 `web-core` — продуктовый монорепозиторий Synestra для разработки и сопровождения группы сайтов/веб‑приложений (corporate, e‑commerce, SaaS web, лендинги и др.) на стеке **Payload CMS + Next.js**, а также для хранения **GitOps‑артефактов деплоя** этих приложений (шаблоны/values/манифесты), которые применяются через Argo CD.
 
-Репозиторий находится в стадии активной разработки: структура и правила формируются **на основании исследований best practices** под целевую задачу и **анализа официальных шаблонов и документации Payload**.
+Репозиторий находится в стадии **проектирования и подготовки к разработке**: структура и правила формируются **на основании исследований best practices** под целевую задачу и **анализа официальных шаблонов и документации Payload**.
 
 ## Зачем этот репозиторий
 
@@ -40,14 +40,42 @@
 - Payload CMS: `3.68.3`
 - Next.js: `15.4.9`
 - Node.js: `>= 22` (см. `package.json`)
+- Turborepo (turbo): `2.6.3` (см. `package.json`)
+
+## Ключевые решения (актуально)
+
+- **Монорепа**: `apps/*` (deployable apps) + `packages/*` (shared code/configs), pnpm workspaces + Turborepo как координатор задач (`pnpm dev/build/lint/test`).
+- **Независимый деплой**: один deployment = один ArgoCD `Application`; инфраструктура/секреты/CI в `~/synestra-platform`, а `web-core` хранит код и GitOps‑артефакты (без секретов).
+- **Секреты**: plaintext‑секреты не коммитим; используем `.env.example` и ссылки на Kubernetes Secret names/keys.
+- **Shared configs**:
+  - ESLint: `packages/eslint-config` (flat config), подключается в `apps/*/eslint.config.mjs`;
+  - TypeScript: `packages/typescript-config` (configs `base.json`, `nextjs.json`), используется через `extends`.
+    Важно: потребители должны иметь `@synestra/typescript-config` в `devDependencies` (обычно `"workspace:*"`), иначе TypeScript не сможет резолвить `extends`.
+- **Shared UI**: `packages/ui` — общий UI‑слой; поддерживаем импорт из корня и subpath exports (`@synestra/ui/button`, `@synestra/ui/card`).
+- **Тестовый контур**: базовые UI‑тесты на Vitest в `packages/ui`; запускаются через `pnpm test` (Turborepo).
+- **CI (референс)**: в репо есть пример workflow `.github/workflows/ci.yml` (основной CI всё равно может быть в `synestra-platform`).
 
 ## Документация
 
 Начни с индекса: `docs/README.md`.
 
+## Структура репозитория (кратко)
+
+```text
+apps/        — deployable приложения (Next.js + Payload)
+packages/    — общий код и конфиги (UI, ESLint, TypeScript и др.)
+deploy/      — GitOps для ArgoCD/Helm (charts, values по env, Applications)
+docs/        — архитектура, исследования, runbooks, материалы курса
+upstream/    — референс‑снапшоты (например, официальные шаблоны Payload)
+.github/     — референс CI (в проде может жить в synestra-platform)
+turbo/       — Turborepo tooling (генераторы/утилиты, если используются)
+.vscode/     — настройки рабочей области (опционально)
+```
+
 Ключевые документы:
 - Архитектура и взаимодействие репозиториев: `docs/architecture/architecture.md`
 - Целевая структура репозитория: `docs/architecture/repo-structure.md`
+- Контракт env vars + валидация (dev→stage→prod): `docs/architecture/env-contract.md`
 - Конспект исследований и критерии: `docs/research/research.md`
 - Исследование официальных шаблонов Payload: `docs/research/templates-research.md`
 - Runbooks (dev‑процессы, первый dev‑деплой): `docs/runbooks/README.md`
@@ -69,6 +97,28 @@ pnpm install
 ```bash
 pnpm --filter @synestra/corporate-website dev
 ```
+
+4) Быстрые проверки (перед пушем):
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+Примечание: для добавления нового приложения из official Payload template используйте runbook `docs/runbooks/runbook-add-app-from-payload-template.md`.
+
+## Turborepo (turbo)
+
+В корне репозитория используется Turborepo как координатор задач (см. `turbo.json` и root scripts в `package.json`).
+
+- Запуск задач по монорепе: `pnpm dev|build|lint|typecheck|test`
+- Для локальной разработки обычно удобнее запускать конкретный app через `pnpm --filter <package> dev`
+- Для сборки контейнеров (CI/CD) используется `turbo prune --docker` — см. скрипты:
+  - `pnpm prune:corp`
+  - `pnpm prune:shop`
+  - `pnpm prune:exp`
 
 ## GitOps / Argo CD (обзор)
 

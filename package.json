@@ -2,14 +2,39 @@
   "name": "web-core",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "pnpm@10.0.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "workspaces": [
     "apps/*",
     "packages/*",
     "packages/plugins/*"
   ],
   "scripts": {
-    "dev:corp": "npm --workspace apps/corporate-website run dev",
-    "dev:shop": "npm --workspace apps/ecommerce-store run dev",
-    "dev:exp": "npm --workspace apps/experiments run dev"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json,yaml,yml}\"",
+    "prune:corp": "turbo prune --scope=@synestra/corporate-website --docker --out-dir=out/corporate-website",
+    "prune:shop": "turbo prune --scope=@synestra/ecommerce-store --docker --out-dir=out/ecommerce-store",
+    "prune:exp": "turbo prune --scope=@synestra/experiments --docker --out-dir=out/experiments",
+    "dev:corp": "pnpm --filter @synestra/corporate-website dev",
+    "dev:shop": "pnpm --filter @synestra/ecommerce-store dev",
+    "dev:exp": "pnpm --filter @synestra/experiments dev"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "2.6.3",
+    "typescript": "5.7.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }

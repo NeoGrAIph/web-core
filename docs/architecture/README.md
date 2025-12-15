@@ -1,0 +1,7 @@
+# `docs/architecture`
+
+Нормативные документы по архитектуре и структуре репозитория:
+- `docs/architecture/architecture.md` — взаимодействие `web-core` ↔ `synestra-platform`
+- `docs/architecture/repo-structure.md` — живая структура репозитория и маппинг на deployments
+- `docs/architecture/tooling-turborepo.md` — как используем Turborepo (turbo) в монорепе
+- `docs/architecture/env-contract.md` — контракт env vars `dev → stage → prod` и правила валидации (без секретов в репо)

@@ -1,0 +1,24 @@
+# Prod values for shop deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "prod"
+  NEXT_PUBLIC_SERVER_URL: "https://shop.synestra.io"
+
+envFrom:
+  secretRef: "web-shop-prod-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "shop.synestra.io"
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgres:
+  enabled: true
+  clusterName: postgres
+  bootstrap:
+    secretName: "web-shop-prod-db-init"
+    database: shop
+    owner: shop

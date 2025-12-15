@@ -1,0 +1,120 @@
+# runbook-platform-integration.md
+
+Runbook: какие шаги нужны в `synestra-platform`, чтобы **подключить `web-core`** и получить рабочую схему:
+
+- `dev` (hot через Okteto) на домене `*.dev.synestra.tech`
+- `prod` (GitOps‑строго) на домене `*.synestra.io`
+
+Этот документ специально “стыкует” два репозитория:
+- `~/repo/web-core` — код и GitOps‑артефакты приложений (values/charts/ArgoCD Applications)
+- `~/synestra-platform` — кластерная инфраструктура (Traefik, cert-manager, Okteto, ArgoCD, секреты, runner/CI)
+
+## 0) Что уже есть в `synestra-platform` (важно знать)
+
+### TLS / wildcard сертификаты
+
+В `synestra-platform` уже заведены wildcard сертификаты и Traefik TLSStore:
+
+- cert-manager Certificates (namespace `ingress`):
+  - `wildcard-dev-synestra-tech-tls` для `*.dev.synestra.tech`
+  - `wildcard-synestra-io-tls` для `synestra.io` и `*.synestra.io`
+  - см. `infra/cert-manager/resources/certificate-wildcard-*.yaml`
+- Traefik `TLSStore default` содержит эти secrets:
+  - `infra/ingress/traefik/resources/tlsstore-default.yaml`
+
+Следствие: для сайтов достаточно включить TLS на роутере Traefik (`router.tls=true`), а конкретный сертификат подберётся по SNI.
+
+Важно: Kubernetes `Ingress.spec.tls[].secretName` должен ссылаться на Secret в *том же namespace*, поэтому мы **не** пытаемся указывать TLS secretName для wildcard‑сертификатов из namespace `ingress`. Рекомендованный паттерн описан в `synestra-platform/docs/wiki/tls-wildcard-traefik.md` и реализован в chart `deploy/charts/web-app` (Traefik TLSStore‑подбор по SNI).
+
+### Okteto
+
+Okteto Self‑Hosted уже развернут GitOps’ом:
+- приложение: `argocd/apps/infra-okteto.yaml`
+- домен control‑plane: `okteto.services.synestra.tech`
+- см. `docs/wiki/okteto.md` в `synestra-platform`.
+
+## 1) DNS (вне Git)
+
+Нужно, чтобы DNS указывал на публичный IP Traefik LoadBalancer (в `synestra-platform` это `212.237.216.94`).
+
+Минимум:
+- `*.dev.synestra.tech` → Traefik LB IP
+- `*.synestra.io` → Traefik LB IP
+
+## 2) Доступ ArgoCD к репозиторию `web-core`
+
+Если репозиторий `web-core` публичный — ArgoCD может читать его без credentials.
+
+Если приватный — нужно добавить repo credentials в ArgoCD (в `synestra-platform`, через SOPS‑секрет в namespace `argo`).
+
+Цель: ArgoCD должен уметь читать:
+- `deploy/charts/web-app`
+- `deploy/env/**`
+- `deploy/argocd/apps/**`
+
+## 3) AppProject для web‑приложений (рекомендуется)
+
+В `synestra-platform` стоит завести отдельный AppProject, например `synestra-web`, который разрешает:
+- destinations: `web-*-dev`, `web-*-prod` (и позже stage)
+- cluster resources: `Namespace` (если используем `CreateNamespace=true`)
+
+Файл: `synestra-platform/argocd/apps/app-projects.yaml`.
+
+После этого в `web-core/deploy/argocd/apps/**` нужно заменить `spec.project: default` на `synestra-web`.
+
+## 4) Root Application “web-core” в `synestra-platform`
+
+В `synestra-platform/argocd/apps/` добавляется один root Application (app‑of‑apps), который применяет child Applications из `web-core`.
+
+Рекомендуемый паттерн:
+- root: `argocd/apps/web-core.yaml` в `synestra-platform`
+- source repoURL: репозиторий `web-core`
+- path: `deploy/argocd/apps` (recurse)
+
+Это позволит подключить все сайты одной точкой и дальше управлять ими из `web-core`.
+
+## 5) Секреты для сайтов (SOPS, `synestra-platform`)
+
+Для каждого deployment (`web-<app>-dev` / `web-<app>-prod`) должны существовать:
+
+1) `gitlab-regcred` (imagePullSecret), если образы лежат в приватном GitLab Registry  
+   - имя: `gitlab-regcred`
+   - namespace: `web-<app>-dev` и `web-<app>-prod`
+   - web-core уже ожидает это имя в `deploy/env/release/*.yaml`.
+
+2) Secret с env vars приложения, подключаемый через `envFrom.secretRef`  
+   Пример имён:
+   - dev: `web-corporate-dev-env`
+   - prod: `web-corporate-prod-env`
+
+   Минимальные ключи (см. `docs/architecture/env-contract.md`):
+   - `PAYLOAD_SECRET`
+   - `DATABASE_URI`
+   - опционально: `CRON_SECRET`, `PREVIEW_SECRET`
+   - для shop: Stripe keys
+
+3) CNPG bootstrap secret для initdb (если используем bootstrap через secret)  
+   Пример имён:
+   - dev: `web-corporate-dev-db-init`
+   - prod: `web-corporate-prod-db-init`
+
+После добавления секретов:
+- синхронизировать `infra-secrets` в ArgoCD (`synestra-platform/argocd/apps/infra-secrets.yaml`).
+
+## 6) Проверка интеграции
+
+После подключения root Application `web-core` в ArgoCD должны появиться child Applications:
+- `web-corporate-dev`, `web-corporate-prod`
+- `web-shop-dev`, `web-shop-prod`
+
+Далее:
+- проверить, что Ingress’ы создаются в правильных namespaces;
+- проверить, что открываются домены:
+  - dev: `https://corporate.dev.synestra.tech`
+  - prod: `https://corporate.synestra.io`
+
+## 7) Okteto dev‑режим поверх dev‑деплоя
+
+Runbook по логике “Okteto поверх ArgoCD” (под монорепу): `docs/runbooks/runbook-okteto-dev.md`.
+
+Важно: чтобы Okteto мог патчить workload в dev, для dev‑Applications обычно нужен режим без self‑heal (см. `docs/runbooks/runbook-dev-prod-flow.md`).

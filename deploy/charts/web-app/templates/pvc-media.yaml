@@ -1,0 +1,17 @@
+{{- if .Values.persistence.media.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "web-app.fullname" . }}-media
+  labels:
+    {{- include "web-app.labels" . | nindent 4 }}
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.persistence.media.size | quote }}
+  {{- if .Values.persistence.media.storageClassName }}
+  storageClassName: {{ .Values.persistence.media.storageClassName | quote }}
+  {{- end }}
+{{- end }}
+

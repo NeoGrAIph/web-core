@@ -1,7 +1,6 @@
-export const collections: any[] = []
-export const globals: any[] = []
+// Здесь будет ecommerce‑специфичная CMS‑часть (коллекции/глобалы/хуки) для shop deployment.
+// Основание: upstream Payload template `ecommerce` (BETA) — см. docs/research/templates/payload-ecommerce.md
 
-export default {
-  collections,
-  globals
-}
+export const ecommerceCollections = [] as const
+export const ecommerceGlobals = [] as const
+
