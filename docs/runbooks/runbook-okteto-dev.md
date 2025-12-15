@@ -67,8 +67,8 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 
 ```bash
 okteto context use https://okteto.services.synestra.tech
-okteto namespace create web-dev-synestra-io
-okteto namespace web-dev-synestra-io
+okteto namespace create web-synestra-io-dev
+okteto namespace web-synestra-io-dev
 ```
 
 Важно:

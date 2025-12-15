@@ -396,8 +396,8 @@ Directory‑тип приложения грузит plain manifests из `.yml/
 - есть **security implications** ApplicationSet (нельзя давать возможность менять ApplicationSet людям без доверия, иначе можно эскалировать доступы через destinations/projects).
 
 Рекомендация на текущем этапе:
-- оставить directory apps для “фиксированных” `web-dev-synestra-io` / `web-synestra-io`,
-- параллельно зафиксировать (в отдельном документе) критерии, когда мигрировать на ApplicationSet (количество сайтов, необходимость previews, количество окружений).
+- оставить directory apps для “фиксированных” `web-synestra-io-dev` / `web-synestra-io-prod`,
+  - параллельно зафиксировать (в отдельном документе) критерии, когда мигрировать на ApplicationSet (количество сайтов, необходимость previews, количество окружений).
 
 ---
 

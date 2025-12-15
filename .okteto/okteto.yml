@@ -5,24 +5,24 @@ name: web-core
 #
 # Usage example (after ArgoCD deploy of dev env):
 #   okteto context use <our-okteto-instance>
-#   okteto namespace web-dev-synestra-io
-#   okteto up web-dev-synestra-io
+#   okteto namespace web-synestra-io-dev
+#   okteto up web-synestra-io-dev
 #   # ... develop ...
-#   okteto down web-dev-synestra-io
+#   okteto down web-synestra-io-dev
 #
 # Notes:
 # - We run `next dev` on port 3000 so the existing Service/Ingress continues to work.
 # - Because the manifest lives in `.okteto/okteto.yml`, Okteto expects `.okteto/.stignore` (otherwise it prompts interactively).
 
 dev:
-  web-dev-synestra-io:
-    # Target the ArgoCD-managed Deployment in namespace `web-dev-synestra-io`.
+  web-synestra-io-dev:
+    # Target the ArgoCD-managed Deployment in namespace `web-synestra-io-dev`.
     # Chart `deploy/charts/web-app` labels:
     # - app.kubernetes.io/name=web-app
     # - app.kubernetes.io/instance=<release>
     selector:
       app.kubernetes.io/name: web-app
-      app.kubernetes.io/instance: web-dev-synestra-io
+      app.kubernetes.io/instance: web-synestra-io-dev
     container: app
     workdir: /app
     command: sh -lc 'export CI=1 COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm --filter @synestra/synestra-io exec next dev --hostname 0.0.0.0 --port 3000'

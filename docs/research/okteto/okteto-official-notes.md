@@ -88,8 +88,8 @@
 - namespace может называться по фиче/тикету и т.п.; имеет смысл вести несколько namespaces параллельно.
 
 Практический вывод для нас:
-- наши `web-dev-synestra-io` и `web-synestra-io` — это **non-personal** namespaces, и это нормально;
-- отдельные ephemeral namespaces под preview‑ветки в будущем логично делать по “тикет/ветка” (это ближе к официальному паттерну, чем “один общий dev namespace на всё”).
+- наши `web-synestra-io-dev` и `web-synestra-io-prod` — это **non-personal** namespaces, и это нормально;
+  - отдельные ephemeral namespaces под preview‑ветки в будущем логично делать по “тикет/ветка” (это ближе к официальному паттерну, чем “один общий dev namespace на всё”).
 
 ---
 

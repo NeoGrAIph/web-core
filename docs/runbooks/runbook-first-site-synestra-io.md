@@ -3,8 +3,8 @@
 Дата актуальности: **2025-12-15**.  
 Версии: **Payload `3.68.3`**, **Next.js `15.4.9`**, **Turborepo `2.6.3`**.  
 Namespaces:
-- **prod**: `web-synestra-io`
-- **dev**: `web-dev-synestra-io`
+- **prod**: `web-synestra-io-prod`
+- **dev**: `web-synestra-io-dev`
 
 Этот документ фиксирует **только то, что реально осталось в Git** (в двух репозиториях) после проделанной работы, и объясняет:
 - *что* именно добавлено/изменено;
@@ -38,7 +38,7 @@ Namespaces:
 2) Добавлен root ArgoCD Application **`apps-web-core`** (app‑of‑apps), который подтягивает ArgoCD Applications из `web-core`.
 3) Добавлены wildcard TLS сертификаты (cert-manager) и Traefik `TLSStore default` для автоподбора сертификата по SNI без per-namespace TLS secrets.
 4) Убраны конфликтующие host’ы (`synestra.io`, `synestra.tech`) из legacy ingress приложения `infra-payload`, чтобы освободить домены под новые сайты.
-5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-dev-synestra-io` и `web-synestra-io` (env + db-init + registry pull secret).
+5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-synestra-io-dev` и `web-synestra-io-prod` (env + db-init + registry pull secret).
 
 ---
 
@@ -224,18 +224,18 @@ Namespaces:
 Содержит:
 - `env.SYNESTRA_ENV=dev`,
 - `env.NEXT_PUBLIC_SERVER_URL=https://dev.synestra.io`,
-- `envFrom.secretRef=web-dev-synestra-io-env` (секрет создаётся в platform‑репозитории),
+- `envFrom.secretRef=web-synestra-io-dev-env` (секрет создаётся в platform‑репозитории),
 - `ingress.hosts[0].host=dev.synestra.io`,
 - `persistence.media.mountPath=/app/apps/synestra-io/public/media`,
-- `postgres.bootstrap.secretName=web-dev-synestra-io-db-init` + `database/owner`.
+- `postgres.bootstrap.secretName=web-synestra-io-dev-db-init` + `database/owner`.
 
 **Prod values:** `deploy/env/prod/synestra-io.yaml`  
 Аналогично, но:
 - `SYNESTRA_ENV=prod`,
 - `NEXT_PUBLIC_SERVER_URL=https://synestra.io`,
-- `secretRef=web-synestra-io-env`,
+- `secretRef=web-synestra-io-prod-env`,
 - `ingress.host=synestra.io`,
-- db-init secret другой: `web-synestra-io-db-init`.
+- db-init secret другой: `web-synestra-io-prod-db-init`.
 
 **Release values (dev/prod):**  
 - `deploy/env/release-dev/synestra-io.yaml`  
@@ -246,11 +246,11 @@ Namespaces:
 - `image.pullSecrets` (`gitlab-regcred`).
 
 **ArgoCD Application (dev):** `deploy/argocd/apps/dev/synestra-io.yaml`
-- destination namespace: `web-dev-synestra-io`,
+- destination namespace: `web-synestra-io-dev`,
 - `selfHeal: false` (на dev допускаем временные ручные/okteto‑патчи без мгновенного отката).
 
 **ArgoCD Application (prod):** `deploy/argocd/apps/prod/synestra-io.yaml`
-- destination namespace: `web-synestra-io`,
+- destination namespace: `web-synestra-io-prod`,
 - `selfHeal: true` (prod должен самовосстанавливаться к Git‑состоянию).
 
 ---
@@ -311,17 +311,17 @@ Namespaces:
 
 Добавлены SOPS‑зашифрованные манифесты:
 
-`secrets/web-dev-synestra-io/`
-- `00-namespace.yaml` (Namespace `web-dev-synestra-io`)
+`secrets/web-synestra-io-dev/`
+- `00-namespace.yaml` (Namespace `web-synestra-io-dev`)
 - `gitlab-regcred.yaml` (pull secret для GitLab Registry)
-- `web-dev-synestra-io-env.yaml` (Opaque secret с runtime env vars)
-- `web-dev-synestra-io-db-init.yaml` (initdb username/password для CNPG bootstrap)
+- `web-synestra-io-dev-env.yaml` (Opaque secret с runtime env vars)
+- `web-synestra-io-dev-db-init.yaml` (initdb username/password для CNPG bootstrap)
 
-`secrets/web-synestra-io/`
-- `00-namespace.yaml` (Namespace `web-synestra-io`)
+`secrets/web-synestra-io-prod/`
+- `00-namespace.yaml` (Namespace `web-synestra-io-prod`)
 - `gitlab-regcred.yaml`
-- `web-synestra-io-env.yaml`
-- `web-synestra-io-db-init.yaml`
+- `web-synestra-io-prod-env.yaml`
+- `web-synestra-io-prod-db-init.yaml`
 
 Зачем:
 - `web-core` не хранит секреты и не должен их знать;
@@ -334,7 +334,7 @@ Namespaces:
 ### 4.1. После синхронизации `synestra-platform` (ArgoCD)
 
 Ожидаем:
-- `apps-web-core` присутствует в ArgoCD и подтягивает `web-dev-synestra-io` и `web-synestra-io` из `web-core`;
+- `apps-web-core` присутствует в ArgoCD и подтягивает `web-synestra-io-dev` и `web-synestra-io-prod` из `web-core`;
 - в namespace `ingress` существуют:
   - wildcard Certificates (`wildcard-*-tls` secrets),
   - `TLSStore default`;
@@ -351,8 +351,8 @@ Namespaces:
 
 ### 4.3. После этого снаружи
 
-- `https://synestra.io` должен вести на новый `web-synestra-io` сайт.
-- `https://dev.synestra.io` должен вести на новый `web-dev-synestra-io` сайт.
+- `https://synestra.io` должен вести на новый `web-synestra-io-prod` сайт.
+- `https://dev.synestra.io` должен вести на новый `web-synestra-io-dev` сайт.
 
 ---
 
@@ -369,9 +369,9 @@ Namespaces:
 
 ### 5.2. `dev.synestra.io` не отвечает (404)
 
-Факт (наблюдение): если `web-dev-synestra-io` ещё не развернул Ingress, Traefik отдаёт 404 (нет matching router).
+Факт (наблюдение): если `web-synestra-io-dev` ещё не развернул Ingress, Traefik отдаёт 404 (нет matching router).
 
-Почему `web-dev-synestra-io` мог не развернуться:
+Почему `web-synestra-io-dev` мог не развернуться:
 1) ранее ArgoCD не мог отрендерить chart из‑за файла `templates/README.md` (исправлено в `web-core` переносом в `_README.md`);
 2) если hook Job миграций падает, ArgoCD не продолжает rollout остальных ресурсов (Deployment/Ingress).
 
@@ -451,8 +451,8 @@ Namespaces:
 - `infra/webcore/payload/values.prod.yaml`
 
 **Secrets (SOPS)**
-- `secrets/web-dev-synestra-io/*`
-- `secrets/web-synestra-io/*`
+- `secrets/web-synestra-io-dev/*`
+- `secrets/web-synestra-io-prod/*`
 
 ---
 

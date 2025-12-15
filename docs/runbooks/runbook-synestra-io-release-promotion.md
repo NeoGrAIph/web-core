@@ -28,13 +28,13 @@
 
 Должны существовать 2 приложения:
 
-- `deploy/argocd/apps/dev/synestra-io.yaml` (`web-dev-synestra-io`)
+- `deploy/argocd/apps/dev/synestra-io.yaml` (`web-synestra-io-dev`)
   - `valueFiles` должны подключать:
     - `../../env/release-dev/synestra-io.yaml`
     - `../../env/dev/synestra-io.yaml`
   - `selfHeal: false` (dev допускает drift для Okteto)
 
-- `deploy/argocd/apps/prod/synestra-io.yaml` (`web-synestra-io`)
+- `deploy/argocd/apps/prod/synestra-io.yaml` (`web-synestra-io-prod`)
   - `valueFiles` должны подключать:
     - `../../env/release-prod/synestra-io.yaml`
     - `../../env/prod/synestra-io.yaml`
@@ -47,15 +47,15 @@
 ### 2.1. Secrets (SOPS) по namespaces
 
 В namespaces:
-- `web-dev-synestra-io`
-- `web-synestra-io`
+- `web-synestra-io-dev`
+- `web-synestra-io-prod`
 
 должны быть созданы:
 
 1) `gitlab-regcred` (если registry приватный)
 2) Secret с env vars приложения, подключаемый через `envFrom.secretRef`:
-   - dev: `web-dev-synestra-io-env`
-   - prod: `web-synestra-io-env`
+   - dev: `web-synestra-io-dev-env`
+   - prod: `web-synestra-io-prod-env`
 3) (если используем CNPG bootstrap через secret) `*-db-init` secrets
 
 Важно: в `web-core` должны быть только **ссылки** на имена Secret’ов/ключи.
@@ -71,7 +71,7 @@ CI должен делать promotion **коммитами в `web-core`**, н�
 2) Dev release:
    - commit в `web-core`: обновить `deploy/env/release-dev/synestra-io.yaml:image.tag`
    - дождаться, что ArgoCD выкатил dev (варианты ожидания):
-     - `argocd app wait web-dev-synestra-io --health --sync`
+     - `argocd app wait web-synestra-io-dev --health --sync`
      - или проверка HTTP на `https://dev.synestra.io/` (если ArgoCD доступ из CI не настроен)
 
 3) Validate dev:
@@ -81,7 +81,7 @@ CI должен делать promotion **коммитами в `web-core`**, н�
 
 4) Promote prod:
    - commit в `web-core`: обновить `deploy/env/release-prod/synestra-io.yaml:image.tag` тем же tag
-   - дождаться rollout prod (`argocd app wait web-synestra-io ...` или HTTP smoke на `https://synestra.io/`)
+   - дождаться rollout prod (`argocd app wait web-synestra-io-prod ...` или HTTP smoke на `https://synestra.io/`)
 
 Отдельное решение (по желанию):
 - сделать promotion job **manual** (кнопка в GitLab), если хотим человеческий gate для prod.
@@ -107,9 +107,8 @@ CI должен делать promotion **коммитами в `web-core`**, н�
 
 1) Drift только от Okteto:
    - `okteto down ...`
-   - `argocd app sync web-dev-synestra-io`
+   - `argocd app sync web-synestra-io-dev`
 
 2) Dev tag ушёл вперёд и нужно “как в prod”:
    - привести `deploy/env/release-dev/synestra-io.yaml:image.tag` к значению из `deploy/env/release-prod/synestra-io.yaml`
    - дождаться sync dev в Argo CD
-

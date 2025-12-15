@@ -7,7 +7,7 @@ env:
   NODE_ENV: "development"
 
 envFrom:
-  secretRef: "web-dev-synestra-io-env"
+  secretRef: "web-synestra-io-dev-env"
 
 ingress:
   enabled: true
@@ -25,7 +25,7 @@ postgres:
   enabled: true
   clusterName: postgres
   bootstrap:
-    secretName: "web-dev-synestra-io-db-init"
+    secretName: "web-synestra-io-dev-db-init"
     database: synestra_io
     owner: synestra_io
 

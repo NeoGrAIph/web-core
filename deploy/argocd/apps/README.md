@@ -6,4 +6,4 @@ ArgoCD `Application` манифесты, разложенные по окруж�
 - `prod/`
 
 Каждый `Application` соответствует одному deployment (corporate/shop/saas/landings).
-Для основного домена `synestra.io` есть отдельные deployments `web-dev-synestra-io` и `web-synestra-io`.
+Для основного домена `synestra.io` есть отдельные deployments `web-synestra-io-dev` и `web-synestra-io-prod`.

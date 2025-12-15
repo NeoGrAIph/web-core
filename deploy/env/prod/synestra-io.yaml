@@ -5,7 +5,7 @@ env:
   NEXT_PUBLIC_SERVER_URL: "https://synestra.io"
 
 envFrom:
-  secretRef: "web-synestra-io-env"
+  secretRef: "web-synestra-io-prod-env"
 
 ingress:
   enabled: true
@@ -23,6 +23,6 @@ postgres:
   enabled: true
   clusterName: postgres
   bootstrap:
-    secretName: "web-synestra-io-db-init"
+    secretName: "web-synestra-io-prod-db-init"
     database: synestra_io
     owner: synestra_io

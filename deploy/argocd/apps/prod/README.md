@@ -2,6 +2,6 @@
 
 ArgoCD `Application` манифесты для окружения **prod** (по одному на deployment).
 
-Включает основной сайт `synestra.io`: `web-synestra-io`.
+Включает основной сайт `synestra.io`: `web-synestra-io-prod`.
 
 Примечание: для prod включаем `selfHeal: true` (GitOps‑строго), в отличие от dev, где `selfHeal` может быть выключен ради Okteto dev‑режима.

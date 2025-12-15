@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: web-dev-synestra-io
+  name: web-synestra-io-dev
   namespace: argo
 spec:
   project: synestra-web
@@ -15,7 +15,7 @@ spec:
         - ../../env/dev/synestra-io.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: web-dev-synestra-io
+    namespace: web-synestra-io-dev
   syncPolicy:
     automated:
       prune: true
