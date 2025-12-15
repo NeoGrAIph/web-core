@@ -1,0 +1,451 @@
+# Runbook / отчёт: bootstrap `synestra.io` (prod) и `dev.synestra.io` (dev)
+
+Дата актуальности: **2025-12-15**.  
+Версии: **Payload `3.68.3`**, **Next.js `15.4.9`**, **Turborepo `2.6.3`**.  
+Namespaces:
+- **prod**: `web-synestra-io`
+- **dev**: `web-dev-synestra-io`
+
+Этот документ фиксирует **только то, что реально осталось в Git** (в двух репозиториях) после проделанной работы, и объясняет:
+- *что* именно добавлено/изменено;
+- *зачем* это сделано;
+- *на основании каких правил/документов/ограничений* принимались решения;
+- *какой ожидаемый результат* и *какие текущие проблемы* (если они наблюдаются).
+
+---
+
+## 0) Короткое резюме (что было сделано)
+
+### В `web-core` (`/home/neograiph/repo/web-core`)
+
+1) Добавлено deployable приложение **`apps/synestra-io`** на базе официального Payload template `website` (копия хранится в `upstream/`).
+2) Подготовлен универсальный Helm chart **`deploy/charts/web-app`** для деплоя одного Next.js+Payload app (Deployment/Service/Ingress/PVC/CNPG Cluster + migrations hook Job).
+3) Подготовлены values и ArgoCD Application‑манифесты для **двух окружений**:
+   - `deploy/env/dev/synestra-io.yaml` + `deploy/argocd/apps/dev/synestra-io.yaml`
+   - `deploy/env/prod/synestra-io.yaml` + `deploy/argocd/apps/prod/synestra-io.yaml`
+   - общий релизный слой: `deploy/env/release/synestra-io.yaml`
+4) Исправлены проблемы, которые блокировали деплой через ArgoCD/Helm:
+   - `deploy/charts/web-app/templates/README.md` переносится в `_README.md`, чтобы Helm не пытался парсить Markdown как YAML‑манифест;
+   - команда миграций выполнена через `pnpm --filter "$APP_NAME" payload migrate` (монорепа + сборка из `turbo prune`);
+   - `persistence.media.mountPath` для `synestra-io` выставлен на реальный путь `/app/apps/synestra-io/public/media`;
+   - включён ESM‑режим для внутренних пакетов/конфига, чтобы CLI `payload` корректно запускался (см. раздел 2.3).
+
+### В `synestra-platform` (`/home/neograiph/synestra-platform`)
+
+1) Добавлен ArgoCD AppProject **`synestra-web`** (изоляция web‑приложений в namespaces `web-*`).
+2) Добавлен root ArgoCD Application **`apps-web-core`** (app‑of‑apps), который подтягивает ArgoCD Applications из `web-core`.
+3) Добавлены wildcard TLS сертификаты (cert-manager) и Traefik `TLSStore default` для автоподбора сертификата по SNI без per-namespace TLS secrets.
+4) Убраны конфликтующие host’ы (`synestra.io`, `synestra.tech`) из legacy ingress приложения `infra-payload`, чтобы освободить домены под новые сайты.
+5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-dev-synestra-io` и `web-synestra-io` (env + db-init + registry pull secret).
+
+---
+
+## 1) Принципы и ограничения, которые учитывались
+
+### 1.1. Разделение ответственности (два репозитория)
+
+- `web-core` — **код приложений** + **GitOps‑артефакты приложений** (chart/values/ArgoCD Application manifests), без секретов.
+- `synestra-platform` — **кластерная инфраструктура** (ArgoCD/Traefik/cert-manager/Okteto/Keycloak/DB operators) + **SOPS‑секреты**.
+
+Это следует из правил в `web-core/AGENTS.md` и `synestra-platform/AGENTS.md`:
+- secrets не храним в `web-core`;
+- изменения кластера делаем через GitOps (ArgoCD), а не вручную.
+
+### 1.2. Dev+Prod сразу, без Stage на старте
+
+Схема “dev+prod” на старте зафиксирована в `web-core/docs/runbooks/runbook-dev-prod-flow.md`:
+- dev нужен для hot‑разработки (Okteto) и быстрых итераций;
+- prod — строго GitOps‑стабильный;
+- позже можно добавить stage, не ломая структуру.
+
+### 1.3. Namespaces как единицы изоляции
+
+Принцип “one namespace ↔ one deployment ↔ one DB” реализован через:
+- `web-core/deploy/charts/web-app/templates/cnpg-cluster.yaml` (Cluster в namespace приложения),
+- `synestra-platform/argocd/apps/app-projects.yaml` (AppProject ограничивает допустимые namespaces).
+
+---
+
+## 2) Что именно сделано в `web-core` и зачем
+
+Ниже описано только то, что действительно существует в репозитории `web-core` на текущий момент.
+
+### 2.1. Приложение: `apps/synestra-io/*`
+
+**Файлы/каталоги:**
+- `apps/synestra-io/` — Next.js 15 + Payload 3, адаптированный под монорепу.
+
+**Зачем:**
+- это первый “боевой” сайт на домене `synestra.io` (prod) и `dev.synestra.io` (dev),
+- это референс‑реализация для дальнейшего тиражирования на сайты группы.
+
+**Согласно чему:**
+- исходник взят из официального шаблона Payload (копия хранится в `web-core/upstream/payload/templates/website`),
+- версии зафиксированы в `web-core/AGENTS.md` (Payload `3.68.3`, Next.js `15.4.9`).
+
+**Важные особенности реализации:**
+
+1) **Postgres вместо Mongo**
+   - Payload template `website` по умолчанию ориентирован на MongoDB (`@payloadcms/db-mongodb`).
+   - В `apps/synestra-io/src/payload.config.ts` используется `@payloadcms/db-postgres` и `DATABASE_URI`.
+   - Это согласуется с общим курсом на CNPG (CloudNativePG) в кластере и типичным прод‑паттерном для k8s.
+
+2) **Валидация env vars**
+   - В `apps/synestra-io/src/env.ts` используется `@synestra/env` (Zod‑валидация) и явный контракт.
+   - Причина: ошибки окружения должны падать **раньше**, с понятным сообщением, и без утечки значений.
+   - Контракт описан в `docs/architecture/env-contract.md`.
+
+3) **ESM / совместимость с Payload CLI**
+   - Добавлено `"type": "module"` в:
+     - `apps/synestra-io/package.json`
+     - `packages/cms-core/package.json`
+     - `packages/env/package.json`
+   - Причина: Payload 3 запускает бинари через ESM и использует `tsx` для трансляции TS; в mixed CJS/ESM режиме ловятся ошибки резолва/экспортов.
+   - Соответственно, конфиги, которые импортируются как ESM, приведены к `export default`:
+     - `apps/synestra-io/redirects.js`
+     - `apps/synestra-io/postcss.config.js`
+
+4) **Media storage путь**
+   - В `apps/synestra-io/src/collections/Media.ts` `staticDir` указывает на `../../public/media`.
+   - В собранном образе (монорепа внутри контейнера) это соответствует пути:
+     - `/app/apps/synestra-io/public/media`
+   - Поэтому в values для `synestra-io` переопределён mountPath PVC (см. 2.4).
+
+### 2.2. Shared packages: `packages/env` и `packages/cms-core`
+
+**`packages/env`**
+- Назначение: единый способ описывать env‑контракт и валидировать его runtime‑схемой (Zod) без вывода секретов.
+- Ключевые exports:
+  - `z` (реэкспорт Zod),
+  - `getSynestraEnv(runtimeEnv)` → `dev|stage|prod`,
+  - `createValidatedEnv({ schema, runtimeEnv, appName })`.
+
+**`packages/cms-core`**
+- Назначение: выносить повторно используемые Payload‑конфиги (коллекции/access/common patterns) в `packages/*`, чтобы разные сайты не копировали один и тот же код.
+- Сейчас содержит `Users` collection (`packages/cms-core/src/collections/users.ts`) и экспорт из `packages/cms-core/src/index.ts`.
+
+Почему это важно именно для нашей цели:
+- Payload templates часто дублируют `Users`/auth/access в каждом app;
+- если с первого сайта заложить вынос в `packages/*`, новые сайты легче добавлять “как из конструктора”.
+
+### 2.3. Docker сборка под монорепу: `docker/Dockerfile.turbo`
+
+**Файл:** `docker/Dockerfile.turbo`
+
+**Зачем:**
+- собирать **одно** приложение из монорепозитория без копирования всего репо в image;
+- сделать сборку предсказуемой и совместимой с CI/remote cache (Turborepo).
+
+**Как работает:**
+1) Сначала делается `turbo prune --docker` → получается минимальный workspace в `out/<app>/json` и полный код в `out/<app>/full`.
+2) Dockerfile ставит deps на базе `json/`, затем копирует `full/` и билдит только выбранный workspace:
+   - `ARG APP_NAME`
+   - `RUN pnpm --filter "${APP_NAME}" build`
+3) В runtime stage прокидывается `APP_NAME` в env:
+   - `ENV APP_NAME="${APP_NAME}"`
+   - Это нужно и для старта (`pnpm --filter ${APP_NAME} start`), и для hook job миграций.
+
+### 2.4. Helm chart приложения: `deploy/charts/web-app`
+
+**Директория:** `deploy/charts/web-app/`
+
+**Назначение:**
+- унифицированный деплой одного приложения Next.js+Payload в Kubernetes:
+  - `Deployment`, `Service`, `Ingress`,
+  - `PVC` для медиа (`public/media`),
+  - опционально CNPG Postgres `Cluster`,
+  - migrations Job как ArgoCD hook.
+
+**Почему chart живёт в `web-core`:**
+- это “application layer”: шаблон деплоя сайтов;
+- platform‑репозиторий отвечает за общие сервисы (Traefik/cert-manager/Okteto), но не должен знать детали каждого сайта.
+
+#### 2.4.1. Критичный фикс: Markdown в `templates/`
+
+**Факт:** ArgoCD показывал `ComparisonError` при генерации манифестов:
+- Helm пытался парсить `deploy/charts/web-app/templates/README.md` как YAML.
+
+**Исправление (в репозитории):**
+- файл переименован в `deploy/charts/web-app/templates/_README.md`.
+
+**Почему именно так:**
+- Helm обрабатывает файлы в `templates/` как шаблоны, а файлы с `_`‑префиксом используются как “partials/служебные” и не рендерятся в манифесты.
+- Нам важно сохранить пояснение рядом с шаблонами, но не ломать рендер.
+
+#### 2.4.2. Миграции как ArgoCD hook Job
+
+**Файл:** `deploy/charts/web-app/templates/migrations-job.yaml`
+
+**Мотивация:**
+- Payload требует миграции схемы БД до запуска приложения.
+- В GitOps‑модели удобно запускать миграции как `PreSync` hook: сначала миграции, затем rollout Deployment.
+
+**Команда миграций:**
+- Настроена в `deploy/charts/web-app/values.yaml` как:
+  - `pnpm --filter "$APP_NAME" payload migrate`
+
+**Почему не просто `payload migrate`:**
+- образ собирается из монорепы и содержит несколько workspaces;
+- `pnpm --filter` гарантирует запуск CLI в каталоге нужного app (там, где есть `payload.config.ts` и app‑зависимости).
+
+#### 2.4.3. PVC для media
+
+**Файл:** `deploy/charts/web-app/templates/pvc-media.yaml` + монтирование в `templates/deployment.yaml`.
+
+**Зачем:**
+- Payload template `website` по умолчанию кладёт медиа в `public/media`.
+- Без PVC медиа потеряются при пересоздании pod’а.
+
+**Важно для `synestra-io`:**
+- базовый chart mountPath по умолчанию: `/app/public/media`,
+- но для `synestra-io` реальный путь: `/app/apps/synestra-io/public/media`,
+- поэтому в values dev/prod добавлено переопределение (см. 2.5).
+
+#### 2.4.4. CNPG Cluster для Postgres
+
+**Файл:** `deploy/charts/web-app/templates/cnpg-cluster.yaml`
+
+**Зачем:**
+- быстрый старт без отдельного DB chart на раннем этапе;
+- изоляция: один namespace → одна БД.
+
+**Важная валидация values (Helm `required`):**
+- если задан `postgres.bootstrap.secretName`, то обязаны быть заданы:
+  - `postgres.bootstrap.database`
+  - `postgres.bootstrap.owner`
+
+Это предотвращает “тихие” ошибки, когда cluster создаётся без корректного initdb.
+
+### 2.5. Values и ArgoCD Applications для `synestra-io`
+
+**Dev values:** `deploy/env/dev/synestra-io.yaml`  
+Содержит:
+- `env.SYNESTRA_ENV=dev`,
+- `env.NEXT_PUBLIC_SERVER_URL=https://dev.synestra.io`,
+- `envFrom.secretRef=web-dev-synestra-io-env` (секрет создаётся в platform‑репозитории),
+- `ingress.hosts[0].host=dev.synestra.io`,
+- `persistence.media.mountPath=/app/apps/synestra-io/public/media`,
+- `postgres.bootstrap.secretName=web-dev-synestra-io-db-init` + `database/owner`.
+
+**Prod values:** `deploy/env/prod/synestra-io.yaml`  
+Аналогично, но:
+- `SYNESTRA_ENV=prod`,
+- `NEXT_PUBLIC_SERVER_URL=https://synestra.io`,
+- `secretRef=web-synestra-io-env`,
+- `ingress.host=synestra.io`,
+- db-init secret другой: `web-synestra-io-db-init`.
+
+**Release values:** `deploy/env/release/synestra-io.yaml`  
+Содержит:
+- `image.repository`,
+- `image.tag` (это “релиз” в смысле `runbook-ci-dev-to-prod.md`),
+- `image.pullSecrets` (`gitlab-regcred`).
+
+**ArgoCD Application (dev):** `deploy/argocd/apps/dev/synestra-io.yaml`
+- destination namespace: `web-dev-synestra-io`,
+- `selfHeal: false` (на dev допускаем временные ручные/okteto‑патчи без мгновенного отката).
+
+**ArgoCD Application (prod):** `deploy/argocd/apps/prod/synestra-io.yaml`
+- destination namespace: `web-synestra-io`,
+- `selfHeal: true` (prod должен самовосстанавливаться к Git‑состоянию).
+
+---
+
+## 3) Что именно сделано в `synestra-platform` и зачем
+
+Ниже описано только то, что реально существует в репозитории `synestra-platform` на текущий момент.
+
+### 3.1. AppProject: `argocd/apps/app-projects.yaml` (`synestra-web`)
+
+Добавлен AppProject `synestra-web`:
+- `sourceRepos` ограничен `https://github.com/NeoGrAIph/web-core.git`,
+- `destinations` ограничены namespaces `web-*`,
+- `clusterResourceWhitelist` содержит только `Namespace`.
+
+Зачем:
+- не давать web‑приложениям деплоить что угодно в любые namespaces;
+- изоляция и безопасность по умолчанию.
+
+### 3.2. Root application: `argocd/apps/apps-web-core.yaml`
+
+Добавлен root ArgoCD Application `apps-web-core`, который:
+- смотрит в repo `web-core`, path `deploy/argocd/apps`,
+- включает `directory.recurse: true`,
+- и на первом шаге поднимает **только** `*/synestra-io.yaml` (`directory.include`).
+
+Зачем:
+- безопасный инкрементальный rollout: не деплоить сразу все будущие приложения из `web-core`.
+
+### 3.3. Wildcard TLS и Traefik `TLSStore default`
+
+Добавлены Certificates (namespace `ingress`):
+- `infra/cert-manager/resources/certificate-wildcard-synestra-io.yaml` (для `synestra.io` и `*.synestra.io`)
+- а также аналогичные wildcard’и для `*.synestra.tech`, `*.dev.synestra.tech`, `*.services.synestra.tech` (по файлам в той же директории)
+
+Добавлен Traefik `TLSStore default`:
+- `infra/ingress/traefik/resources/tlsstore-default.yaml`
+
+Зачем:
+- Helm chart `web-app` в `web-core` по умолчанию **не** задаёт `ingress.tls.secretName`;
+- Kubernetes не разрешает ссылаться на TLS secret из другого namespace;
+- поэтому TLS делается кластерно через Traefik TLSStore с wildcard‑сертификатами.
+
+### 3.4. Устранение конфликтов доменов: `infra/webcore/payload/*`
+
+В legacy приложении `infra-payload` (charts/payload) убраны домены:
+- `synestra.io`
+- `synestra.tech`
+
+Файлы:
+- `infra/webcore/payload/values.dev-hot.yaml`
+- `infra/webcore/payload/values.prod.yaml`
+
+Зачем:
+- пока `infra-payload` держит host `synestra.io`, новый сайт не сможет получить этот домен (конфликт ingress rules по host).
+
+### 3.5. Секреты и namespaces (SOPS): `secrets/web-*-synestra-io/*`
+
+Добавлены SOPS‑зашифрованные манифесты:
+
+`secrets/web-dev-synestra-io/`
+- `00-namespace.yaml` (Namespace `web-dev-synestra-io`)
+- `gitlab-regcred.yaml` (pull secret для GitLab Registry)
+- `web-dev-synestra-io-env.yaml` (Opaque secret с runtime env vars)
+- `web-dev-synestra-io-db-init.yaml` (initdb username/password для CNPG bootstrap)
+
+`secrets/web-synestra-io/`
+- `00-namespace.yaml` (Namespace `web-synestra-io`)
+- `gitlab-regcred.yaml`
+- `web-synestra-io-env.yaml`
+- `web-synestra-io-db-init.yaml`
+
+Зачем:
+- `web-core` не хранит секреты и не должен их знать;
+- приложения должны получать конфиг через `envFrom.secretRef` (имя секрета в values), а секреты создаются GitOps‑ом в platform‑репозитории.
+
+---
+
+## 4) Что должно получиться в кластере (целевая картина)
+
+### 4.1. После синхронизации `synestra-platform` (ArgoCD)
+
+Ожидаем:
+- `apps-web-core` присутствует в ArgoCD и подтягивает `web-dev-synestra-io` и `web-synestra-io` из `web-core`;
+- в namespace `ingress` существуют:
+  - wildcard Certificates (`wildcard-*-tls` secrets),
+  - `TLSStore default`;
+- `infra-payload` больше не объявляет ingress host `synestra.io`.
+
+### 4.2. После синхронизации `apps-web-core`
+
+Ожидаем, что для каждого из двух namespaces появятся ресурсы chart’а:
+- `postgresql.cnpg.io/Cluster` (если включён postgres),
+- `PVC` для media,
+- `Job` миграций (hook),
+- `Deployment` + `Service`,
+- `Ingress` на нужный host.
+
+### 4.3. После этого снаружи
+
+- `https://synestra.io` должен вести на новый `web-synestra-io` сайт.
+- `https://dev.synestra.io` должен вести на новый `web-dev-synestra-io` сайт.
+
+---
+
+## 5) Зафиксированные причины текущей проблемы (почему домены ведут не туда)
+
+Этот раздел не про “что поменять дальше”, а про **факты**, которые объясняют текущее поведение, и напрямую связаны с уже существующими изменениями в Git.
+
+### 5.1. `synestra.io` ведёт на неверный сайт
+
+Факт (наблюдение): в кластере существует Ingress `webcore/payload`, который объявляет host `synestra.io`.
+
+Почему так возможно:
+- В `synestra-platform` домен убран из values (`infra/webcore/payload/values.*.yaml`), но приложение `infra-payload` в ArgoCD может быть **OutOfSync** и фактически ещё не применило изменения.
+
+### 5.2. `dev.synestra.io` не отвечает (404)
+
+Факт (наблюдение): если `web-dev-synestra-io` ещё не развернул Ingress, Traefik отдаёт 404 (нет matching router).
+
+Почему `web-dev-synestra-io` мог не развернуться:
+1) ранее ArgoCD не мог отрендерить chart из‑за файла `templates/README.md` (исправлено в `web-core` переносом в `_README.md`);
+2) если hook Job миграций падает, ArgoCD не продолжает rollout остальных ресурсов (Deployment/Ingress).
+
+---
+
+## 6) Трассировка: какие коммиты это закрепляют
+
+### `web-core`
+
+- `998792c fix(synestra-io): unblock ArgoCD deploy and payload CLI`
+  - перенос `deploy/charts/web-app/templates/README.md` → `_README.md`,
+  - правки migration command,
+  - ESM‑совместимость и конфиги,
+  - mountPath для media,
+  - pnpm override для `tsx` (через `package.json`).
+- `e3261e4 chore(release): set synestra-io image tag`
+  - обновление `deploy/env/release/synestra-io.yaml` (релизный tag).
+
+### `synestra-platform`
+
+- `d89a74d feat(web): bootstrap synestra.io (dev+prod)`
+  - AppProject `synestra-web`,
+  - root app `apps-web-core`,
+  - wildcard Certificates + Traefik TLSStore,
+  - секреты для namespaces,
+  - удаление конфликтующих доменов из `infra-payload`,
+  - документация (wiki/runbooks).
+
+---
+
+## 7) Быстрый индекс файлов (для ревью человеком)
+
+### В `web-core`
+
+**Код приложения**
+- `apps/synestra-io/package.json`
+- `apps/synestra-io/src/payload.config.ts`
+- `apps/synestra-io/src/env.ts`
+- `apps/synestra-io/src/collections/Media.ts`
+- `apps/synestra-io/redirects.js`
+- `apps/synestra-io/postcss.config.js`
+
+**Shared packages**
+- `packages/env/src/index.ts`
+- `packages/env/package.json`
+- `packages/cms-core/src/index.ts`
+- `packages/cms-core/src/collections/users.ts`
+- `packages/cms-core/package.json`
+
+**Docker / Turborepo**
+- `docker/Dockerfile.turbo`
+- `turbo.json`
+- `package.json` (workspace + overrides)
+
+**GitOps артефакты**
+- `deploy/charts/web-app/**`
+- `deploy/env/dev/synestra-io.yaml`
+- `deploy/env/prod/synestra-io.yaml`
+- `deploy/env/release/synestra-io.yaml`
+- `deploy/argocd/apps/dev/synestra-io.yaml`
+- `deploy/argocd/apps/prod/synestra-io.yaml`
+
+### В `synestra-platform`
+
+**ArgoCD**
+- `argocd/apps/app-projects.yaml` (AppProject `synestra-web`)
+- `argocd/apps/apps-web-core.yaml` (root app)
+
+**TLS**
+- `infra/cert-manager/resources/certificate-wildcard-synestra-io.yaml`
+- `infra/cert-manager/resources/certificate-wildcard-*.yaml` (прочие wildcard’и)
+- `infra/ingress/traefik/resources/tlsstore-default.yaml`
+
+**Legacy ingress**
+- `infra/webcore/payload/values.dev-hot.yaml`
+- `infra/webcore/payload/values.prod.yaml`
+
+**Secrets (SOPS)**
+- `secrets/web-dev-synestra-io/*`
+- `secrets/web-synestra-io/*`
+

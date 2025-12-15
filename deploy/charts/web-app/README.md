@@ -19,7 +19,7 @@ TLS по умолчанию:
 - важно: `Ingress.spec.tls[].secretName` не может ссылаться на Secret из другого namespace → поэтому мы и опираемся на `TLSStore default`, а не на per‑namespace TLS secrets.
 
 Где смотреть шаблоны:
-- `deploy/charts/web-app/templates/README.md`
+- `deploy/charts/web-app/templates/_README.md`
 
 Где задаются секреты:
 - `envFrom.secretRef` — имя Secret (создаётся в `synestra-platform` через SOPS).
