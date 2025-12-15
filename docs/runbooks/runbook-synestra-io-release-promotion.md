@@ -56,7 +56,12 @@
 2) Secret с env vars приложения, подключаемый через `envFrom.secretRef`:
    - dev: `web-synestra-io-dev-env`
    - prod: `web-synestra-io-prod-env`
-3) (если используем CNPG bootstrap через secret) `*-db-init` secrets
+
+А база данных создаётся и управляется отдельно в namespace `databases` через CloudNativePG:
+- initdb secret: `synestra-io-initdb-secret` (общий для prod/dev)
+- CNPG clusters:
+  - `synestra-io-dev-cnpg`
+  - `synestra-io-cnpg`
 
 Важно: в `web-core` должны быть только **ссылки** на имена Secret’ов/ключи.
 

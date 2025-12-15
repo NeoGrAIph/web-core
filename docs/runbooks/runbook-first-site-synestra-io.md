@@ -307,25 +307,27 @@ Namespaces:
 Зачем:
 - пока `infra-payload` держит host `synestra.io`, новый сайт не сможет получить этот домен (конфликт ingress rules по host).
 
-### 3.5. Секреты и namespaces (SOPS): `secrets/web-*-synestra-io/*`
+### 3.5. Секреты и namespaces (SOPS): `secrets/web-synestra-io-*/` + `secrets/databases/`
 
 Добавлены SOPS‑зашифрованные манифесты:
 
 `secrets/web-synestra-io-dev/`
 - `00-namespace.yaml` (Namespace `web-synestra-io-dev`)
 - `gitlab-regcred.yaml` (pull secret для GitLab Registry)
-- `web-synestra-io-dev-env.yaml` (Opaque secret с runtime env vars)
-- `web-synestra-io-dev-db-init.yaml` (initdb username/password для CNPG bootstrap)
+- `web-synestra-io-dev-env.yaml` (Opaque secret с runtime env vars, в т.ч. `DATABASE_URI`)
 
 `secrets/web-synestra-io-prod/`
 - `00-namespace.yaml` (Namespace `web-synestra-io-prod`)
 - `gitlab-regcred.yaml`
-- `web-synestra-io-prod-env.yaml`
-- `web-synestra-io-prod-db-init.yaml`
+- `web-synestra-io-prod-env.yaml` (Opaque secret с runtime env vars, в т.ч. `DATABASE_URI`)
+
+`secrets/databases/`
+- `synestra-io-initdb-secret.yaml` — **общий** initdb secret (username/password) для bootstrap CNPG кластеров `synestra-io-cnpg` и `synestra-io-dev-cnpg` в namespace `databases`.
 
 Зачем:
 - `web-core` не хранит секреты и не должен их знать;
-- приложения должны получать конфиг через `envFrom.secretRef` (имя секрета в values), а секреты создаются GitOps‑ом в platform‑репозитории.
+- приложения получают runtime‑конфиг через `envFrom.secretRef`, а секреты создаются GitOps‑ом в platform‑репозитории;
+- БД для `synestra.io` управляется отдельными ArgoCD app’ами в `synestra-platform` (см. `argocd/apps/infra-synestra-io-db.yaml` и `argocd/apps/infra-synestra-io-dev-db.yaml`), поэтому **внутренний Postgres в namespaces сайтов отключён** (`deploy/env/{dev,prod}/synestra-io.yaml: postgres.enabled=false`).
 
 ---
 
@@ -343,11 +345,14 @@ Namespaces:
 ### 4.2. После синхронизации `apps-web-core`
 
 Ожидаем, что для каждого из двух namespaces появятся ресурсы chart’а:
-- `postgresql.cnpg.io/Cluster` (если включён postgres),
 - `PVC` для media,
 - `Job` миграций (hook),
 - `Deployment` + `Service`,
 - `Ingress` на нужный host.
+
+А база данных разворачивается **отдельно** в namespace `databases`:
+- dev: `synestra-io-dev-cnpg` (service `synestra-io-dev-cnpg-rw.databases.svc.cluster.local`)
+- prod: `synestra-io-cnpg` (service `synestra-io-cnpg-rw.databases.svc.cluster.local`)
 
 ### 4.3. После этого снаружи
 

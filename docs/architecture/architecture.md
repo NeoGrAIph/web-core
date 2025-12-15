@@ -115,7 +115,11 @@ web-core/
 
 ## 6) Маппинг “apps → deployments → namespaces → БД”
 
-Целевой принцип: **каждый deployment = отдельный namespace + отдельный CNPG Cluster**.
+Целевой принцип: **каждый deployment = отдельный namespace + отдельная БД (CNPG Cluster)**.
+
+Примечание: где физически живёт CNPG Cluster — зависит от выбранного режима:
+- **per-namespace** (быстрый старт): CNPG Cluster создаёт сам chart `deploy/charts/web-app` при `values.postgres.enabled=true`;
+- **platform-managed DB** (как для `synestra.io`): CNPG Cluster живёт в namespace `databases` и управляется `synestra-platform`, а в `web-core` для приложения ставим `postgres.enabled=false`, и подключаемся через `DATABASE_URI` к сервису вида `*-cnpg-rw.databases.svc.cluster.local`.
 
 Рекомендованный нейминг:
 
