@@ -11,6 +11,7 @@
   - `docs/plan/alignment-plan.md`
 - Архитектура и структура репозитория
   - `docs/architecture/architecture.md`
+  - `docs/architecture/canon-v0.md`
   - `docs/architecture/repo-structure.md`
   - `docs/architecture/tooling-turborepo.md`
   - `docs/architecture/env-contract.md`
