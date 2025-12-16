@@ -110,6 +110,33 @@
 Рекомендация:
 - в prod seed использовать только осознанно (или вырезать/закрыть фичу после первого запуска).
 
+#### 3.3.1. Как выполнить seed (через UI, рекомендовано)
+
+1) Зайти в админку: `https://<host>/admin`
+2) Войти под админом (первого админа создаём на пустой БД через UI).
+3) На главном экране Dashboard нажать кнопку **“Seed your database”**.
+
+Технически кнопка делает `POST /next/seed` с твоими cookies, поэтому seed выполняется “изнутри” работающего приложения.
+
+#### 3.3.2. Как проверить, что seed реально отработал
+
+До seed обычно:
+- `GET /api/pages?limit=1` → `totalDocs: 0`
+- `GET /api/media?limit=1` → `totalDocs: 0`
+
+После seed ожидаем:
+- `GET /api/pages?limit=1` → `totalDocs > 0` (включая `home`)
+- `GET /api/media?limit=1` → `totalDocs > 0` (включая `image-hero1.webp`)
+
+Примеры:
+
+```bash
+curl -sS https://<host>/api/pages?limit=1
+curl -sS https://<host>/api/media?limit=1
+```
+
+Если `pages` появились, главная `/` перестанет использовать fallback `homeStatic` и hero/фон будет браться из seeded данных.
+
 Техническое примечание (важно для self-hosted Next.js):
 - seed вызывает операции create/update, которые в шаблоне могут триггерить `revalidatePath`.
 - Если seed запускается “вне” Next request context (например, через CLI), `revalidatePath` может упасть с ошибкой вида `static generation store missing`.
