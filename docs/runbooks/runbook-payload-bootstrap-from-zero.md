@@ -110,6 +110,11 @@
 Рекомендация:
 - в prod seed использовать только осознанно (или вырезать/закрыть фичу после первого запуска).
 
+Техническое примечание (важно для self-hosted Next.js):
+- seed вызывает операции create/update, которые в шаблоне могут триггерить `revalidatePath`.
+- Если seed запускается “вне” Next request context (например, через CLI), `revalidatePath` может упасть с ошибкой вида `static generation store missing`.
+- В `web-core` мы принудительно запускаем seed с `context.disableRevalidate=true` (см. `apps/synestra-io/src/app/(frontend)/next/seed/route.ts`), чтобы seed был стабильным и не зависел от наличия revalidate store.
+
 Проверка “seed ещё не делали”:
 - `GET /api/pages?limit=1` возвращает `totalDocs: 0`,
 - `GET /api/media?limit=1` возвращает `totalDocs: 0`.

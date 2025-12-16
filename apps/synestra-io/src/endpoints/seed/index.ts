@@ -37,6 +37,10 @@ export const seed = async ({
 }): Promise<void> => {
   payload.logger.info('Seeding database...')
 
+  const context = {
+    disableRevalidate: true,
+  }
+
   // we need to clear the media directory before seeding
   // as well as the collections and globals
   // this is because while `yarn seed` drops the database
@@ -52,9 +56,8 @@ export const seed = async ({
           navItems: [],
         },
         depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
+        req,
+        context,
       }),
     ),
   )
@@ -74,6 +77,8 @@ export const seed = async ({
   await payload.delete({
     collection: 'users',
     depth: 0,
+    req,
+    context,
     where: {
       email: {
         equals: 'demo-author@example.com',
@@ -101,6 +106,8 @@ export const seed = async ({
   const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
     payload.create({
       collection: 'users',
+      req,
+      context,
       data: {
         name: 'Demo Author',
         email: 'demo-author@example.com',
@@ -109,27 +116,37 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
+      req,
+      context,
       data: image1,
       file: image1Buffer,
     }),
     payload.create({
       collection: 'media',
+      req,
+      context,
       data: image2,
       file: image2Buffer,
     }),
     payload.create({
       collection: 'media',
+      req,
+      context,
       data: image2,
       file: image3Buffer,
     }),
     payload.create({
       collection: 'media',
+      req,
+      context,
       data: imageHero1,
       file: hero1Buffer,
     }),
     categories.map((category) =>
       payload.create({
         collection: 'categories',
+        req,
+        context,
         data: {
           title: category,
           slug: category,
@@ -145,27 +162,24 @@ export const seed = async ({
   const post1Doc = await payload.create({
     collection: 'posts',
     depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
+    req,
+    context,
     data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
   })
 
   const post2Doc = await payload.create({
     collection: 'posts',
     depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
+    req,
+    context,
     data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
   })
 
   const post3Doc = await payload.create({
     collection: 'posts',
     depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
+    req,
+    context,
     data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
   })
 
@@ -173,6 +187,8 @@ export const seed = async ({
   await payload.update({
     id: post1Doc.id,
     collection: 'posts',
+    req,
+    context,
     data: {
       relatedPosts: [post2Doc.id, post3Doc.id],
     },
@@ -180,6 +196,8 @@ export const seed = async ({
   await payload.update({
     id: post2Doc.id,
     collection: 'posts',
+    req,
+    context,
     data: {
       relatedPosts: [post1Doc.id, post3Doc.id],
     },
@@ -187,6 +205,8 @@ export const seed = async ({
   await payload.update({
     id: post3Doc.id,
     collection: 'posts',
+    req,
+    context,
     data: {
       relatedPosts: [post1Doc.id, post2Doc.id],
     },
@@ -197,6 +217,8 @@ export const seed = async ({
   const contactForm = await payload.create({
     collection: 'forms',
     depth: 0,
+    req,
+    context,
     data: contactFormData,
   })
 
@@ -206,11 +228,15 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
+      req,
+      context,
       data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
+      req,
+      context,
       data: contactPageData({ contactForm: contactForm }),
     }),
   ])
@@ -220,6 +246,8 @@ export const seed = async ({
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
+      req,
+      context,
       data: {
         navItems: [
           {
@@ -244,6 +272,8 @@ export const seed = async ({
     }),
     payload.updateGlobal({
       slug: 'footer',
+      req,
+      context,
       data: {
         navItems: [
           {
