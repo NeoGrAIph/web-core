@@ -51,7 +51,7 @@
    - CA bundle (если self‑signed).
 
 2) SOPS‑секрет в namespace `databases` для CNPG S3 credentials, например:
-   - `secrets/databases/cnpg-backup-s3-credentials.yaml` (имя — обсуждаемо, важно единообразие).
+   - `secrets/databases/cnpg-backup-s3-credentials-<site>.yaml` (пример: `cnpg-backup-s3-credentials-synestra-io`).
 
 Рекомендуемые ключи в Secret (чтобы ссылки в манифестах были “шаблонными”):
 - `accessKeyId`
@@ -67,7 +67,7 @@
    - (опционально) `s3Credentials.region` → secret+key
    - (опционально) `endpointCA` → secret+key
 
-4) Создать `ScheduledBackup` для prod‑кластера (например daily + retention политикой на бакете).
+4) Делать on-demand backup вручную (CR `Backup`) и использовать его как “источник” для восстановления dev через `bootstrap.recovery`.
 
 Дальше refresh dev делается “правильно”: пересозданием dev‑кластера через `bootstrap.recovery` из backup (а не через `pg_dump`).
 
