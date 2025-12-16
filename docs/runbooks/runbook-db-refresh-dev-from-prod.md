@@ -71,6 +71,19 @@
 
 Дальше refresh dev делается “правильно”: пересозданием dev‑кластера через `bootstrap.recovery` из backup (а не через `pg_dump`).
 
+#### Как делать on-demand backup вручную (вместо ScheduledBackup)
+
+Если `barmanObjectStore` уже включён на prod‑кластере, on-demand backup запускается созданием CR `Backup`.
+
+Для `synestra.io` шаблон лежит в `synestra-platform` и **не подключён** в GitOps kustomization:
+- `synestra-platform/infra/databases/cloudnativepg/synestra-io/backup-manual.yaml`
+
+Запуск (пример):
+```bash
+kubectl apply -f /home/neograiph/synestra-platform/infra/databases/cloudnativepg/synestra-io/backup-manual.yaml
+kubectl -n databases get backups.postgresql.cnpg.io -o wide
+```
+
 ---
 
 ## 2) Временный путь (рабочий сейчас): in‑cluster `pg_dump | pg_restore`
