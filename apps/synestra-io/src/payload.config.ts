@@ -3,6 +3,8 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import { en } from 'payload/i18n/en'
+import { ru } from 'payload/i18n/ru'
 import { Users } from '@synestra/cms-core'
 
 import { Categories } from './collections/Categories'
@@ -60,6 +62,10 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
+  i18n: {
+    fallbackLanguage: 'en',
+    supportedLanguages: { en, ru },
+  },
   db: postgresAdapter({
     pool: {
       connectionString:
