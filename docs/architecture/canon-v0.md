@@ -138,6 +138,8 @@ Runbook: `docs/runbooks/runbook-dev-prod-flow.md`.
 
 Ключевая идея: **в k8s/production‑условиях Postgres требует миграций**. Мы не полагаемся на “автосинк схемы” при деплое.
 
+Нормативный документ по миграциям (Postgres): `docs/architecture/payload-migrations.md`.
+
 ### 6.1. Что считаем правильным процессом для нового сайта
 
 1. Адаптировали template под Postgres (`@payloadcms/db-postgres`) и зафиксировали `migrationDir`.
@@ -145,6 +147,8 @@ Runbook: `docs/runbooks/runbook-dev-prod-flow.md`.
 3. В кластере перед стартом приложения запускаем `payload migrate`.
 
 Практическое следствие: если БД чистая, приложение сначала создаёт таблицы, затем запускается, а не падает с `relation ... does not exist`.
+
+Операционная инструкция “как поднять с нуля” (пустая Postgres БД): `docs/runbooks/runbook-payload-bootstrap-from-zero.md`.
 
 ### 6.2. Где запускаем миграции
 

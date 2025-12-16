@@ -122,6 +122,31 @@
 Примечание по шаблонам:
 - upstream может быть рассчитан на MongoDB или иметь иной набор env vars — это **нормально**, адаптируем под наш контракт.
 
+### 5.1) Быстрый чеклист: адаптировать `templates/website` (Mongo) → Postgres
+
+Upstream `templates/website` использует Mongo (`@payloadcms/db-mongodb`), но наш канон — Postgres (CNPG).
+
+Минимальные шаги адаптации:
+
+1) Заменить адаптер в `src/payload.config.ts`:
+   - было: `mongooseAdapter({ url: process.env.DATABASE_URI })`
+   - стало: `postgresAdapter({ pool: { connectionString: process.env.DATABASE_URI }, migrationDir: ..., push: ... })`
+
+2) Зависимости приложения:
+   - удалить Mongo adapter: `pnpm --filter @synestra/<app-dir> remove @payloadcms/db-mongodb`
+   - добавить Postgres adapter: `pnpm --filter @synestra/<app-dir> add @payloadcms/db-postgres@3.68.3`
+
+Примечание: отдельный `pnpm add pg` обычно не нужен — `@payloadcms/db-postgres` тянет `pg` транзитивно (проверить можно `pnpm --filter @synestra/<app-dir> why pg`).
+
+3) Привести `DATABASE_URI` к Postgres формату:
+   - `postgresql://user:pass@host:5432/dbname`
+
+4) Критично: создать и закоммитить baseline‑миграцию **до первого prod‑деплоя**:
+   - `pnpm --filter @synestra/<app-dir> payload migrate:create`
+   - затем тест на пустой БД: `pnpm --filter @synestra/<app-dir> payload migrate`
+
+Нормативный документ по миграциям: `docs/architecture/payload-migrations.md`.
+
 ---
 
 ## 6) Оформите `.env.example` (контракт переменных)
@@ -200,11 +225,14 @@
 Правило: изменения схемы БД **не** выкатываем “только кодом”.
 
 - Для локальной разработки допустим быстрый режим (push/быстрые итерации), но для `dev/prod` контуров должны существовать **migration files в git** (`apps/<app-dir>/src/migrations/**`).
+- Важно: официальный `templates/website` в upstream использует MongoDB и **не даёт Postgres миграций**. При переходе на Postgres baseline‑миграцию нужно сгенерировать и закоммитить **до** первого прод‑деплоя, иначе пустая БД не инициализируется.
 - Если менялась схема (коллекции/поля/relations/access), в PR должны быть добавлены миграции:
   - создать миграцию: `pnpm --filter @synestra/<app-dir> payload migrate:create`
   - применить миграции (локально): `pnpm --filter @synestra/<app-dir> payload migrate`
 
 Runbook по k8s/GitOps паттерну миграций (hook Job): `docs/runbooks/runbook-dev-deploy-corporate.md`.
+Runbook по bootstrap “с нуля” (пустая Postgres БД): `docs/runbooks/runbook-payload-bootstrap-from-zero.md`.
+Нормативный канон миграций для Postgres: `docs/architecture/payload-migrations.md`.
 
 ---
 

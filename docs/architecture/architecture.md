@@ -224,6 +224,7 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 - и только затем продолжить rollout приложения.
 
 Реализация: `deploy/charts/web-app/templates/migrations-job.yaml` и `deploy/charts/web-app/values.yaml`.
+Нормативный документ по миграциям Payload+Postgres: `docs/architecture/payload-migrations.md`.
 
 ## 10) Hot‑разработка: Okteto (вместо hostPath)
 

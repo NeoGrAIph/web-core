@@ -13,6 +13,7 @@
   - `docs/architecture/architecture.md`
   - `docs/architecture/canon-v0.md`
   - `docs/architecture/database-cnpg.md`
+  - `docs/architecture/payload-migrations.md`
   - `docs/architecture/repo-structure.md`
   - `docs/architecture/tooling-turborepo.md`
   - `docs/architecture/env-contract.md`
@@ -31,8 +32,12 @@
   - `docs/runbooks/runbook-platform-integration.md`
   - `docs/runbooks/runbook-ci-dev-to-prod.md`
   - `docs/runbooks/runbook-database-cnpg.md`
+  - `docs/runbooks/runbook-db-refresh-dev-from-prod.md`
+  - `docs/runbooks/runbook-payload-bootstrap-from-zero.md`
+  - `docs/runbooks/runbook-add-app-from-payload-template.md`
   - `docs/runbooks/runbook-first-site-corporate.md`
   - `docs/runbooks/runbook-first-site-synestra-io.md`
+  - `docs/runbooks/runbook-synestra-io-release-promotion.md`
   - `docs/runbooks/runbook-dev-deploy-corporate.md`
 - GitOps деплой
   - `deploy/README.md`

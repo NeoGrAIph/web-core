@@ -62,6 +62,13 @@ GitOps‑маппинг:
 - создать миграцию: `pnpm payload migrate:create`
 - выполнить миграции в проде до `start`: `pnpm payload migrate`
 
+Официальная документация по миграциям (Payload 3) уточняет workflow для Postgres:
+- в dev можно использовать `push` (быстро, без миграций),
+- затем генерировать migration files (`migrate:create`) и коммитить их,
+- в окружениях “не dev” (в т.ч. prod) нужно запускать `payload migrate` перед стартом приложения.
+
+Источник: `https://payloadcms.com/docs/database/migrations`.
+
 Для нашей цели CNPG/Postgres это обязательный контур:
 - выбрать Postgres adapter, совместимый с `payload@3.68.3`,
 - выбрать место выполнения миграций:

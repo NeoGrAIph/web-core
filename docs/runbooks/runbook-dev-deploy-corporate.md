@@ -235,7 +235,7 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 - указывать на chart `deploy/charts/web-app`
 - подключать values `deploy/env/dev/corporate.yaml`
 - деплоить в namespace `web-corporate-dev`
-- иметь `syncOptions: - CreateNamespace=true` (чтобы не создавать Namespace руками)
+- для dev‑окружений **не** использовать `CreateNamespace=true`, чтобы namespace создавался/жил “правильно” для Okteto (см. `docs/runbooks/runbook-okteto-dev.md`)
 - иметь понятную стратегию sync для dev (обычно auto‑sync допустим)
 
 ---

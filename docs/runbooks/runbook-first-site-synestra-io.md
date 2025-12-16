@@ -193,6 +193,15 @@ Namespaces:
 - образ собирается из монорепы и содержит несколько workspaces;
 - `pnpm --filter` гарантирует запуск CLI в каталоге нужного app (там, где есть `payload.config.ts` и app‑зависимости).
 
+#### 2.4.2.1. Bootstrap “с нуля” (пустая Postgres БД) — что обязательно
+
+Если мы поднимаем `synestra.io` “с нуля” (БД пустая/кластер пересоздан), то корректный старт возможен только при соблюдении:
+- в репозитории есть baseline‑миграция (`apps/synestra-io/src/migrations/**`),
+- миграции реально попадают в runtime образ,
+- при деплое выполняется `payload migrate` **до** старта приложения (у нас — hook Job).
+
+Операционная инструкция и частые симптомы: `docs/runbooks/runbook-payload-bootstrap-from-zero.md`.
+
 #### 2.4.3. PVC для media
 
 **Файл:** `deploy/charts/web-app/templates/pvc-media.yaml` + монтирование в `templates/deployment.yaml`.
@@ -363,6 +372,93 @@ Namespaces:
 
 - `https://synestra.io` должен вести на новый `web-synestra-io-prod` сайт.
 - `https://dev.synestra.io` должен вести на новый `web-synestra-io-dev` сайт.
+
+### 4.4. Операционный чеклист: пересоздать `web-synestra-io-prod` “с нуля” (пустая БД)
+
+Цель: если namespace/БД/volume были удалены, восстановить сайт **детерминированно** (без “ручной магии”), так чтобы:
+- CNPG Postgres поднялся,
+- выполнились миграции Payload,
+- `/admin` открывался и позволял создать первого пользователя,
+- (опционально) появился демо‑контент/фон из template через seed.
+
+Важно (с учётом текущих настроек): ArgoCD Applications для `web-synestra-io-prod` и `web-synestra-io-dev` **не создают namespace автоматически** (`CreateNamespace=true` выключен). Поэтому namespace должен существовать до sync.
+
+#### 4.4.1. Предпосылки в Git (что должно быть уже закоммичено)
+
+- `apps/synestra-io/src/migrations/**` содержит baseline‑миграцию (иначе на пустой БД нечего применять).
+- В `deploy/charts/web-app` включены migrations (по умолчанию да) и команда миграций использует `APP_NAME` + `payload migrate`.
+- В `synestra-platform` существует runtime secret для `web-synestra-io-prod` с `DATABASE_URI`, `PAYLOAD_SECRET` (и опционально `CRON_SECRET`, `PREVIEW_SECRET`).
+
+Подробный “канон bootstrap с нуля”: `docs/runbooks/runbook-payload-bootstrap-from-zero.md`.
+Нормативный канон миграций (Postgres): `docs/architecture/payload-migrations.md`.
+
+#### 4.4.2. Шаги восстановления (Kubernetes/ArgoCD)
+
+1) Убедиться, что namespace существует:
+
+```bash
+kubectl get ns web-synestra-io-prod
+```
+
+Если отсутствует — создать (как временная ручная операция) или восстановить через GitOps‑манифесты в `synestra-platform` (предпочтительнее, если там заведён канон namespace lifecycle).
+
+2) Убедиться, что runtime secret приложения существует в namespace (иначе миграции/приложение не стартуют):
+
+```bash
+kubectl -n web-synestra-io-prod get secret web-synestra-io-prod-env
+kubectl -n web-synestra-io-prod get secret gitlab-regcred
+```
+
+3) Убедиться, что CNPG кластер prod существует и готов (namespace `databases`):
+
+```bash
+kubectl -n databases get cluster synestra-io-cnpg
+kubectl -n databases get pods -l cnpg.io/cluster=synestra-io-cnpg
+```
+
+4) Запустить sync ArgoCD приложения `web-synestra-io-prod`:
+
+```bash
+argocd app sync web-synestra-io-prod
+argocd app wait web-synestra-io-prod --health --timeout 600
+```
+
+5) Проверить, что миграции реально выполнились (hook Job `*-migrate`):
+
+```bash
+kubectl -n web-synestra-io-prod get job | grep -E "migrate|NAME" || true
+kubectl -n web-synestra-io-prod logs job/web-synestra-io-prod-migrate
+```
+
+Ожидаем `Complete`. Если миграции не выполнились — `/admin` часто “не поднимается” или падает с ошибками вида `relation ... does not exist`.
+
+6) Проверить приложение:
+
+- `https://synestra.io/admin` — должна открываться страница логина.
+- Первый пользователь создаётся на пустой БД через UI админки.
+
+7) (Опционально) Добавить демо‑контент/фон из website template:
+
+Website template кладёт часть демо‑контента через seed. Если главная “пустая” или нет фонового изображения — это ожидаемо, пока не выполнен seed.
+
+Вариант A (через админку): кнопка seed в dashboard (если она оставлена в UI).  
+Вариант B (endpoint): `POST /next/seed` (только если endpoint не отключён и вы понимаете последствия).
+
+Примечание: seed ≠ migrations. Seed — контент/медиа, migrations — схема БД.
+
+8) (Опционально) Включить русский язык в Admin UI:
+
+По умолчанию upstream шаблон показывает только English. Чтобы в `Payload Settings -> Language` появился русский, в конфиге приложения нужно задать `i18n.supportedLanguages` (см. `apps/synestra-io/src/payload.config.ts`). Это требует новой сборки образа и rollout через release values.
+
+#### 4.4.3. Что делать, если нужно “полное с 0” (включая данные)
+
+Если требуется именно “стереть всё и поднять заново”:
+- удалить `CNPG Cluster` + PVC (в `databases`) для `synestra-io-cnpg`,
+- удалить `PVC` media в `web-synestra-io-prod`,
+- затем выполнить шаги 1–7 выше.
+
+Если цель — dev как “клон prod” для разработки, используем CNPG backup/recovery flow:
+- `docs/runbooks/runbook-db-refresh-dev-from-prod.md`.
 
 ---
 

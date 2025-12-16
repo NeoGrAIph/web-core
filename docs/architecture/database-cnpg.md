@@ -154,6 +154,8 @@ postgresql://<username>:<password>@<cluster>-rw.databases.svc.cluster.local:5432
   - `kubectl -n <ns> delete job <name>`
   - `argocd app sync <app> --prune` (если требуется).
 
+Нормативный документ по миграциям Payload+Postgres: `docs/architecture/payload-migrations.md`.
+
 ---
 
 ## 8) Важный нюанс: bootstrap не “переигрывается”
