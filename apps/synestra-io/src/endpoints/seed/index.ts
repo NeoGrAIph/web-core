@@ -5,6 +5,7 @@ import { contact as contactPageData } from './contact-page'
 import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
+import { image3 } from './image-3'
 import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
@@ -103,45 +104,56 @@ export const seed = async ({
     ),
   ])
 
-  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
-    payload.create({
-      collection: 'users',
-      req,
-      context,
-      data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
-      },
-    }),
-    payload.create({
-      collection: 'media',
-      req,
-      context,
-      data: image1,
-      file: image1Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      req,
-      context,
-      data: image2,
-      file: image2Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      req,
-      context,
-      data: image2,
-      file: image3Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      req,
-      context,
-      data: imageHero1,
-      file: hero1Buffer,
-    }),
+  // IMPORTANT:
+  // Local API file uploads use `req.file` under the hood.
+  // If we run multiple `payload.create({ file })` calls in parallel with the same `req`,
+  // they will race and overwrite `req.file`, causing intermittent (or constant) failures.
+  // So media uploads must be sequential (or use separate request objects per call).
+
+  const demoAuthor = await payload.create({
+    collection: 'users',
+    req,
+    context,
+    data: {
+      name: 'Demo Author',
+      email: 'demo-author@example.com',
+      password: 'password',
+    },
+  })
+
+  const image1Doc = await payload.create({
+    collection: 'media',
+    req,
+    context,
+    data: image1,
+    file: image1Buffer,
+  })
+
+  const image2Doc = await payload.create({
+    collection: 'media',
+    req,
+    context,
+    data: image2,
+    file: image2Buffer,
+  })
+
+  const image3Doc = await payload.create({
+    collection: 'media',
+    req,
+    context,
+    data: image3,
+    file: image3Buffer,
+  })
+
+  const imageHomeDoc = await payload.create({
+    collection: 'media',
+    req,
+    context,
+    data: imageHero1,
+    file: hero1Buffer,
+  })
+
+  await Promise.all(
     categories.map((category) =>
       payload.create({
         collection: 'categories',
@@ -153,7 +165,7 @@ export const seed = async ({
         },
       }),
     ),
-  ])
+  )
 
   payload.logger.info(`— Seeding posts...`)
 
