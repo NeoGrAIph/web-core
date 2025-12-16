@@ -4,13 +4,22 @@ import redirects from './redirects.js'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : undefined || process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3003'
+  : undefined
+
+// Kubernetes / local dev: prefer explicit server URL.
+// This is used by Next Image `remotePatterns` to allow optimized loading of absolute URLs
+// (our `getMediaUrl` prepends origin on the client).
+const SERVER_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  NEXT_PUBLIC_SERVER_URL ||
+  process.env.__NEXT_PRIVATE_ORIGIN ||
+  'http://localhost:3000'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+      ...[SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)
 
         return {
@@ -35,4 +44,3 @@ const nextConfig = {
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
-
