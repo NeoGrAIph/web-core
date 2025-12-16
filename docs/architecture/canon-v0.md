@@ -90,7 +90,10 @@
 На старте допустима схема (может корректироваться):
 
 - prod: `sitename.synestra.io`
-- dev: `sitename.dev.synestra.tech` **или** `dev.sitename.synestra.tech` (выбираем единообразно)
+- dev: `sitename.dev.synestra.tech` (единый паттерн для всех сайтов, кроме корневых доменов)
+
+Исключение (корневые домены):
+- для сайтов на корневом домене вида `synestra.io` dev‑домен может быть `dev.synestra.io` (см. `docs/runbooks/runbook-first-site-synestra-io.md`).
 
 Фактические домены задаются в `deploy/env/{dev,prod}/*.yaml` (ingress hosts).
 
