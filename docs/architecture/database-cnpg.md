@@ -169,6 +169,29 @@ postgresql://<username>:<password>@<cluster>-rw.databases.svc.cluster.local:5432
 
 ---
 
+## 9) Backup/Restore и “DB refresh” dev ← prod
+
+Цель: иметь управляемый способ:
+- регулярно бэкапить prod,
+- восстанавливать prod при авариях,
+- делать refresh dev‑БД из prod‑снимка для разработки.
+
+Финальный (рекомендуемый) механизм для CloudNativePG:
+- `spec.backup.barmanObjectStore` на prod‑кластере,
+- `ScheduledBackup` для prod (и/или on-demand `Backup`),
+- восстановление dev через `bootstrap.recovery` (пересоздание dev‑кластера из backup).
+
+Предпосылки:
+- S3‑совместимое object storage (S3/MinIO) и SOPS‑секрет с доступом;
+- договорённость по ретеншну/стоимости и нагрузке на prod.
+
+Временный (допустимый на старте) механизм без object storage:
+- in‑cluster `pg_dump | pg_restore` из prod в dev.
+
+Операционная инструкция: `docs/runbooks/runbook-db-refresh-dev-from-prod.md`.
+
+---
+
 ## 9) Чеклист для нового приложения (коротко)
 
 1) `synestra-platform`: создать `<app-key>-initdb-secret` (SOPS) в `secrets/databases/`.

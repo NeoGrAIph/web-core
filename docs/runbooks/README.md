@@ -10,6 +10,7 @@
 - `docs/runbooks/runbook-platform-integration.md` — что нужно в `synestra-platform`, чтобы подключить `web-core`
 - `docs/runbooks/runbook-ci-dev-to-prod.md` — CI контракт: build image → update release values → ArgoCD rollout
 - `docs/runbooks/runbook-database-cnpg.md` — как добавлять/сопровождать БД Postgres через CNPG (CloudNativePG) для новых web‑приложений
+- `docs/runbooks/runbook-db-refresh-dev-from-prod.md` — как синхронизировать dev‑БД с prod‑БД (refresh/clone)
 - `docs/runbooks/runbook-first-site-corporate.md` — чеклист старта первого сайта (dev hot + авто prod)
 - `docs/runbooks/runbook-first-site-synestra-io.md` — bootstrap `synestra.io` + `dev.synestra.io` (что сделано и почему)
 - `docs/runbooks/runbook-synestra-io-release-promotion.md` — привести `synestra.io`/`dev.synestra.io` к канону promotion (release-dev → release-prod)

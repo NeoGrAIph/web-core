@@ -129,3 +129,8 @@ postgresql://<username>:<password>@<host>:5432/<db_name>
   - `Deployment` `Available`
   - домен отвечает `200`
 
+---
+
+## 8) Refresh dev‑БД из prod‑БД
+
+См. отдельный runbook: `docs/runbooks/runbook-db-refresh-dev-from-prod.md`.
