@@ -142,4 +142,103 @@ kubectl -n databases delete job/refresh-synestra-io-dev-db-from-prod
 Чтобы сделать refresh “каноничным” и масштабируемым на ~20 сайтов:
 - завести объектное хранилище (S3/MinIO) под backup’и CNPG,
 - добавить `spec.backup.barmanObjectStore` и `ScheduledBackup` для prod‑кластеров,
-- заменить “pg_dump refresh” на “recovery dev кластера из backup”.
+    - заменить “pg_dump refresh” на “recovery dev кластера из backup”.
+
+---
+
+## 5) Refresh dev через CNPG Backup → Recovery (когда S3/MinIO уже есть)
+
+Это и есть причина, зачем мы поднимали S3‑совместимое object storage: чтобы делать **каноничный клон prod → dev** через CNPG (`Backup` в S3 → `bootstrap.recovery` dev‑кластера из этого backup).
+
+Ключевой момент: при восстановлении dev‑кластера из prod‑backup **пароль роли приложения в БД тоже “переезжает” из prod**, поэтому после restore dev‑сайт может начать отдавать 500 из‑за `password authentication failed`. Это нормально и лечится одной операцией — привести пароль роли в dev‑БД к тому, который использует dev‑окружение (например, из `DATABASE_URI` в секретах dev‑приложения).
+
+### 5.1. Создать on-demand Backup в prod
+
+Пример (для `synestra-io-cnpg`):
+
+```bash
+name="backup-synestra-io-cnpg-$(date -u +%Y%m%d-%H%M%S)"
+cat > /tmp/${name}.yaml <<YAML
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  name: ${name}
+  namespace: databases
+spec:
+  cluster:
+    name: synestra-io-cnpg
+YAML
+kubectl apply -f /tmp/${name}.yaml
+kubectl -n databases get backup.postgresql.cnpg.io/${name} -o jsonpath='{.status.phase}{"\n"}'
+```
+
+### 5.2. Пересоздать dev CNPG кластер из Backup (bootstrap.recovery)
+
+1) Остановить dev‑приложение (чтобы не держало подключения):
+
+```bash
+kubectl -n web-synestra-io-dev scale deploy/web-synestra-io-dev-web-app --replicas=0
+```
+
+2) Удалить dev‑кластер (и его PVC):
+
+```bash
+kubectl -n databases delete cluster.postgresql.cnpg.io synestra-io-dev-cnpg --wait=true
+kubectl -n databases delete pvc synestra-io-dev-cnpg-1 --ignore-not-found
+```
+
+3) Создать dev‑кластер из конкретного backup:
+
+```bash
+backup_name="<имя Backup CR из шага 5.1>"
+cat > /tmp/synestra-io-dev-cnpg-recovery.yaml <<YAML
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: synestra-io-dev-cnpg
+  namespace: databases
+  annotations:
+    argocd.argoproj.io/manifest-gc-strategy: orphan
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.7
+  storage:
+    size: 3Gi
+  enableSuperuserAccess: false
+  bootstrap:
+    recovery:
+      backup:
+        name: ${backup_name}
+      database: synestra_io
+      owner: synestra_io
+YAML
+kubectl apply -f /tmp/synestra-io-dev-cnpg-recovery.yaml
+kubectl -n databases wait --for=condition=Ready cluster/synestra-io-dev-cnpg --timeout=10m
+```
+
+4) Запустить dev‑приложение обратно:
+
+```bash
+kubectl -n web-synestra-io-dev scale deploy/web-synestra-io-dev-web-app --replicas=1
+```
+
+### 5.3. Важно: привести пароль роли приложения в dev‑БД к dev‑секретам
+
+Если после restore dev сайт отдаёт 500 и в логах `password authentication failed for user "synestra_io"`, поменяйте пароль роли в dev‑кластере на тот, который использует dev окружение.
+
+Пример (парсим пароль из `DATABASE_URI` в `web-synestra-io-dev-env` и применяем в dev‑БД):
+
+```bash
+uri=$(kubectl -n web-synestra-io-dev get secret web-synestra-io-dev-env -o jsonpath='{.data.DATABASE_URI}' | base64 -d)
+rest=${uri#*://}
+auth_and_host=${rest%%/*}
+auth=${auth_and_host%%@*}
+user=${auth%%:*}
+pass=${auth#*:}
+pass_sql=${pass//"'"/"''"}
+
+pod=$(kubectl -n databases get pod -l cnpg.io/cluster=synestra-io-dev-cnpg,role=primary -o jsonpath='{.items[0].metadata.name}')
+kubectl -n databases exec \"$pod\" -c postgres -- psql -U postgres -d postgres -c \"ALTER ROLE \\\"${user}\\\" WITH PASSWORD '${pass_sql}';\"
+
+kubectl -n web-synestra-io-dev rollout restart deploy/web-synestra-io-dev-web-app
+```
