@@ -15,6 +15,10 @@
   - `docs/architecture/component-system.md`
   - `docs/architecture/database-cnpg.md`
   - `docs/architecture/payload-migrations.md`
+  - `docs/architecture/payload-seeding.md`
+  - `docs/architecture/payload-page-builder-catalog.md`
+  - `docs/architecture/payload-lexical-layout-convergence.md`
+  - `docs/architecture/payload-editor-workflow.md`
   - `docs/architecture/monorepo-packages-standards.md`
   - `docs/architecture/monorepo-package-contracts.md`
   - `docs/architecture/monorepo-packages-audit.md`

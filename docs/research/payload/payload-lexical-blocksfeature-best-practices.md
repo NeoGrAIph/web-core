@@ -8,6 +8,9 @@
 - рендерингу Lexical state в React/JSX (и при необходимости в HTML),
 и описать применимый стандарт для `web-core` (monorepo, независимые деплои, слой 2 registry).
 
+Связанные документы:
+- Канон конвергенции layout ↔ embedded: `docs/architecture/payload-lexical-layout-convergence.md`
+
 ---
 
 ## 1) Источники (официальные)
@@ -115,4 +118,3 @@ HTML‑конвертер (`convertLexicalToHTMLAsync`) полезен, когд
 3) В rich text editor включён `BlocksFeature({ blocks: [...] })`.
 4) В app‑слое добавлен JSX‑converter в `blocks: { <slug>: (...) => ... }`.
 5) Переиспользуемое/стабильное — выносится в `packages/cms-blocks` (schema) и/или общий helper (без темы).
-
