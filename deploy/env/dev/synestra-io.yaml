@@ -7,6 +7,11 @@ env:
   # For Okteto hot-dev (`next dev`) we set NODE_ENV=development in `.okteto/okteto.yml`.
   NODE_ENV: "production"
   SYNESTRA_DB_SOURCE: "cnpg-databases"
+  SYNESTRA_MEDIA_STORAGE: "s3"
+  S3_ENDPOINT: "http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000"
+  S3_BUCKET: "payload-media"
+  S3_REGION: "us-east-1"
+  S3_FORCE_PATH_STYLE: "true"
 
 envFrom:
   secretRef: "web-synestra-io-dev-env"
@@ -21,6 +26,7 @@ ingress:
 
 persistence:
   media:
+    enabled: false
     mountPath: /repo/apps/synestra-io/public/media
 
 postgres:
