@@ -39,3 +39,9 @@
 - фиксировать стандарты структуры (имена файлов, тесты, экспорты).
 
 Сейчас генераторы считаются WIP (см. `turbo/generators/README.md`).
+
+## Источники
+
+- Turborepo: `turbo.json` / task pipeline: https://turbo.build/repo/docs/reference/configuration
+- `turbo prune` (в т.ч. `--docker`): https://turbo.build/repo/docs/reference/prune
+- Генераторы (`turbo gen`, `@turbo/gen`): https://turbo.build/repo/docs/reference/generate

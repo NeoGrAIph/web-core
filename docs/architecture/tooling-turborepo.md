@@ -42,3 +42,9 @@
 - реализация: `turbo/generators/*`
 
 Цель генераторов — стандартизировать создание пакетов/компонентов и не допускать “дрейфа структуры”.
+
+## Источники (официальные)
+
+- Turborepo: `turbo.json` / task pipeline: https://turbo.build/repo/docs/reference/configuration
+- `turbo prune` (в т.ч. `--docker`): https://turbo.build/repo/docs/reference/prune
+- Генераторы (`turbo gen`, `@turbo/gen`): https://turbo.build/repo/docs/reference/generate
