@@ -12,6 +12,7 @@ import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { isSharePreviewRequest } from '@/utilities/isSharePreviewRequest'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -21,15 +22,24 @@ type Args = {
   params: Promise<{
     slug?: string
   }>
+  searchParams: Promise<{
+    sp?: string
+  }>
 }
 
-export default async function Post({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
+export default async function Post({ params: paramsPromise, searchParams: searchParamsPromise }: Args) {
+  const { isEnabled: internalDraft } = await draftMode()
   const { slug = '' } = await paramsPromise
+  const searchParams = await searchParamsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/posts/' + decodedSlug
-  const post = await queryPostBySlug({ slug: decodedSlug })
+  const shareDraft = await isSharePreviewRequest({
+    path: `/posts/${encodeURIComponent(decodedSlug)}`,
+    searchParams,
+  })
+  const draft = internalDraft || shareDraft
+  const post = await queryPostBySlug({ slug: decodedSlug, draft })
 
   if (!post) return <PayloadRedirects url={url} />
 
@@ -40,7 +50,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
+      {internalDraft && <LivePreviewListener />}
 
       <PostHero post={post} />
 
@@ -63,14 +73,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const post = await queryPostBySlug({ slug: decodedSlug })
+  const post = await queryPostBySlug({ slug: decodedSlug, draft: false })
 
   return generateMeta({ doc: post })
 }
 
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
-
+const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({

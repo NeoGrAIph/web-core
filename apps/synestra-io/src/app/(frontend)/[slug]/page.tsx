@@ -10,6 +10,7 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { isSharePreviewRequest } from '@/utilities/isSharePreviewRequest'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -19,19 +20,26 @@ type Args = {
   params: Promise<{
     slug?: string
   }>
+  searchParams: Promise<{
+    sp?: string
+  }>
 }
 
-export default async function Page({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
+export default async function Page({ params: paramsPromise, searchParams: searchParamsPromise }: Args) {
+  const { isEnabled: internalDraft } = await draftMode()
   const { slug = 'home' } = await paramsPromise
+  const searchParams = await searchParamsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/' + decodedSlug
+  const shareDraft = await isSharePreviewRequest({
+    path: `/${encodeURIComponent(decodedSlug)}`,
+    searchParams,
+  })
+  const draft = internalDraft || shareDraft
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
-  page = await queryPageBySlug({
-    slug: decodedSlug,
-  })
+  page = await queryPageBySlug({ slug: decodedSlug, draft })
 
   // Remove this code once your website is seeded
   if (!page && slug === 'home') {
@@ -50,7 +58,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
+      {internalDraft && <LivePreviewListener />}
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
@@ -62,16 +70,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug = 'home' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const page = await queryPageBySlug({
-    slug: decodedSlug,
-  })
+  const page = await queryPageBySlug({ slug: decodedSlug, draft: false })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
-
+const queryPageBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
