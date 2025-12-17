@@ -3,8 +3,9 @@
 env:
   SYNESTRA_ENV: "dev"
   NEXT_PUBLIC_SERVER_URL: "https://dev.synestra.io"
-  # Next.js ожидает стандартные значения NODE_ENV. Для `next dev` это должно быть `development`.
-  NODE_ENV: "development"
+  # `web-app` chart runs `next start` by default, so NODE_ENV should be `production`.
+  # For Okteto hot-dev (`next dev`) we set NODE_ENV=development in `.okteto/okteto.yml`.
+  NODE_ENV: "production"
   SYNESTRA_DB_SOURCE: "cnpg-databases"
 
 envFrom:
