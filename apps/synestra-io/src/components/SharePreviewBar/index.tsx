@@ -15,7 +15,8 @@ export function SharePreviewBar() {
   const [checking, setChecking] = useState(true)
 
   const url = useMemo(() => new URL(window.location.href), [])
-  const hasFlag = url.searchParams.get('sp') === '1'
+  const sp = url.searchParams.get('sp') || ''
+  const hasFlag = Boolean(sp)
 
   useEffect(() => {
     if (!hasFlag) {
@@ -25,9 +26,12 @@ export function SharePreviewBar() {
 
     const run = async () => {
       try {
-        const res = await fetch(`/api/share-preview-status?path=${encodeURIComponent(url.pathname)}`, {
-          credentials: 'include',
-        })
+        const res = await fetch(
+          `/api/share-preview-status?path=${encodeURIComponent(url.pathname)}&sp=${encodeURIComponent(sp)}`,
+          {
+            credentials: 'include',
+          },
+        )
         const data = (await res.json()) as StatusResponse
         if (data.ok) setActive(Boolean(data.active))
       } catch {
@@ -38,7 +42,7 @@ export function SharePreviewBar() {
     }
 
     run()
-  }, [hasFlag, url.pathname])
+  }, [hasFlag, sp, url.pathname])
 
   if (!hasFlag || checking || !active) return null
 
@@ -70,4 +74,3 @@ export function SharePreviewBar() {
     </div>
   )
 }
-

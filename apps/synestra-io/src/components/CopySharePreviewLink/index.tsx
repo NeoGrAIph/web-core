@@ -39,7 +39,11 @@ export default function CopySharePreviewLink() {
 
   const versionID = useMemo(() => {
     const params = new URLSearchParams(window.location.search)
-    return params.get('version') || params.get('versionId') || params.get('v') || undefined
+    const fromQuery = params.get('version') || params.get('versionId') || params.get('v')
+    if (fromQuery) return fromQuery
+
+    const m = window.location.pathname.match(/\/versions\/([^/]+)$/)
+    return m?.[1] || undefined
   }, [])
 
   const handleClick = useCallback(async () => {

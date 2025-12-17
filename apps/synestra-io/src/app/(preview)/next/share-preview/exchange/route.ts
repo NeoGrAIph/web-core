@@ -12,13 +12,14 @@ export async function POST(req: Request): Promise<Response> {
     }
 
     const secret = process.env.PREVIEW_SECRET || ''
-    const { path } = verifySharePreviewToken({ token, secret })
+    const payload = verifySharePreviewToken({ token, secret })
+    const { path } = payload
 
     // Share preview must not enable Next.js Draft Mode globally (it would shadow published pages).
-    // Instead we set a scoped cookie and require an explicit `?sp=1` flag to show drafts.
+    // Instead we set cookies and require an explicit `?sp=<versionID>` (or `?sp=1` for legacy tokens) to show drafts.
     const cookieStore = await cookies()
     const existing = cookieStore.getAll().filter((c) => c.name === 'syn_share_preview')
-    const res = NextResponse.json({ ok: true, path: appendSharePreviewFlag(path) })
+    const res = NextResponse.json({ ok: true, path: appendSharePreviewFlag(payload) })
 
     // Set cookie scoped to the target path (session cookie, TTL is enforced by token `exp`).
     res.cookies.set('syn_share_preview', token, {
@@ -26,6 +27,14 @@ export async function POST(req: Request): Promise<Response> {
       sameSite: 'lax',
       secure: true,
       path,
+    })
+
+    // Also store the active token at root path so it can be read by `/api/*` endpoints (cookie Path rules).
+    res.cookies.set('syn_share_preview_active', token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: true,
+      path: '/',
     })
 
     // If user already has cookies with the same name for other paths, keep them (browser will handle per-path).
@@ -39,8 +48,8 @@ export async function POST(req: Request): Promise<Response> {
   }
 }
 
-function appendSharePreviewFlag(path: string): string {
-  const url = new URL(path, 'http://internal')
-  url.searchParams.set('sp', '1')
+function appendSharePreviewFlag(payload: { path: string } & Partial<{ versionID: string | number }>): string {
+  const url = new URL(payload.path, 'http://internal')
+  url.searchParams.set('sp', payload.versionID !== undefined ? String(payload.versionID) : '1')
   return `${url.pathname}${url.search}`
 }

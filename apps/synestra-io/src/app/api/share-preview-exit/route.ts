@@ -17,6 +17,7 @@ export async function POST(req: Request): Promise<Response> {
     // Remove cookie scoped to this path (and also attempt to clear broader scopes if they ever existed).
     res.cookies.set('syn_share_preview', '', { path, maxAge: 0 })
     res.cookies.set('syn_share_preview', '', { path: '/', maxAge: 0 })
+    res.cookies.set('syn_share_preview_active', '', { path: '/', maxAge: 0 })
 
     void existing
 
@@ -25,4 +26,3 @@ export async function POST(req: Request): Promise<Response> {
     return NextResponse.json({ ok: false, message: 'Bad request' }, { status: 400 })
   }
 }
-
