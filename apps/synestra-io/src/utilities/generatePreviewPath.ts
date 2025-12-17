@@ -1,4 +1,6 @@
-import { PayloadRequest, CollectionSlug } from 'payload'
+import { CollectionSlug } from 'payload'
+
+import { createSharePreviewToken } from './sharePreviewToken'
 
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   posts: '/posts',
@@ -8,10 +10,12 @@ const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
 type Props = {
   collection: keyof typeof collectionPrefixMap
   slug: string
-  req: PayloadRequest
+  kind?: 'internal' | 'share'
 }
 
-export const generatePreviewPath = ({ collection, slug }: Props) => {
+const SHARE_PREVIEW_TTL_SECONDS = 60 * 60 * 24 * 7 // 7 days
+
+export const generatePreviewPath = ({ collection, slug, kind = 'internal' }: Props) => {
   // Allow empty strings, e.g. for the homepage
   if (slug === undefined || slug === null) {
     return null
@@ -20,14 +24,17 @@ export const generatePreviewPath = ({ collection, slug }: Props) => {
   // Encode to support slugs with special characters
   const encodedSlug = encodeURIComponent(slug)
 
-  const encodedParams = new URLSearchParams({
-    slug: encodedSlug,
-    collection,
-    path: `${collectionPrefixMap[collection]}/${encodedSlug}`,
-    previewSecret: process.env.PREVIEW_SECRET || '',
-  })
+  const path = `${collectionPrefixMap[collection]}/${encodedSlug}`
 
-  const url = `/next/preview?${encodedParams.toString()}`
+  if (kind === 'share') {
+    const token = createSharePreviewToken({
+      path,
+      ttlSeconds: SHARE_PREVIEW_TTL_SECONDS,
+      secret: process.env.PREVIEW_SECRET || '',
+    })
+    return `/next/share-preview#token=${token}`
+  }
 
-  return url
+  const encodedParams = new URLSearchParams({ slug: encodedSlug, collection, path })
+  return `/next/preview?${encodedParams.toString()}`
 }

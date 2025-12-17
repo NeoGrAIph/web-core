@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --port 3003",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "start": "next start",
@@ -50,6 +50,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@synestra/eslint-config": "workspace:*",
+    "@synestra/next-config": "workspace:*",
     "@synestra/typescript-config": "workspace:*",
     "@tailwindcss/typography": "^0.5.13",
     "@types/escape-html": "^1.0.2",

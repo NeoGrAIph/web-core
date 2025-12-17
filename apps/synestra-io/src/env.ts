@@ -42,9 +42,15 @@ export const env = createValidatedEnv({
             message: 'is required in stage/prod',
           })
         }
+        if (!value.PREVIEW_SECRET) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['PREVIEW_SECRET'],
+            message: 'is required in stage/prod (share preview links)',
+          })
+        }
       }
     }),
 })
 
 export const appEnv = getSynestraEnv(process.env)
-
