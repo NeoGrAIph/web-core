@@ -70,8 +70,9 @@ Helm chart: `deploy/charts/web-app`.
 
 ### Опциональные (включаются при использовании соответствующих фич)
 
-- `CRON_SECRET` (secret): авторизация jobs/cron endpoints (если включены)
+- `CRON_SECRET` (secret): авторизация jobs/cron endpoints (например, `GET /api/payload-jobs/run`, если включён jobs runner)
 - `PREVIEW_SECRET` (secret): подпись preview links (если включены)
+- `SEED_KEY` (secret): дополнительная защита endpoint `POST /next/seed` в `stage/prod` (если seed оставлен включённым)
 
 ### Ecommerce (если включаем Stripe)
 
@@ -96,3 +97,10 @@ Helm chart: `deploy/charts/web-app`.
 
 Если миграции запускаются как `Job` (ArgoCD hook), то этот Job должен получать тот же набор env vars,
 что и основной `Deployment` (включая `SYNESTRA_ENV`), иначе валидация может “думать”, что это `dev`.
+
+---
+
+## 6) Источники (официальные)
+
+- Next.js: Environment Variables (App Router): https://nextjs.org/docs/app/guides/environment-variables
+- Kubernetes: Secrets (в т.ч. `envFrom` / `secretKeyRef`): https://kubernetes.io/docs/concepts/configuration/secret/

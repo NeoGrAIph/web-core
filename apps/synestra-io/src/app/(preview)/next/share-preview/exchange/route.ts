@@ -21,11 +21,13 @@ export async function POST(req: Request): Promise<Response> {
     const existing = cookieStore.getAll().filter((c) => c.name === 'syn_share_preview')
     const res = NextResponse.json({ ok: true, path: appendSharePreviewFlag(payload) })
 
+    const secure = process.env.NODE_ENV === 'production'
+
     // Set cookie scoped to the target path (session cookie, TTL is enforced by token `exp`).
     res.cookies.set('syn_share_preview', token, {
       httpOnly: true,
       sameSite: 'lax',
-      secure: true,
+      secure,
       path,
     })
 
@@ -33,7 +35,7 @@ export async function POST(req: Request): Promise<Response> {
     res.cookies.set('syn_share_preview_active', token, {
       httpOnly: true,
       sameSite: 'lax',
-      secure: true,
+      secure,
       path: '/',
     })
 

@@ -444,6 +444,9 @@ Website template кладёт часть демо‑контента через 
 Вариант A (через админку): кнопка seed в dashboard (если она оставлена в UI).  
 Вариант B (endpoint): `POST /next/seed` (только если endpoint не отключён и вы понимаете последствия).
 
+Важно для `stage/prod` в `web-core`:
+- `POST /next/seed` дополнительно защищён `SEED_KEY` (см. `docs/architecture/payload-seeding.md`), чтобы нельзя было случайно выполнить деструктивный seed в проде.
+
 Примечание: seed ≠ migrations. Seed — контент/медиа, migrations — схема БД.
 
 8) (Опционально) Включить русский язык в Admin UI:

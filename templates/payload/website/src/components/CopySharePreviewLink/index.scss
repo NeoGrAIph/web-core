@@ -1,0 +1,27 @@
+@import '~@payloadcms/ui/scss';
+
+.copySharePreviewLink {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--base) / 2);
+
+  &__button {
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.85;
+    }
+  }
+
+  &__hint {
+    color: var(--theme-elevation-500);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+

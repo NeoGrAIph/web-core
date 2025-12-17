@@ -99,8 +99,19 @@
 4) Убедиться, что миграции выполнились:
    - Job `*-migrate` завершился `Complete`.
 5) Открыть `/admin` и создать первого пользователя (если его нет).
+6) (Опционально, но обязательно при `schedulePublish`) Включить jobs runner:
+   - в values включить `jobsRunner.enabled=true` для prod deployment (chart: `deploy/charts/web-app`);
+   - убедиться, что в runtime secret задан `CRON_SECRET` (иначе `/api/payload-jobs/run` вернёт `401`);
+   - проверить, что в namespace появился `CronJob *-jobs-runner` и его Job’ы выполняются успешно.
 
 Примечание: Payload также допускает запуск миграций “при старте сервера” через `prodMigrations`, но для Kubernetes мы канонизируем отдельный Job до старта приложения, чтобы упростить ordering и избежать конкуренции миграций при 2+ репликах. Подробности: `docs/architecture/payload-migrations.md`.
+
+---
+
+## Источники (официальные)
+
+- Payload: Database Migrations: https://payloadcms.com/docs/database/migrations
+- Payload: Local API (контекст и `req` для операций): https://payloadcms.com/docs/local-api/overview
 
 ### 3.3. (Опционально) Seed для website‑template
 
@@ -109,6 +120,7 @@
 
 Рекомендация:
 - в prod seed использовать только осознанно (или вырезать/закрыть фичу после первого запуска).
+- В `web-core` seed endpoint в `stage/prod` дополнительно защищён `SEED_KEY` (см. `docs/architecture/payload-seeding.md`).
 
 #### 3.3.1. Как выполнить seed (через UI, рекомендовано)
 
@@ -117,6 +129,7 @@
 3) На главном экране Dashboard нажать кнопку **“Seed your database”**.
 
 Технически кнопка делает `POST /next/seed` с твоими cookies, поэтому seed выполняется “изнутри” работающего приложения.
+Если окружение `stage/prod`, то UI попросит `seed key` (или запрос вернёт `403`), пока не задан `SEED_KEY`.
 
 #### 3.3.2. Как проверить, что seed реально отработал
 

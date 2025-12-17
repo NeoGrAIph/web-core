@@ -1,4 +1,4 @@
-import type { CollectionSlug, PayloadRequest } from 'payload'
+import type { CollectionSlug } from 'payload'
 import { getPayload } from 'payload'
 
 import { draftMode } from 'next/headers'
@@ -24,22 +24,17 @@ export async function GET(req: NextRequest): Promise<Response> {
     return new Response('This endpoint can only be used for relative previews', { status: 500 })
   }
 
-  let user
-
-  try {
-    user = await payload.auth({
-      req: req as unknown as PayloadRequest,
-      headers: req.headers,
-    })
-  } catch (error) {
-    payload.logger.error({ err: error }, 'Error verifying token for live preview')
-    return new Response('You are not allowed to preview this page', { status: 403 })
-  }
-
   const draft = await draftMode()
 
-  if (!user) {
+  try {
+    const { user } = await payload.auth({ headers: req.headers })
+    if (!user) {
+      draft.disable()
+      return new Response('You are not allowed to preview this page', { status: 403 })
+    }
+  } catch (error) {
     draft.disable()
+    payload.logger.error({ err: error }, 'Error verifying token for live preview')
     return new Response('You are not allowed to preview this page', { status: 403 })
   }
 

@@ -117,7 +117,17 @@ migrations:
 
       pnpm --filter "$APP_NAME" payload migrate
 
+jobsRunner:
+  # Включайте в prod, если используете `versions.drafts.schedulePublish: true`.
+  # CronJob вызывает встроенный endpoint Payload: `GET /api/payload-jobs/run`.
+  enabled: false
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+
 argo:
   syncWaves:
     postgres: "0"
     app: "2"
+    jobsRunner: "3"

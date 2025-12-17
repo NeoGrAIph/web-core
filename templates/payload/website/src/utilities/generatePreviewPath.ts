@@ -1,20 +1,21 @@
-import { CollectionSlug } from 'payload'
-
 import { createSharePreviewToken } from './sharePreviewToken'
 
-const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
+const collectionPrefixMap = {
   posts: '/posts',
   pages: '',
-}
+} as const
 
 type Props = {
   collection: keyof typeof collectionPrefixMap
   slug: string
+  kind?: 'internal' | 'share'
+  docID?: string
+  versionID?: string
 }
 
 const SHARE_PREVIEW_TTL_SECONDS = 60 * 60 * 24 * 7 // 7 days
 
-export const generatePreviewPath = ({ collection, slug }: Props) => {
+export const generatePreviewPath = ({ collection, slug, kind = 'internal', docID, versionID }: Props) => {
   // Allow empty strings, e.g. for the homepage
   if (slug === undefined || slug === null) {
     return null
@@ -25,13 +26,25 @@ export const generatePreviewPath = ({ collection, slug }: Props) => {
 
   const path = `${collectionPrefixMap[collection]}/${encodedSlug}`
 
-  // Share-preview token is placed in the URL fragment so it won't hit access logs or Referer.
-  // The token is exchanged server-side for a Next.js draft mode cookie.
-  const token = createSharePreviewToken({
-    path,
-    ttlSeconds: SHARE_PREVIEW_TTL_SECONDS,
-    secret: process.env.PREVIEW_SECRET || '',
-  })
+  if (kind === 'share') {
+    if (!docID || !versionID) return null
 
-  return `/next/share-preview#token=${token}`
+    // Share-preview token is placed in the URL fragment so it won't hit access logs or Referer.
+    // Token is exchanged server-side for an HttpOnly cookie + explicit `?sp=<versionID>` flag.
+    const token = createSharePreviewToken({
+      payload: {
+        collection,
+        docID,
+        versionID,
+        path,
+      },
+      ttlSeconds: SHARE_PREVIEW_TTL_SECONDS,
+      secret: process.env.PREVIEW_SECRET || '',
+    })
+
+    return `/next/share-preview#token=${token}`
+  }
+
+  const encodedParams = new URLSearchParams({ slug: encodedSlug, collection, path })
+  return `/next/preview?${encodedParams.toString()}`
 }
