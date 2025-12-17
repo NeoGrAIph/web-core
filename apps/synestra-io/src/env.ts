@@ -16,6 +16,8 @@ export const env = createValidatedEnv({
 
       CRON_SECRET: z.string().min(1).optional(),
       PREVIEW_SECRET: z.string().min(1).optional(),
+
+      SEED_KEY: z.string().min(1).optional(),
     })
     .superRefine((value, ctx) => {
       const envName = value.SYNESTRA_ENV ?? 'dev'

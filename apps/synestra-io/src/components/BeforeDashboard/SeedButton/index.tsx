@@ -18,6 +18,7 @@ export const SeedButton: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [seeded, setSeeded] = useState(false)
   const [error, setError] = useState<null | string>(null)
+  const [seedKey, setSeedKey] = useState('')
 
   const handleClick = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,24 +37,35 @@ export const SeedButton: React.FC = () => {
         return
       }
 
+      const ok = window.confirm(
+        'Seeding is destructive (it clears collections/globals) and is intended for bootstrapping an empty database. Continue?',
+      )
+      if (!ok) {
+        return
+      }
+
       setLoading(true)
 
       try {
         toast.promise(
           new Promise((resolve, reject) => {
             try {
-              fetch('/next/seed', { method: 'POST', credentials: 'include' })
-                .then((res) => {
+              fetch('/next/seed', {
+                method: 'POST',
+                credentials: 'include',
+                headers: seedKey ? { 'x-seed-key': seedKey } : undefined,
+              })
+                .then(async (res) => {
                   if (res.ok) {
                     resolve(true)
                     setSeeded(true)
-                  } else {
-                    reject('An error occurred while seeding.')
+                    return
                   }
+
+                  const text = await res.text().catch(() => '')
+                  reject(text || 'An error occurred while seeding.')
                 })
-                .catch((error) => {
-                  reject(error)
-                })
+                .catch((fetchError) => reject(fetchError))
             } catch (error) {
               reject(error)
             }
@@ -69,7 +81,7 @@ export const SeedButton: React.FC = () => {
         setError(error)
       }
     },
-    [loading, seeded, error],
+    [loading, seeded, error, seedKey],
   )
 
   let message = ''
@@ -82,6 +94,14 @@ export const SeedButton: React.FC = () => {
       <button className="seedButton" onClick={handleClick}>
         Seed your database
       </button>
+      <input
+        className="seedKeyInput"
+        inputMode="text"
+        onChange={(e) => setSeedKey(e.target.value)}
+        placeholder="Seed key (stage/prod)"
+        type="password"
+        value={seedKey}
+      />
       {message}
     </Fragment>
   )

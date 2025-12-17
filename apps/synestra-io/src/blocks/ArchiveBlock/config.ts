@@ -10,6 +10,9 @@ import {
 export const Archive: Block = {
   slug: 'archive',
   interfaceName: 'ArchiveBlock',
+  admin: {
+    group: 'Dynamic',
+  },
   fields: [
     {
       name: 'introContent',

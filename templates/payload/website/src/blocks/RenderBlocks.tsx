@@ -1,21 +1,17 @@
 import React from 'react'
 
 import type { Page } from '@/payload-types'
-import { computeBlockAnchorIDs, renderBlocks } from '@synestra/blocks-renderer'
+import { computeBlockAnchorIDs, defineBlockCatalog, renderBlocks } from '@synestra/blocks-renderer'
 
-import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
-import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { PAGE_LAYOUT_BLOCKS } from '@/blocks/pageBuilder'
+import { PAGE_BLOCK_COMPONENTS } from '@/blocks/registry'
 
-const blockComponents = {
-  archive: ArchiveBlock,
-  content: ContentBlock,
-  cta: CallToActionBlock,
-  formBlock: FormBlock,
-  mediaBlock: MediaBlock,
-}
+const { components: blockComponents } = defineBlockCatalog({
+  name: '@synestra/template-payload-website pages.layout',
+  blocks: PAGE_LAYOUT_BLOCKS,
+  components: PAGE_BLOCK_COMPONENTS,
+  strict: process.env.NODE_ENV !== 'production',
+})
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]

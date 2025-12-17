@@ -8,6 +8,9 @@ import {
 
 export const Banner: Block = {
   slug: 'banner',
+  admin: {
+    group: 'Marketing',
+  },
   labels: {
     plural: 'Banners',
     singular: 'Banner',

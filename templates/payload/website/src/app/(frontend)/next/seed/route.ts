@@ -16,6 +16,18 @@ export async function POST(): Promise<Response> {
     return new Response('Action forbidden.', { status: 403 })
   }
 
+  const environmentName = process.env.SYNESTRA_ENV ?? 'dev'
+  const configuredSeedKey = process.env.SEED_KEY
+  const providedSeedKey = requestHeaders.get('x-seed-key')
+
+  if (configuredSeedKey) {
+    if (!providedSeedKey || providedSeedKey !== configuredSeedKey) {
+      return new Response('Action forbidden (seed key required).', { status: 403 })
+    }
+  } else if (environmentName !== 'dev') {
+    return new Response('Action forbidden (seed disabled in stage/prod).', { status: 403 })
+  }
+
   try {
     // Create a Payload request object to pass to the Local API for transactions
     // At this point you should pass in a user, locale, and any other context you need for the Local API

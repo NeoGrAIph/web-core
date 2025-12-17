@@ -36,6 +36,17 @@ Ecommerce template:
 - `upstream/payload/templates/ecommerce/src/collections/Pages/index.ts` — `layout` как blocks field
 - `upstream/payload/templates/ecommerce/src/blocks/RenderBlocks.tsx` — использование `blockName` (например, для якорей/ID)
 
+Провенанс upstream в `web-core`:
+- repo: https://github.com/payloadcms/payload
+- pinned snapshot commit: https://github.com/payloadcms/payload/tree/77f96a4ff224e37285d3d554686e9fe3af25d00b
+
+Прямые ссылки на те же файлы (GitHub, pinned commit):
+- Website `Pages` blocks layout: https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/collections/Pages/index.ts
+- Website Header RowLabel: https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/Header/RowLabel.tsx
+- Website Footer RowLabel: https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/Footer/RowLabel.tsx
+- Ecommerce `Pages` blocks layout: https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/ecommerce/src/collections/Pages/index.ts
+- Ecommerce `RenderBlocks` (использование `blockName`): https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/ecommerce/src/blocks/RenderBlocks.tsx
+
 ---
 
 ## 3) Канон `web-core` (UX)

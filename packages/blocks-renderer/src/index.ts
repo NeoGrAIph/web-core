@@ -1,5 +1,8 @@
 import * as React from 'react'
 
+export { defineBlockCatalog } from './catalog'
+export { defineBlockList } from './catalog'
+
 export type BlockLike = {
   blockType?: string | null
   id?: string | number | null

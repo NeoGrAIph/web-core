@@ -12,6 +12,9 @@ import { linkGroup } from '@synestra/cms-fields/linkGroup'
 export const CallToAction: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlock',
+  admin: {
+    group: 'Marketing',
+  },
   fields: [
     {
       name: 'richText',

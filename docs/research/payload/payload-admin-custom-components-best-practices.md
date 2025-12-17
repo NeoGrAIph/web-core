@@ -125,3 +125,13 @@ Root Components — официальные точки расширения ад�
 Референс (официальные templates Payload, `upstream/`):
 - `upstream/payload/templates/website/src/Header/config.ts` + `RowLabel`
 - `upstream/payload/templates/website/src/Footer/config.ts` + `RowLabel`
+
+Провенанс upstream в `web-core`:
+- repo: https://github.com/payloadcms/payload
+- pinned snapshot commit: https://github.com/payloadcms/payload/tree/77f96a4ff224e37285d3d554686e9fe3af25d00b
+
+Прямые ссылки на те же файлы (GitHub, pinned commit):
+- Website Header config (RowLabel Component Path): https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/Header/config.ts
+- Website Header RowLabel component: https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/Header/RowLabel.tsx
+- Website Footer config (RowLabel Component Path): https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/Footer/config.ts
+- Website Footer RowLabel component: https://github.com/payloadcms/payload/blob/77f96a4ff224e37285d3d554686e9fe3af25d00b/templates/website/src/Footer/RowLabel.tsx
