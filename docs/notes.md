@@ -89,7 +89,7 @@
 - `synestra-platform`: сейчас уже есть деплой Payload в namespace `webcore` — `argocd/apps/infra-payload.yaml` + `infra/webcore/payload/values*.yaml`.
 - `synestra-platform`: `infra/webcore/payload/values.dev-hot.yaml` использует `hostPath` (локальный путь на ноде) и “install/build/start внутри Pod” — это dev-only костыль, который считаем legacy и планируем заменить на Okteto dev‑loop.
 - `synestra-platform`: CNPG оператор ставится `argocd/apps/infra-cloudnativepg.yaml`; текущий кластер для Payload живёт в namespace `databases` (`infra/databases/cloudnativepg/payload/cluster.yaml`) и использует bootstrap secret `payload-initdb-secret` (SOPS в `secrets/databases/payload-initdb-secret.yaml`).
-- Okteto Self‑Hosted **уже развернут** в `synestra-platform` и доступен по `okteto.services.synestra.tech` (также подняты BuildKit и Registry). В chart отключены `okteto-nginx`/`okteto-ingress`, поэтому маршрутизация сайтов остаётся на наших Ingress’ах/Traefik (Okteto даёт dev‑loop поверх уже развёрнутых workloads).
+- Okteto Self‑Hosted **уже развернут** в `synestra-platform` и доступен по `okteto.synestra.tech` (также подняты BuildKit и Registry). В chart отключены `okteto-nginx`/`okteto-ingress`, поэтому маршрутизация сайтов остаётся на наших Ingress’ах/Traefik (Okteto даёт dev‑loop поверх уже развёрнутых workloads).
 - Рекомендуемая связка ArgoCD `synestra-platform` ↔ `web-core` (app-of-apps):
   - в `synestra-platform` добавляем один root Application на `web-core` (например `argocd/apps/web-core.yaml`), который синхронизирует `web-core/deploy/argocd/apps`;
   - внутри `web-core` живут ArgoCD Applications на каждый deployment (corporate/shop/saas/landings) и они ссылаются на `web-core/deploy/...` (Helm/Kustomize);

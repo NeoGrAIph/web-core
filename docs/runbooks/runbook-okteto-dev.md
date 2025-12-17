@@ -31,9 +31,9 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 
 ## 0.2) Наш Okteto (Synestra): endpoints и auth
 
-- Control‑plane: `https://okteto.services.synestra.tech`
-- Builder (BuildKit): `buildkit.services.synestra.tech`
-- Registry: `registry.services.synestra.tech`
+- Control‑plane: `https://okteto.synestra.tech`
+- Builder (BuildKit): `buildkit.okteto.synestra.tech`
+- Registry: `registry.okteto.synestra.tech`
 - Авторизация: через Keycloak/OIDC (логин зависит от настроек платформы; токены и секреты в репо не храним).
 
 ## 1) Namespaces
@@ -84,7 +84,7 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 Пример для `synestra.io`:
 
 ```bash
-okteto context use https://okteto.services.synestra.tech
+okteto context use https://okteto.synestra.tech
 okteto namespace create web-synestra-io-dev
 okteto namespace web-synestra-io-dev
 ```

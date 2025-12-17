@@ -224,9 +224,9 @@ Manifest (overview) описывает несколько логических �
   - Helm chart: `okteto` `1.39.0`
   - namespace: `okteto`
 - Публичные endpoints (Traefik):
-  - control‑plane: `okteto.services.synestra.tech`
-  - builder (BuildKit): `buildkit.services.synestra.tech`
-  - registry: `registry.services.synestra.tech`
+  - control‑plane: `okteto.synestra.tech`
+  - builder (BuildKit): `buildkit.okteto.synestra.tech`
+  - registry: `registry.okteto.synestra.tech`
 - Аутентификация:
   - OIDC через Keycloak (`auth.synestra.io`) — client `okteto` (секреты хранятся в SOPS и не должны попадать в `web-core`).
 - Build/Registry:

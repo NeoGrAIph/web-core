@@ -31,7 +31,7 @@ Runbook: какие шаги нужны в `synestra-platform`, чтобы **п�
 
 Okteto Self‑Hosted уже развернут GitOps’ом:
 - приложение: `argocd/apps/infra-okteto.yaml`
-- домен control‑plane: `okteto.services.synestra.tech` (также есть `buildkit.services.synestra.tech` и `registry.services.synestra.tech`)
+- домен control‑plane: `okteto.synestra.tech` (также есть `buildkit.okteto.synestra.tech` и `registry.okteto.synestra.tech`)
 - в нашей установке отключены `okteto-nginx` и `okteto-ingress` — пользовательские сайты/дев‑домены остаются на наших Ingress’ах/Traefik, Okteto используется как dev‑loop поверх workloads
 - см. `docs/wiki/okteto.md` в `synestra-platform`.
 

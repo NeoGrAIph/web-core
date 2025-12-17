@@ -231,9 +231,9 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 В `synestra-platform` сейчас есть dev-only “hostPath + build внутри Pod” подход (`infra/webcore/payload/values.dev-hot.yaml`). Он не масштабируется и привязан к одной ноде/пути.
 
 Важно: Okteto Self‑Hosted уже развернут на платформе (через Argo CD) и предоставляет:
-- control‑plane: `okteto.services.synestra.tech`,
-- BuildKit builder: `buildkit.services.synestra.tech`,
-- Registry: `registry.services.synestra.tech`,
+- control‑plane: `okteto.synestra.tech`,
+- BuildKit builder: `buildkit.okteto.synestra.tech`,
+- Registry: `registry.okteto.synestra.tech`,
 - SSO (OIDC) через Keycloak.
 
 При этом в нашей установке отключены `okteto-nginx` и `okteto-ingress`, поэтому Okteto **не заменяет** ingress‑маршрутизацию сайтов: публичные домены сайтов обслуживаются нашими Ingress’ами/Traefik, а Okteto используется для dev‑loop “поверх” уже развернутых workloads.

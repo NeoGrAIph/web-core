@@ -33,8 +33,8 @@
 2) DNS для Okteto registry/buildkit
 
 Okteto remote execution / catalog deploy использует BuildKit и registry endpoints:
-- `buildkit.services.synestra.tech`
-- `registry.services.synestra.tech`
+- `buildkit.okteto.synestra.tech`
+- `registry.okteto.synestra.tech`
 
 Если эти имена не резолвятся из кластера (NXDOMAIN), кнопки будут “висеть” ещё до запуска наших Job’ов.
 Если эти имена не резолвятся на локальной машине, то и `okteto deploy --remote ...` будет “висеть” на этапе подключения к BuildKit (и тоже не дойдёт до запуска Job’ов).
