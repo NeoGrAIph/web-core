@@ -1,19 +1,22 @@
 import * as React from 'react'
 
-export type CardProps = React.HTMLAttributes<HTMLDivElement>
+export type CardVariant = 'surface' | 'muted'
 
-export function Card({ style, ...rest }: CardProps) {
+export type CardProps = React.HTMLAttributes<HTMLDivElement> & {
+  variant?: CardVariant
+}
+
+function joinClassNames(...values: Array<string | undefined>): string | undefined {
+  const next = values.filter(Boolean).join(' ')
+  return next.length ? next : undefined
+}
+
+export function Card({ className, variant = 'surface', ...rest }: CardProps) {
   return (
     <div
       {...rest}
-      style={{
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        padding: '16px',
-        background: '#fff',
-        ...style,
-      }}
+      data-variant={variant === 'surface' ? undefined : variant}
+      className={joinClassNames('syn-ui-card', className)}
     />
   )
 }
-

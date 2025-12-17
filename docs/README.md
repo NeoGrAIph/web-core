@@ -12,16 +12,31 @@
 - Архитектура и структура репозитория
   - `docs/architecture/architecture.md`
   - `docs/architecture/canon-v0.md`
+  - `docs/architecture/component-system.md`
   - `docs/architecture/database-cnpg.md`
   - `docs/architecture/payload-migrations.md`
+  - `docs/architecture/monorepo-packages-standards.md`
+  - `docs/architecture/monorepo-package-contracts.md`
+  - `docs/architecture/monorepo-packages-audit.md`
   - `docs/architecture/repo-structure.md`
   - `docs/architecture/tooling-turborepo.md`
   - `docs/architecture/env-contract.md`
+  - `docs/architecture/release-promotion.md`
 - Исследования
   - `docs/research/research.md`
   - `docs/research/templates-research.md`
+  - `docs/research/ui-layer-1-parameterization.md`
+  - `docs/research/ui-layer-2-registry.md`
+  - `docs/research/ui-layer-2-unification-matrix.md`
+  - `docs/research/ui-layer-3-file-overrides.md`
   - `docs/research/templates/payload-website.md`
   - `docs/research/templates/payload-ecommerce.md`
+  - `docs/research/payload/payload-blocks-best-practices.md`
+  - `docs/research/payload/payload-admin-custom-components-best-practices.md`
+  - `docs/research/payload/payload-migrations-best-practices.md`
+  - `docs/research/payload/payload-media-storage-best-practices.md`
+  - `docs/research/payload/payload-lexical-blocksfeature-best-practices.md`
+  - `docs/research/payload/payload-versions-drafts-preview-best-practices.md`
   - `docs/research/payload/payload-v3-official-notes.md`
   - `docs/research/okteto/okteto-official-notes.md`
   - `docs/research/argocd/argocd-official-notes.md`

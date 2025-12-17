@@ -24,6 +24,31 @@
   - `import { Button } from '@synestra/ui/button'`
   - `import { Card } from '@synestra/ui/card'`
 
+## Стили и “tokens”
+
+Core UI использует CSS variables (токены) и `data-*` variants, чтобы:
+- не зависеть от Tailwind major,
+- позволять app’ам переопределять только нужные параметры.
+
+Важно про Next.js (App Router): обработчики событий (например `onClick`) работают только в Client Components. Поэтому `Button` можно рендерить в Server Components, но интерактивность добавляй на стороне client (или в отдельном client‑компоненте).
+
+1) Подключи дефолтные стили один раз в app (например, в `app/layout.tsx`):
+
+```ts
+import '@synestra/ui/styles.css'
+```
+
+2) Переопределяй токены в глобальном CSS конкретного сайта (пример):
+
+```css
+:root {
+  --syn-ui-color-primary: #0ea5e9;
+  --syn-ui-radius-md: 16px;
+}
+```
+
+Примечание: чтобы переопределения гарантированно “побеждали дефолт”, импортируй `@synestra/ui/styles.css` **раньше** файла глобальных стилей app (например `./globals.css`).
+
 ## Скрипты
 
 - `pnpm --filter @synestra/ui build`

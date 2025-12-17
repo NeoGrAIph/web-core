@@ -1,0 +1,12 @@
+import * as React from 'react'
+import { render, screen } from '@testing-library/react'
+
+import { {{pascalCase name}} } from './{{kebabCase name}}'
+
+describe('{{pascalCase name}}', () => {
+  it('renders', () => {
+    render(<{{pascalCase name}} data-testid="{{kebabCase name}}" />)
+    expect(screen.getByTestId('{{kebabCase name}}')).toBeInTheDocument()
+  })
+})
+

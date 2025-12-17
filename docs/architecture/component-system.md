@@ -12,6 +12,15 @@
 - общий код живёт в `packages/*`;
 - есть несовместимость UI-стека по upstream: Tailwind 3.x vs Tailwind 4.x, поэтому **core UI не должен зависеть от Tailwind** (пока не будет принят единый major).
 
+Официальные источники, на которые опирается этот документ (Next.js 15 / Payload 3):
+- Next.js (App Router) CSS / Global styles: `https://nextjs.org/docs/app/getting-started/css`
+- Next.js `'use client'` (client boundary + сериализуемость props): `https://nextjs.org/docs/app/api-reference/directives/use-client`
+- Next.js Server / Client Components (App Router): `https://nextjs.org/docs/app/getting-started/server-and-client-components`
+- Next.js `transpilePackages` (monorepo/workspace пакеты): `https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages`
+- Next.js `optimizePackageImports` (когда barrel‑imports становятся тяжёлыми): `https://nextjs.org/docs/app/api-reference/config/next-config-js/optimizePackageImports`
+- Payload Blocks Field (в т.ч. `blockName`, `blockReferences`, реюз block configs): `https://payloadcms.com/docs/fields/blocks`
+- Payload Custom Components (Admin UI, component paths, import map): `https://payloadcms.com/docs/custom-components/overview`
+
 ---
 
 ## 1) Границы (что где живёт)
@@ -29,6 +38,23 @@
 - не тянуть app-специфичную бизнес-логику;
 - не тянуть Payload-конфиги/модели конкретного сайта;
 - не делать “скрытые” зависимости на глобальные стили конкретного app.
+
+Уточнение (Next.js App Router):
+- Next.js прямо предупреждает, что Global CSS **не удаляется при навигации** и может вызывать конфликты, поэтому “глобальные” стили (включая `@synestra/ui/styles.css`) импортируем **один раз** в root layout приложения. См. `https://nextjs.org/docs/app/getting-started/css`.
+- Если `packages/ui` (или другие workspace‑пакеты) поставляют TypeScript/JS, который Next должен транспилировать как часть приложения, используем `transpilePackages` в `next.config.js` приложения. См. `https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages`.
+
+### Стандарт слоя 1 (tokens/variants/slots) — “как Helm values”
+
+Цель слоя 1: переиспользование UI без форков за счёт “тонких” переопределений в app’ах.
+
+Канон:
+- дизайн‑токены задаются через CSS variables с префиксом `--syn-ui-*` (apps могут переопределять только нужные значения);
+- компоненты используют `data-*` атрибуты для вариантов (`data-variant`, `data-size`, `data-tone`), чтобы app мог точечно менять стили;
+- базовые (дефолтные) стили живут в `@synestra/ui/styles.css` и подключаются один раз на уровне app (в корневом layout);
+- inline‑стили (захардкоженные цвета/паддинги) в `packages/ui` не считаются каноном;
+- `'use client'` применяется точечно: базовые компоненты должны оставаться server‑safe, интерактивность — через app‑слой или отдельные client entrypoints.
+
+Исследование и ссылки на первичные источники: `docs/research/ui-layer-1-parameterization.md`.
 
 ### `packages/cms-blocks` — “контентные блоки” Payload (схемы/типы)
 
@@ -52,6 +78,19 @@
 - единый контракт блоков (данные одинаковые),
 - независимую тему/стили в каждом app,
 - минимальный копипаст при добавлении нового блока (добавили schema + компонент + регистрация).
+
+Подтверждение в Payload docs:
+- Payload рекомендует держать каждый block config в отдельном файле и импортировать в Blocks Field — это “trivializes their reusability” между разными полями/коллекциями (например, Pages и Posts). См. `https://payloadcms.com/docs/fields/blocks`.
+
+Практика `web-core`:
+- shared‑хелпер для рендера блоков живёт в `packages/blocks-renderer` (`@synestra/blocks-renderer`);
+- app‑слой сохраняет registry и обёртки (spacing/containers), чтобы не “протекал” дизайн между сайтами.
+  - если в конкретном app/shared ещё нет `@synestra/blocks-renderer`, временно допускается локальный `renderBlocks` в app с последующим выносом.
+
+Нюансы (Payload Blocks):
+- `blockReferences` (оптимизация больших схем) **не включаем по умолчанию**, потому что referenced блоки “замораживают” конфиг: в docs прямо сказано, что referenced blocks **не могут быть изменены/расширены** на уровне поля и должны совпадать 1:1 с оригиналами. См. `https://payloadcms.com/docs/fields/blocks`.
+- `blockName` используем точечно (сложные страницы/лендинги, когда редакторам важно различать “однотипные” блоки). Payload описывает `blockName` как override для UI‑label строки блока. См. `https://payloadcms.com/docs/fields/blocks`.
+  Детали (проектные соглашения): `docs/research/payload/payload-blocks-best-practices.md` и `docs/research/ui-layer-2-registry.md`.
 
 ### `apps/*` — интеграция, тема и “конечная сборка страниц”
 
@@ -97,6 +136,9 @@
 
 Запрещаем deep-imports вида:
 - `@synestra/ui/src/...` (ломает инкапсуляцию и усложняет рефакторинг).
+
+Уточнение (Next.js):
+- Если мы массово используем barrel‑импорты (`@synestra/ui`) и пакет начинает разрастаться, у Next.js есть официальный механизм `experimental.optimizePackageImports`. Но архитектурно проще держать основной путь импорта через subpath exports (`@synestra/ui/button`) и оставлять barrel как “удобный, но не обязательный”.
 
 ### Рекомендуемая структура `packages/ui` (эволюционная)
 
@@ -183,6 +225,11 @@ packages/ui/src/
   - `@synestra/ui/client/modal` (или отдельный пакет `@synestra/ui-client`).
 
 Это снижает “расползание” `'use client'` по дереву.
+
+Подтверждение в Next.js docs:
+- директива `'use client'` задаёт client boundary (entrypoint) и не должна “дублироваться” во всех файлах дерева;
+- при передаче props из Server Components в Client Components действуют ограничения (props должны быть сериализуемыми).
+См. `https://nextjs.org/docs/app/api-reference/directives/use-client`.
 
 ---
 

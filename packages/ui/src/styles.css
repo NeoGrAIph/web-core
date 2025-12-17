@@ -1,0 +1,63 @@
+:root {
+  --syn-ui-color-surface: #ffffff;
+  --syn-ui-color-surface-muted: #f9fafb;
+  --syn-ui-color-border: #e5e7eb;
+  --syn-ui-color-text: #111827;
+  --syn-ui-color-primary: #2563eb;
+  --syn-ui-color-primary-contrast: #ffffff;
+
+  --syn-ui-radius-sm: 8px;
+  --syn-ui-radius-md: 12px;
+
+  --syn-ui-space-2: 8px;
+  --syn-ui-space-3: 12px;
+  --syn-ui-space-4: 16px;
+
+  --syn-ui-font-size-sm: 14px;
+  --syn-ui-font-size-md: 16px;
+
+  --syn-ui-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.syn-ui-card {
+  border: 1px solid var(--syn-ui-color-border);
+  border-radius: var(--syn-ui-radius-md);
+  padding: var(--syn-ui-space-4);
+  background: var(--syn-ui-color-surface);
+  color: var(--syn-ui-color-text);
+  box-shadow: var(--syn-ui-shadow-sm);
+}
+
+.syn-ui-card[data-variant='muted'] {
+  background: var(--syn-ui-color-surface-muted);
+}
+
+.syn-ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--syn-ui-radius-sm);
+  background: var(--syn-ui-color-primary);
+  color: var(--syn-ui-color-primary-contrast);
+  font-size: var(--syn-ui-font-size-md);
+  padding: var(--syn-ui-space-3) var(--syn-ui-space-4);
+  cursor: pointer;
+}
+
+.syn-ui-button[data-size='sm'] {
+  font-size: var(--syn-ui-font-size-sm);
+  padding: var(--syn-ui-space-2) var(--syn-ui-space-3);
+}
+
+.syn-ui-button[data-variant='secondary'] {
+  background: transparent;
+  color: var(--syn-ui-color-text);
+  border-color: var(--syn-ui-color-border);
+}
+
+.syn-ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+

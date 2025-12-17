@@ -24,201 +24,6 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
 
-  apps/corporate-website:
-    dependencies:
-      '@payloadcms/db-postgres':
-        specifier: 3.68.3
-        version: 3.68.3(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))
-      '@payloadcms/next':
-        specifier: 3.68.3
-        version: 3.68.3(@types/react@19.2.1)(graphql@16.12.0)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
-      '@synestra/cms-blocks':
-        specifier: workspace:*
-        version: link:../../packages/cms-blocks
-      '@synestra/cms-core':
-        specifier: workspace:*
-        version: link:../../packages/cms-core
-      '@synestra/env':
-        specifier: workspace:*
-        version: link:../../packages/env
-      '@synestra/payload-plugin-multisite':
-        specifier: workspace:*
-        version: link:../../packages/plugins/payload-plugin-multisite
-      '@synestra/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      next:
-        specifier: 15.4.9
-        version: 15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4)
-      payload:
-        specifier: 3.68.3
-        version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
-      react:
-        specifier: 19.2.1
-        version: 19.2.1
-      react-dom:
-        specifier: 19.2.1
-        version: 19.2.1(react@19.2.1)
-      sharp:
-        specifier: 0.34.2
-        version: 0.34.2
-    devDependencies:
-      '@synestra/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@synestra/next-config':
-        specifier: workspace:*
-        version: link:../../packages/next-config
-      '@synestra/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: 22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: 19.2.1
-        version: 19.2.1
-      '@types/react-dom':
-        specifier: 19.2.1
-        version: 19.2.1(@types/react@19.2.1)
-      eslint:
-        specifier: ^9.16.0
-        version: 9.39.2(jiti@1.21.7)
-      eslint-config-next:
-        specifier: 15.4.9
-        version: 15.4.9(eslint@9.39.2(jiti@1.21.7))(typescript@5.7.3)
-      typescript:
-        specifier: 5.7.3
-        version: 5.7.3
-
-  apps/ecommerce-store:
-    dependencies:
-      '@payloadcms/db-postgres':
-        specifier: 3.68.3
-        version: 3.68.3(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))
-      '@payloadcms/next':
-        specifier: 3.68.3
-        version: 3.68.3(@types/react@19.2.1)(graphql@16.12.0)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
-      '@synestra/cms-core':
-        specifier: workspace:*
-        version: link:../../packages/cms-core
-      '@synestra/cms-ecommerce':
-        specifier: workspace:*
-        version: link:../../packages/cms-ecommerce
-      '@synestra/env':
-        specifier: workspace:*
-        version: link:../../packages/env
-      '@synestra/payload-plugin-multisite':
-        specifier: workspace:*
-        version: link:../../packages/plugins/payload-plugin-multisite
-      '@synestra/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      next:
-        specifier: 15.4.9
-        version: 15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4)
-      payload:
-        specifier: 3.68.3
-        version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
-      react:
-        specifier: 19.2.1
-        version: 19.2.1
-      react-dom:
-        specifier: 19.2.1
-        version: 19.2.1(react@19.2.1)
-      sharp:
-        specifier: 0.34.2
-        version: 0.34.2
-    devDependencies:
-      '@synestra/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@synestra/next-config':
-        specifier: workspace:*
-        version: link:../../packages/next-config
-      '@synestra/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: 22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: 19.2.1
-        version: 19.2.1
-      '@types/react-dom':
-        specifier: 19.2.1
-        version: 19.2.1(@types/react@19.2.1)
-      eslint:
-        specifier: ^9.16.0
-        version: 9.39.2(jiti@1.21.7)
-      eslint-config-next:
-        specifier: 15.4.9
-        version: 15.4.9(eslint@9.39.2(jiti@1.21.7))(typescript@5.7.3)
-      typescript:
-        specifier: 5.7.3
-        version: 5.7.3
-
-  apps/experiments:
-    dependencies:
-      '@payloadcms/db-postgres':
-        specifier: 3.68.3
-        version: 3.68.3(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))
-      '@payloadcms/next':
-        specifier: 3.68.3
-        version: 3.68.3(@types/react@19.2.1)(graphql@16.12.0)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
-      '@synestra/cms-core':
-        specifier: workspace:*
-        version: link:../../packages/cms-core
-      '@synestra/env':
-        specifier: workspace:*
-        version: link:../../packages/env
-      '@synestra/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      next:
-        specifier: 15.4.9
-        version: 15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4)
-      payload:
-        specifier: 3.68.3
-        version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
-      react:
-        specifier: 19.2.1
-        version: 19.2.1
-      react-dom:
-        specifier: 19.2.1
-        version: 19.2.1(react@19.2.1)
-      sharp:
-        specifier: 0.34.2
-        version: 0.34.2
-    devDependencies:
-      '@synestra/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@synestra/next-config':
-        specifier: workspace:*
-        version: link:../../packages/next-config
-      '@synestra/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: 22.5.4
-        version: 22.5.4
-      '@types/react':
-        specifier: 19.2.1
-        version: 19.2.1
-      '@types/react-dom':
-        specifier: 19.2.1
-        version: 19.2.1(@types/react@19.2.1)
-      eslint:
-        specifier: ^9.16.0
-        version: 9.39.2(jiti@1.21.7)
-      eslint-config-next:
-        specifier: 15.4.9
-        version: 15.4.9(eslint@9.39.2(jiti@1.21.7))(typescript@5.7.3)
-      typescript:
-        specifier: 5.7.3
-        version: 5.7.3
-
   apps/synestra-io:
     dependencies:
       '@payloadcms/admin-bar':
@@ -266,9 +71,18 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.2.4(@types/react@19.2.1)(react@19.2.1)
+      '@synestra/blocks-renderer':
+        specifier: workspace:*
+        version: link:../../packages/blocks-renderer
+      '@synestra/cms-blocks':
+        specifier: workspace:*
+        version: link:../../packages/cms-blocks
       '@synestra/cms-core':
         specifier: workspace:*
         version: link:../../packages/cms-core
+      '@synestra/cms-fields':
+        specifier: workspace:*
+        version: link:../../packages/cms-fields
       '@synestra/env':
         specifier: workspace:*
         version: link:../../packages/env
@@ -364,8 +178,27 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
 
+  packages/blocks-renderer:
+    dependencies:
+      react:
+        specifier: '*'
+        version: 19.2.1
+    devDependencies:
+      '@synestra/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/react':
+        specifier: 19.2.1
+        version: 19.2.1
+
   packages/cms-blocks:
     dependencies:
+      '@payloadcms/richtext-lexical':
+        specifier: 3.68.3
+        version: 3.68.3(@faceless-ui/modal@3.0.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(@payloadcms/next@3.68.3(@types/react@19.2.1)(graphql@16.12.0)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3))(@types/react@19.2.1)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)(yjs@13.6.27)
+      '@synestra/cms-fields':
+        specifier: workspace:*
+        version: link:../cms-fields
       payload:
         specifier: 3.68.3
         version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
@@ -385,6 +218,16 @@ importers:
         version: link:../typescript-config
 
   packages/cms-ecommerce:
+    dependencies:
+      payload:
+        specifier: 3.68.3
+        version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
+    devDependencies:
+      '@synestra/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
+  packages/cms-fields:
     dependencies:
       payload:
         specifier: 3.68.3
@@ -417,7 +260,7 @@ importers:
     dependencies:
       '@payloadcms/next':
         specifier: 3.68.3
-        version: 3.68.3(graphql@16.12.0)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
+        version: 3.68.3(@types/react@19.2.1)(graphql@16.12.0)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
 
   packages/plugins/payload-plugin-multisite:
     dependencies:
@@ -6534,33 +6377,6 @@ snapshots:
       - supports-color
       - typescript
 
-  '@payloadcms/next@3.68.3(graphql@16.12.0)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)':
-    dependencies:
-      '@dnd-kit/core': 6.0.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@payloadcms/graphql': 3.68.3(graphql@16.12.0)(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(typescript@5.7.3)
-      '@payloadcms/translations': 3.68.3
-      '@payloadcms/ui': 3.68.3(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
-      busboy: 1.6.0
-      dequal: 2.0.3
-      file-type: 19.3.0
-      graphql: 16.12.0
-      graphql-http: 1.22.4(graphql@16.12.0)
-      graphql-playground-html: 1.6.30
-      http-status: 2.1.0
-      next: 15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4)
-      path-to-regexp: 6.3.0
-      payload: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
-      qs-esm: 7.0.2
-      sass: 1.77.4
-      uuid: 10.0.0
-    transitivePeerDependencies:
-      - '@types/react'
-      - monaco-editor
-      - react
-      - react-dom
-      - supports-color
-      - typescript
-
   '@payloadcms/plugin-form-builder@3.68.3(@types/react@19.2.1)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)':
     dependencies:
       '@payloadcms/ui': 3.68.3(@types/react@19.2.1)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
@@ -6662,41 +6478,6 @@ snapshots:
       date-fns: 4.1.0
 
   '@payloadcms/ui@3.68.3(@types/react@19.2.1)(monaco-editor@0.55.1)(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)':
-    dependencies:
-      '@date-fns/tz': 1.2.0
-      '@dnd-kit/core': 6.0.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@dnd-kit/sortable': 7.0.2(@dnd-kit/core@6.0.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)
-      '@dnd-kit/utilities': 3.2.2(react@19.2.1)
-      '@faceless-ui/modal': 3.0.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@faceless-ui/scroll-info': 2.0.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@faceless-ui/window-info': 3.0.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@monaco-editor/react': 4.7.0(monaco-editor@0.55.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      '@payloadcms/translations': 3.68.3
-      bson-objectid: 2.0.4
-      date-fns: 4.1.0
-      dequal: 2.0.3
-      md5: 2.3.0
-      next: 15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4)
-      object-to-formdata: 4.5.1
-      payload: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
-      qs-esm: 7.0.2
-      react: 19.2.1
-      react-datepicker: 7.6.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      react-dom: 19.2.1(react@19.2.1)
-      react-image-crop: 10.1.8(react@19.2.1)
-      react-select: 5.9.0(@types/react@19.2.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      scheduler: 0.25.0
-      sonner: 1.7.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      ts-essentials: 10.0.3(typescript@5.7.3)
-      use-context-selector: 2.0.0(react@19.2.1)(scheduler@0.25.0)
-      uuid: 10.0.0
-    transitivePeerDependencies:
-      - '@types/react'
-      - monaco-editor
-      - supports-color
-      - typescript
-
-  '@payloadcms/ui@3.68.3(next@15.4.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)':
     dependencies:
       '@date-fns/tz': 1.2.0
       '@dnd-kit/core': 6.0.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1)

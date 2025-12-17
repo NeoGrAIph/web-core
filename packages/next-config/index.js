@@ -1,7 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { createRequire } from 'node:module'
 
 import { withPayload } from '@payloadcms/next/withPayload'
+
+const require = createRequire(import.meta.url)
 
 const DEFAULT_EXTENSION_ALIAS = {
   '.cjs': ['.cts', '.cjs'],
@@ -20,11 +23,46 @@ function uniq(list) {
 export function getWorkspaceTranspilePackages({
   appDir = process.cwd(),
   workspacePrefix = '@synestra/',
+  includeTransitive = true,
 } = {}) {
   const packageJSONPath = path.join(appDir, 'package.json')
   const packageJSON = readJSON(packageJSONPath)
   const deps = Object.keys(packageJSON.dependencies || {})
-  return deps.filter((name) => name.startsWith(workspacePrefix))
+  const direct = deps.filter((name) => name.startsWith(workspacePrefix))
+
+  if (!includeTransitive) return direct
+
+  const resolved = new Set()
+  const stack = [...direct]
+
+  while (stack.length) {
+    const name = stack.pop()
+    if (!name || resolved.has(name)) continue
+    resolved.add(name)
+
+    let pkgJsonPath
+    try {
+      pkgJsonPath = require.resolve(`${name}/package.json`, { paths: [appDir] })
+    } catch {
+      continue
+    }
+
+    let depNames = []
+    try {
+      const pkgJson = readJSON(pkgJsonPath)
+      depNames = Object.keys(pkgJson.dependencies || {})
+    } catch {
+      depNames = []
+    }
+
+    for (const depName of depNames) {
+      if (depName.startsWith(workspacePrefix) && !resolved.has(depName)) {
+        stack.push(depName)
+      }
+    }
+  }
+
+  return [...resolved]
 }
 
 export function createSynestraNextConfig({
@@ -32,12 +70,18 @@ export function createSynestraNextConfig({
   nextConfig = {},
   extraTranspilePackages = [],
   includeWorkspaceTranspilePackages = true,
+  includeTransitiveWorkspaceTranspilePackages = true,
   payloadOptions,
 } = {}) {
   const userWebpack = nextConfig.webpack
 
   const resolvedTranspile = uniq([
-    ...(includeWorkspaceTranspilePackages ? getWorkspaceTranspilePackages({ appDir }) : []),
+    ...(includeWorkspaceTranspilePackages
+      ? getWorkspaceTranspilePackages({
+          appDir,
+          includeTransitive: includeTransitiveWorkspaceTranspilePackages,
+        })
+      : []),
     ...(nextConfig.transpilePackages || []),
     ...extraTranspilePackages,
   ])
@@ -58,4 +102,3 @@ export function createSynestraNextConfig({
 
   return withPayload(mergedConfig, payloadOptions)
 }
-
