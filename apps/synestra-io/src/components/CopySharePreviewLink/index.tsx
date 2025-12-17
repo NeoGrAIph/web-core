@@ -1,28 +1,11 @@
 'use client'
 
-import React, { useCallback, useMemo, useState } from 'react'
-import { toast } from '@payloadcms/ui'
+import React, { useCallback, useState } from 'react'
+import { toast, useDocumentInfo, useFormFields, useTranslation } from '@payloadcms/ui'
 
 import './index.scss'
 
 type ApiResponse = { ok: true; url: string; relative: string } | { ok: false; message: string }
-
-function parseAdminDocFromPathname(pathname: string): { collection: 'pages' | 'posts' | null; id: string | null } {
-  const parts = pathname.split('/').filter(Boolean)
-  const collectionsIdx = parts.indexOf('collections')
-  const collection = parts[collectionsIdx + 1]
-  const id = parts[collectionsIdx + 2]
-
-  if (!collection || !id || id === 'create') {
-    return { collection: null, id: null }
-  }
-
-  if (collection !== 'pages' && collection !== 'posts') {
-    return { collection: null, id: null }
-  }
-
-  return { collection, id }
-}
 
 async function copyToClipboard(text: string) {
   if (navigator.clipboard?.writeText) {
@@ -45,13 +28,23 @@ async function copyToClipboard(text: string) {
 export default function CopySharePreviewLink() {
   const [loading, setLoading] = useState(false)
 
-  const { collection, id } = useMemo(
-    () => parseAdminDocFromPathname(typeof window === 'undefined' ? '' : window.location.pathname),
-    [],
-  )
+  const { id, collectionSlug } = useDocumentInfo()
+  const { t } = useTranslation()
+
+  const slugValue = useFormFields(([fields]) => fields?.slug?.value)
+  const slug = typeof slugValue === 'string' ? slugValue : undefined
+
+  const collection = collectionSlug === 'pages' || collectionSlug === 'posts' ? collectionSlug : null
+  const docID = id === undefined || id === null ? null : String(id)
 
   const handleClick = useCallback(async () => {
-    if (!collection || !id) {
+    if (!collection || !docID) {
+      toast.error(t('general:save', { defaultValue: 'Save' }) + ': ' + 'document is not created yet.')
+      return
+    }
+
+    // Allow empty string for homepage, but require the field to exist in form state
+    if (slug === undefined) {
       toast.error('Save the document first to generate a share preview link.')
       return
     }
@@ -68,7 +61,7 @@ export default function CopySharePreviewLink() {
         method: 'POST',
         credentials: 'include',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ collection, id }),
+        body: JSON.stringify({ collection, id: docID }),
       })
 
       const data = (await res.json()) as ApiResponse
@@ -85,7 +78,7 @@ export default function CopySharePreviewLink() {
     } finally {
       setLoading(false)
     }
-  }, [collection, id, loading])
+  }, [collection, docID, loading, slug, t])
 
   const label = loading ? 'Copy share preview link…' : 'Copy share preview link'
 
@@ -100,4 +93,3 @@ export default function CopySharePreviewLink() {
     </div>
   )
 }
-
