@@ -37,6 +37,7 @@ Okteto remote execution / catalog deploy использует BuildKit и regist
 - `registry.services.synestra.tech`
 
 Если эти имена не резолвятся из кластера (NXDOMAIN), кнопки будут “висеть” ещё до запуска наших Job’ов.
+Если эти имена не резолвятся на локальной машине, то и `okteto deploy --remote ...` будет “висеть” на этапе подключения к BuildKit (и тоже не дойдёт до запуска Job’ов).
 
 Временный GitOps‑фикс (пока не заведены публичные DNS записи): добавить эти имена в CoreDNS NodeHosts.
 Сейчас это делается в `synestra-platform` через `clusters/core/coredns.yaml`.
