@@ -39,12 +39,12 @@ spec:
             - name: DEV_PGUSER
               valueFrom:
                 secretKeyRef:
-                  name: synestra-io-dev-cnpg-app
+                  name: synestra-io-initdb-secret
                   key: username
             - name: DEV_PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: synestra-io-dev-cnpg-app
+                  name: synestra-io-initdb-secret
                   key: password
             - name: DB_NAME
               value: synestra_io
