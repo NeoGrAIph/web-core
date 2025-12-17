@@ -1,21 +1,21 @@
-import { CollectionSlug } from 'payload'
-
 import { createSharePreviewToken } from './sharePreviewToken'
 
-const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
+const collectionPrefixMap = {
   posts: '/posts',
   pages: '',
-}
+} as const
 
 type Props = {
   collection: keyof typeof collectionPrefixMap
   slug: string
   kind?: 'internal' | 'share'
+  docID?: string
+  versionID?: string
 }
 
 const SHARE_PREVIEW_TTL_SECONDS = 60 * 60 * 24 * 7 // 7 days
 
-export const generatePreviewPath = ({ collection, slug, kind = 'internal' }: Props) => {
+export const generatePreviewPath = ({ collection, slug, kind = 'internal', docID, versionID }: Props) => {
   // Allow empty strings, e.g. for the homepage
   if (slug === undefined || slug === null) {
     return null
@@ -27,8 +27,15 @@ export const generatePreviewPath = ({ collection, slug, kind = 'internal' }: Pro
   const path = `${collectionPrefixMap[collection]}/${encodedSlug}`
 
   if (kind === 'share') {
+    if (!docID || !versionID) return null
+
     const token = createSharePreviewToken({
-      path,
+      payload: {
+        collection,
+        docID,
+        versionID,
+        path,
+      },
       ttlSeconds: SHARE_PREVIEW_TTL_SECONDS,
       secret: process.env.PREVIEW_SECRET || '',
     })

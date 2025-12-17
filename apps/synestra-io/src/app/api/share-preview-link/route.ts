@@ -10,6 +10,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 type Body = {
   collection?: 'pages' | 'posts'
   id?: string
+  versionID?: string
 }
 
 export async function POST(req: Request): Promise<Response> {
@@ -27,6 +28,7 @@ export async function POST(req: Request): Promise<Response> {
     const body = (await req.json()) as Body
     const collection = body.collection
     const id = body.id
+    const requestedVersionID = body.versionID
 
     if (!collection || !id) {
       return NextResponse.json({ ok: false, message: 'Missing collection or id' }, { status: 400 })
@@ -38,21 +40,48 @@ export async function POST(req: Request): Promise<Response> {
 
     const payloadReq = await createLocalReq({ user }, payload)
 
-    const doc = await payload.findByID({
-      collection,
-      id,
-      depth: 0,
-      disableErrors: true,
-      select: { slug: true },
-      req: payloadReq,
-    })
+    const version =
+      requestedVersionID && typeof requestedVersionID === 'string'
+        ? await payload.findVersionByID({
+            collection,
+            id: requestedVersionID,
+            depth: 0,
+            disableErrors: true,
+            req: payloadReq,
+          })
+        : (
+            await payload.findVersions({
+              collection,
+              depth: 0,
+              limit: 1,
+              pagination: false,
+              sort: '-createdAt',
+              where: { parent: { equals: id } },
+              req: payloadReq,
+            })
+          )?.docs?.[0]
 
-    if (!doc) {
-      return NextResponse.json({ ok: false, message: 'Not found' }, { status: 404 })
+    if (!version) {
+      return NextResponse.json(
+        { ok: false, message: 'Save the draft first to generate a share preview link.' },
+        { status: 409 },
+      )
     }
 
-    const slug = typeof (doc as { slug?: unknown }).slug === 'string' ? (doc as { slug: string }).slug : ''
-    const relative = generatePreviewPath({ collection, slug, kind: 'share' })
+    if (String(version.parent) !== String(id)) {
+      return NextResponse.json({ ok: false, message: 'Invalid version for this document' }, { status: 400 })
+    }
+
+    const slugFromVersion = (version.version as { slug?: unknown })?.slug
+    const slug = typeof slugFromVersion === 'string' ? slugFromVersion : ''
+
+    const relative = generatePreviewPath({
+      collection,
+      slug,
+      kind: 'share',
+      docID: id,
+      versionID: version.id,
+    })
 
     if (!relative) {
       return NextResponse.json({ ok: false, message: 'Unable to generate preview path' }, { status: 500 })
@@ -67,4 +96,3 @@ export async function POST(req: Request): Promise<Response> {
     return NextResponse.json({ ok: false, message }, { status: 500 })
   }
 }
-

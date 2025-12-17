@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { toast, useDocumentInfo, useFormFields, useTranslation } from '@payloadcms/ui'
 
 import './index.scss'
@@ -37,6 +37,11 @@ export default function CopySharePreviewLink() {
   const collection = collectionSlug === 'pages' || collectionSlug === 'posts' ? collectionSlug : null
   const docID = id === undefined || id === null ? null : String(id)
 
+  const versionID = useMemo(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('version') || params.get('versionId') || params.get('v') || undefined
+  }, [])
+
   const handleClick = useCallback(async () => {
     if (!collection || !docID) {
       toast.error(t('general:save', { defaultValue: 'Save' }) + ': ' + 'document is not created yet.')
@@ -61,7 +66,7 @@ export default function CopySharePreviewLink() {
         method: 'POST',
         credentials: 'include',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ collection, id: docID }),
+        body: JSON.stringify({ collection, id: docID, versionID }),
       })
 
       const data = (await res.json()) as ApiResponse
@@ -78,7 +83,7 @@ export default function CopySharePreviewLink() {
     } finally {
       setLoading(false)
     }
-  }, [collection, docID, loading, slug, t])
+  }, [collection, docID, loading, slug, t, versionID])
 
   const label = loading ? 'Copy share preview link…' : 'Copy share preview link'
 

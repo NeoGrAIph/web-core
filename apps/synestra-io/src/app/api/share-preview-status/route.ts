@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { isSharePreviewRequest } from '@/utilities/isSharePreviewRequest'
+import { isSharePreviewRequest } from '@/utilities/sharePreviewContext'
 
 export async function GET(req: Request): Promise<Response> {
   const url = new URL(req.url)
@@ -14,4 +14,3 @@ export async function GET(req: Request): Promise<Response> {
 
   return NextResponse.json({ ok: true, active })
 }
-
