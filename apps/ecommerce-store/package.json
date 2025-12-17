@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@synestra/eslint-config": "workspace:*",
+    "@synestra/next-config": "workspace:*",
     "@synestra/typescript-config": "workspace:*",
     "@types/node": "22.5.4",
     "@types/react": "19.2.1",
