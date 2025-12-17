@@ -102,7 +102,7 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
    - опционально: `CRON_SECRET`, `PREVIEW_SECRET`
     - для shop: Stripe keys
 
-   Важно: `DATABASE_URI` в каноне хранится отдельно, в `web-<app-key>-<env>-db-env` (создаётся CronJob’ом в namespace `databases` из `databases/<app-key>-initdb-secret`).
+   (При необходимости) `DATABASE_URI` хранится в этом же secret.
 
 3) База данных Postgres через CloudNativePG (CNPG)
 
@@ -110,7 +110,7 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 - initdb secret (SOPS): `secrets/databases/<app-key>-initdb-secret.yaml`
 - CNPG clusters: `infra/databases/cloudnativepg/<app-key>` и `<app-key>-dev`
 - ArgoCD apps: `infra-<app-key>-db` и `infra-<app-key>-dev-db`
-- `DATABASE_URI` материализуется в web namespace как `web-<app-key>-<env>-db-env` (CronJob в `databases`).
+- в web secrets (`web-<app-key>-<env>-env`) хранится готовый `DATABASE_URI`, который указывает на сервис CNPG в `databases`.
 
 Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 

@@ -257,10 +257,9 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
   - имя: `synestra-io-initdb-secret`
   - namespace: `databases`
   - ключи: `username`, `password` (тип обычно `kubernetes.io/basic-auth`)
-- runtime `DATABASE_URI` лежит в `web-synestra-io-<env>-db-env` (в web‑namespace), и указывает на сервис CNPG вида:
+- runtime `DATABASE_URI` лежит в `web-synestra-io-<env>-env` (в web‑namespace), и указывает на сервис CNPG вида:
   - dev: `synestra-io-dev-cnpg-rw.databases.svc.cluster.local`
   - prod: `synestra-io-cnpg-rw.databases.svc.cluster.local`
-  - этот Secret создаётся CronJob’ом в `databases` из initdb secret (см. `docs/architecture/database-cnpg.md`).
 
 3) `imagePullSecret` (если registry приватный).
 

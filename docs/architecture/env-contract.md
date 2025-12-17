@@ -55,12 +55,7 @@
 Helm chart: `deploy/charts/web-app`.
 
 - Не‑секреты: `deploy/env/<env>/<app>.yaml` → `.env` (рендерится как `env:` в Pod).
-- Секреты: `deploy/env/<env>/<app>.yaml` → `envFrom.secretRef` и `envFrom.extraSecretRefs[]` (подключают `Secret`’ы целиком).
-
-Канон разбиения Secret’ов:
-- `web-<app>-<env>-env` — app‑секреты (`PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`, …), **без** `DATABASE_URI`.
-- `web-<app>-<env>-db-env` — только `DATABASE_URI` (материализуется из `synestra-platform`).
-- `web-<app>-<env>-s3-env` — только S3 креды (если используем object storage).
+- Секреты: `deploy/env/<env>/<app>.yaml` → `envFrom.secretRef` (подключает `Secret` целиком).
 
 Важно: переменные из `.env` **должны** попадать и в основной `Deployment`, и в `migrations Job`.
 

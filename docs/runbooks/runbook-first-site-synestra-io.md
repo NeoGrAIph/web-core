@@ -38,7 +38,7 @@ Namespaces:
 2) Добавлен root ArgoCD Application **`apps-web-core`** (app‑of‑apps), который подтягивает ArgoCD Applications из `web-core`.
 3) Добавлены wildcard TLS сертификаты (cert-manager) и Traefik `TLSStore default` для автоподбора сертификата по SNI без per-namespace TLS secrets.
 4) Убраны конфликтующие host’ы (`synestra.io`, `synestra.tech`) из legacy ingress приложения `infra-payload`, чтобы освободить домены под новые сайты.
-5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-synestra-io-dev` и `web-synestra-io-prod` (env **без** `DATABASE_URI` + registry pull secret), а также общий initdb secret для CNPG в namespace `databases` (`synestra-io-initdb-secret`). `DATABASE_URI` проецируется в `web-*-db-env` CronJob’ом.
+5) Созданы SOPS‑зашифрованные секреты/namespace‑манифесты для `web-synestra-io-dev` и `web-synestra-io-prod` (env + registry pull secret), а также общий initdb secret для CNPG в namespace `databases` (`synestra-io-initdb-secret`).
 
 ---
 
@@ -239,8 +239,7 @@ Namespaces:
 Содержит:
 - `env.SYNESTRA_ENV=dev`,
 - `env.NEXT_PUBLIC_SERVER_URL=https://dev.synestra.io`,
-- `envFrom.secretRef=web-synestra-io-dev-env` (секрет создаётся в platform‑репозитории; **без** `DATABASE_URI`),
-- `envFrom.extraSecretRefs` включает `web-synestra-io-dev-db-env` (создаётся CronJob’ом из `synestra-platform`),
+- `envFrom.secretRef=web-synestra-io-dev-env` (секрет создаётся в platform‑репозитории),
 - `ingress.hosts[0].host=dev.synestra.io`,
 - `persistence.media.mountPath=/app/apps/synestra-io/public/media`,
 - `postgres.enabled=false` (БД не создаётся chart’ом, используем CNPG в `databases`).
@@ -249,8 +248,7 @@ Namespaces:
 Аналогично, но:
 - `SYNESTRA_ENV=prod`,
 - `NEXT_PUBLIC_SERVER_URL=https://synestra.io`,
-- `secretRef=web-synestra-io-prod-env` (**без** `DATABASE_URI`),
-- `extraSecretRefs` включает `web-synestra-io-prod-db-env`,
+- `secretRef=web-synestra-io-prod-env`,
 - `ingress.host=synestra.io`.
 
 **Release values (dev/prod):**  
@@ -330,21 +328,16 @@ Namespaces:
 `secrets/web-synestra-io-dev/`
 - `00-namespace.yaml` (Namespace `web-synestra-io-dev`)
 - `gitlab-regcred.yaml` (pull secret для GitLab Registry)
-- `web-synestra-io-dev-env.yaml` (Opaque secret с runtime env vars, **без** `DATABASE_URI`)
-- `web-synestra-io-dev-db-env` (runtime Secret в namespace `web-synestra-io-dev`, создаётся CronJob’ом)
+- `web-synestra-io-dev-env.yaml` (Opaque secret с runtime env vars, в т.ч. `DATABASE_URI`)
 
 `secrets/web-synestra-io-prod/`
 - `00-namespace.yaml` (Namespace `web-synestra-io-prod`)
 - `gitlab-regcred.yaml`
-- `web-synestra-io-prod-env.yaml` (Opaque secret с runtime env vars, **без** `DATABASE_URI`)
-- `web-synestra-io-prod-db-env` (runtime Secret в namespace `web-synestra-io-prod`, создаётся CronJob’ом)
+- `web-synestra-io-prod-env.yaml` (Opaque secret с runtime env vars, в т.ч. `DATABASE_URI`)
 
 `secrets/databases/`
 - `synestra-io-initdb-secret.yaml` — **общий** initdb secret (username/password) для bootstrap CNPG кластеров `synestra-io-cnpg` и `synestra-io-dev-cnpg` в namespace `databases`.
 
-Проекция `DATABASE_URI` в web‑namespace (не в `secrets/**`, а в `infra/**`):
-- `infra/databases/cloudnativepg/synestra-io/db-uri-sync.yaml` → создаёт `web-synestra-io-prod-db-env`
-- `infra/databases/cloudnativepg/synestra-io-dev/db-uri-sync.yaml` → создаёт `web-synestra-io-dev-db-env`
 
 Зачем:
 - `web-core` не хранит секреты и не должен их знать;
@@ -395,7 +388,7 @@ Namespaces:
 
 - `apps/synestra-io/src/migrations/**` содержит baseline‑миграцию (иначе на пустой БД нечего применять).
 - В `deploy/charts/web-app` включены migrations (по умолчанию да) и команда миграций использует `APP_NAME` + `payload migrate`.
-- В `synestra-platform` существует runtime secret для `web-synestra-io-prod` с `PAYLOAD_SECRET` (и опционально `CRON_SECRET`, `PREVIEW_SECRET`). `DATABASE_URI` материализуется в отдельный Secret `web-synestra-io-prod-db-env`.
+- В `synestra-platform` существует runtime secret для `web-synestra-io-prod` с `DATABASE_URI`, `PAYLOAD_SECRET` (и опционально `CRON_SECRET`, `PREVIEW_SECRET`).
 
 Подробный “канон bootstrap с нуля”: `docs/runbooks/runbook-payload-bootstrap-from-zero.md`.
 Нормативный канон миграций (Postgres): `docs/architecture/payload-migrations.md`.

@@ -69,42 +69,18 @@
 
 ---
 
-## 4) `synestra-platform`: канон секретов `DATABASE_URI` (dev + prod)
+## 4) `synestra-platform`: добавить `DATABASE_URI` в web env secrets (dev + prod)
 
-В web‑namespace’ах должны быть runtime env secrets приложения **без** `DATABASE_URI`:
-- `web-<app-key>-dev-env` в `web-<app-key>-dev` (например `PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`)
+В web‑namespace’ах должны быть runtime env secrets:
+- `web-<app-key>-dev-env` в `web-<app-key>-dev`
 - `web-<app-key>-prod-env` в `web-<app-key>-prod`
 
-`DATABASE_URI` материализуем в отдельный runtime Secret `web-<app-key>-<env>-db-env`, который создаётся CronJob’ом в namespace `databases`.
+Там должен быть `DATABASE_URI`, который указывает на сервис CNPG в `databases`, например:
 
-### 4.1. Добавить “db-uri-sync” манифесты (dev + prod)
+- dev host: `<app-key>-dev-cnpg-rw.databases.svc.cluster.local`
+- prod host: `<app-key>-cnpg-rw.databases.svc.cluster.local`
 
-Добавляем в `synestra-platform` по одному файлу на окружение:
-- `infra/databases/cloudnativepg/<app-key>-dev/db-uri-sync.yaml`
-- `infra/databases/cloudnativepg/<app-key>/db-uri-sync.yaml`
-
-Что делают эти манифесты:
-- читают `databases/<app-key>-initdb-secret` (`username`/`password`);
-- собирают `DATABASE_URI` на базе host’а CNPG write service:
-  - dev: `<app-key>-dev-cnpg-rw.databases.svc.cluster.local`
-  - prod: `<app-key>-cnpg-rw.databases.svc.cluster.local`
-- создают/обновляют Secret:
-  - `web-<app-key>-dev/web-<app-key>-dev-db-env` с ключом `DATABASE_URI`
-  - `web-<app-key>-prod/web-<app-key>-prod-db-env` с ключом `DATABASE_URI`
-
-Пример (реализация для `synestra-io`):
-- `synestra-platform/infra/databases/cloudnativepg/synestra-io-dev/db-uri-sync.yaml`
-- `synestra-platform/infra/databases/cloudnativepg/synestra-io/db-uri-sync.yaml`
-
-### 4.2. Как подключать секреты в chart `web-app`
-
-В `web-core`:
-- `envFrom.secretRef: "web-<app-key>-<env>-env"`
-- `envFrom.extraSecretRefs[]` должен включать:
-  - `"web-<app-key>-<env>-db-env"`
-  - (опционально) `"web-<app-key>-<env>-s3-env"`
-
-Формат `DATABASE_URI` (Postgres):
+Формат `DATABASE_URI` зависит от используемого драйвера, но для Postgres обычно:
 
 ```text
 postgresql://<username>:<password>@<host>:5432/<db_name>
@@ -123,7 +99,6 @@ postgresql://<username>:<password>@<host>:5432/<db_name>
 
 должно быть:
 - `envFrom.secretRef: "web-<app-key>-<env>-env"`
-- `envFrom.extraSecretRefs` включает `"web-<app-key>-<env>-db-env"`
 - `postgres.enabled: false`
 
 Это фиксирует единый паттерн: web‑chart не создаёт Postgres внутри `web-*` namespace.
