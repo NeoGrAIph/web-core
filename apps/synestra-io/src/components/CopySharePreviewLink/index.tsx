@@ -38,6 +38,8 @@ export default function CopySharePreviewLink() {
   const docID = id === undefined || id === null ? null : String(id)
 
   const versionID = useMemo(() => {
+    if (typeof window === 'undefined') return undefined
+
     const params = new URLSearchParams(window.location.search)
     const fromQuery = params.get('version') || params.get('versionId') || params.get('v')
     if (fromQuery) return fromQuery

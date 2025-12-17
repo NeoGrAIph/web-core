@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type StatusResponse = { ok: true; active: boolean } | { ok: false; message: string }
 
@@ -14,12 +14,19 @@ export function SharePreviewBar() {
   const [active, setActive] = useState(false)
   const [checking, setChecking] = useState(true)
 
-  const url = useMemo(() => new URL(window.location.href), [])
-  const sp = url.searchParams.get('sp') || ''
+  const [pathname, setPathname] = useState<string | null>(null)
+  const [sp, setSp] = useState('')
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    setPathname(url.pathname)
+    setSp(url.searchParams.get('sp') || '')
+  }, [])
+
   const hasFlag = Boolean(sp)
 
   useEffect(() => {
-    if (!hasFlag) {
+    if (!hasFlag || !pathname) {
       setChecking(false)
       return
     }
@@ -27,7 +34,7 @@ export function SharePreviewBar() {
     const run = async () => {
       try {
         const res = await fetch(
-          `/api/share-preview-status?path=${encodeURIComponent(url.pathname)}&sp=${encodeURIComponent(sp)}`,
+          `/api/share-preview-status?path=${encodeURIComponent(pathname)}&sp=${encodeURIComponent(sp)}`,
           {
             credentials: 'include',
           },
@@ -42,7 +49,7 @@ export function SharePreviewBar() {
     }
 
     run()
-  }, [hasFlag, sp, url.pathname])
+  }, [hasFlag, pathname, sp])
 
   if (!hasFlag || checking || !active) return null
 
