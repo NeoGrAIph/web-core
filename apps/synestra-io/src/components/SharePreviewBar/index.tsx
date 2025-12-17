@@ -47,20 +47,13 @@ export function SharePreviewBar() {
   if (!hasFlag || checking || !active) return null
 
   const exit = async () => {
-    try {
-      await fetch('/api/share-preview-exit', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ path: url.pathname }),
-      })
-    } finally {
-      window.location.replace(stripSharePreviewFlag(new URL(window.location.href)))
-    }
+    // Do not clear cookies here: exiting share preview only removes `sp` so the canonical URL shows published.
+    // If user opens the same `?sp=<version>` link again, the banner and draft preview should re-appear.
+    window.location.replace(stripSharePreviewFlag(new URL(window.location.href)))
   }
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-[60] border-b bg-amber-50 text-amber-950">
+    <div className="sticky top-0 z-[60] border-b bg-amber-50 text-amber-950">
       <div className="container flex items-center justify-between gap-4 py-2 text-sm">
         <div className="font-medium">Share preview: вы смотрите черновик (не опубликовано)</div>
         <button
