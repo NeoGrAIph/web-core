@@ -43,6 +43,11 @@ Okteto remote execution / catalog deploy использует BuildKit и regist
 В нашей конфигурации это `https://kubernetes.services.synestra.tech:6443` (k3s API server напрямую).
 Этот hostname должен резолвиться на машине разработчика, иначе `okteto deploy --remote` не сможет обратиться к Kubernetes API.
 
+Важно про TLS (k3s):
+- k3s API server на `:6443` обязан отдавать сертификат, в SAN которого есть `kubernetes.services.synestra.tech`.
+- Если SAN не содержит этот hostname, `okteto deploy --remote` упадёт с ошибкой `x509: certificate is valid for ... not kubernetes.services.synestra.tech`.
+- Исправление делается на control-plane узле (k3s) добавлением hostname в `tls-san` и рестартом k3s.
+
 3) Secret для mirror job в namespace `web-synestra-io-dev`:
 - `web-synestra-io-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
 
