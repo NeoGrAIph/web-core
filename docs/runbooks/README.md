@@ -18,3 +18,4 @@
 - `docs/runbooks/runbook-add-app-from-payload-template.md` — как добавить новый app из официального Payload template
 - `docs/runbooks/runbook-media-migrate-to-object-storage.md` — перевести хранение Media на object storage (MinIO/S3)
 - `docs/runbooks/runbook-media-refresh-dev-from-prod.md` — refresh dev media bucket из prod (MinIO/S3) через `mc mirror`
+- `docs/runbooks/runbook-okteto-refresh-buttons.md` — “кнопки” в Okteto UI: Refresh DB / Refresh (DB+Media)
