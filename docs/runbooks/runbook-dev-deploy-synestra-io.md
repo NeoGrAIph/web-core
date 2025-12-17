@@ -247,7 +247,6 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
 Минимально нужно создать:
 
 1) Secret для приложения (env):
-- `DATABASE_URI` (или набор `DB_HOST/DB_USER/DB_PASS/DB_NAME`, но тогда собираем URI в app)
 - `PAYLOAD_SECRET`
 - `CRON_SECRET` (если jobs/cron)
 - `PREVIEW_SECRET` (если preview/share preview)
@@ -258,9 +257,10 @@ Upstream `templates/website/Dockerfile` ориентируется на Next `ou
   - имя: `synestra-io-initdb-secret`
   - namespace: `databases`
   - ключи: `username`, `password` (тип обычно `kubernetes.io/basic-auth`)
-- runtime `DATABASE_URI` лежит в `web-synestra-io-<env>-env` (в web‑namespace), и указывает на сервис CNPG вида:
+- runtime `DATABASE_URI` лежит в `web-synestra-io-<env>-db-env` (в web‑namespace), и указывает на сервис CNPG вида:
   - dev: `synestra-io-dev-cnpg-rw.databases.svc.cluster.local`
   - prod: `synestra-io-cnpg-rw.databases.svc.cluster.local`
+  - этот Secret создаётся CronJob’ом в `databases` из initdb secret (см. `docs/architecture/database-cnpg.md`).
 
 3) `imagePullSecret` (если registry приватный).
 

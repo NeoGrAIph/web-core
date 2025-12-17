@@ -208,7 +208,8 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
   - ставит CNPG operator и платформенные дефолты;
   - описывает CNPG Cluster’ы в namespace `databases` (`infra/databases/cloudnativepg/**`);
   - хранит initdb secrets в `secrets/databases/**` (SOPS);
-  - хранит runtime env secrets приложений в `secrets/web-*/**` (в т.ч. `DATABASE_URI`).
+  - хранит runtime env secrets приложений в `secrets/web-*/**` (**без** `DATABASE_URI`);
+  - материализует `DATABASE_URI` в `web-*-db-env` через CronJob’ы в `infra/databases/cloudnativepg/**/db-uri-sync.yaml`.
 - `web-core`:
   - **не создаёт БД** по умолчанию (`postgres.enabled=false`);
   - хранит только ссылки на Secret’ы (`envFrom.secretRef`) и не‑секретные values;

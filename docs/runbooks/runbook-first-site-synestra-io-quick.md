@@ -17,7 +17,8 @@ Runbook: старт разработки **первого сайта (`synestra-
 
 В `synestra-platform` (SOPS) создать секреты для namespace `web-synestra-io-dev` и `web-synestra-io-prod`:
 - `gitlab-regcred` (если registry приватный)
-- `web-synestra-io-<env>-env` (`PAYLOAD_SECRET`, `DATABASE_URI`, опционально `CRON_SECRET`, `PREVIEW_SECRET`)
+- `web-synestra-io-<env>-env` (`PAYLOAD_SECRET`, опционально `CRON_SECRET`, `PREVIEW_SECRET`)
+- `web-synestra-io-<env>-db-env` создаётся автоматически CronJob’ом из `synestra-platform` и содержит `DATABASE_URI`
 
 База данных (канон: CNPG в namespace `databases`) настраивается отдельно:
 - initdb secret: `secrets/databases/synestra-io-initdb-secret.yaml`

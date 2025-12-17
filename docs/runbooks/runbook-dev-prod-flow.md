@@ -44,7 +44,8 @@ Runbook: как мы одновременно используем **dev (hot)**
 - дополнительные: `envFrom.extraSecretRefs[]`
 
 Пример (когда S3 креды живут отдельно от основного env secret):
-- `web-<app>-<env>-env` — `DATABASE_URI`, `PAYLOAD_SECRET`, `PREVIEW_SECRET`, …
+- `web-<app>-<env>-env` — `PAYLOAD_SECRET`, `PREVIEW_SECRET`, `CRON_SECRET`, …
+- `web-<app>-<env>-db-env` — `DATABASE_URI`
 - `web-<app>-<env>-s3-env` — `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
 
 Это снижает риск “перезатирания” ключей и упрощает ротацию доступов к object storage.

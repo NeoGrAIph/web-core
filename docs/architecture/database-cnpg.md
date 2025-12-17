@@ -27,7 +27,7 @@
 - CNPG Cluster’ы живут в namespace **`databases`** и управляются репозиторием `synestra-platform`.
 - В `web-core` в values приложения ставим:
   - `postgres.enabled: false`
-  - приложение подключается к БД через `DATABASE_URI` из Secret (`envFrom.secretRef`).
+  - приложение подключается к БД через `DATABASE_URI`, который приходит в pod через `envFrom` (см. раздел 3.4: `web-*-db-env`).
 
 Почему так (практически):
 - web‑Applications (из `web-core`) изолированы AppProject’ом и **не должны** управлять ресурсами платформы;
@@ -75,12 +75,42 @@ Namespace: `databases`
 
 ### 3.4. runtime env secret приложения
 
+В runtime мы разделяем секреты **по назначению**, чтобы:
+- не дублировать “динамичные” значения (типа `DATABASE_URI`) в GitOps‑секретах;
+- уменьшить риск рассинхрона паролей после restore/refresh;
+- проще ротировать доступы (S3 отдельно от “ядра” приложения).
+
+#### 3.4.1. `web-<app-key>-<env>-env` (app env, без БД)
+
 Namespace: `web-<app-key>-<env>`  
 Имя: `web-<app-key>-<env>-env` (например `web-synestra-io-dev-env`).
 
 Ключи (минимум, см. `docs/architecture/env-contract.md`):
-- `DATABASE_URI`
 - `PAYLOAD_SECRET`
+- (опционально) `CRON_SECRET`
+- (опционально) `PREVIEW_SECRET`
+
+Важно: **`DATABASE_URI` здесь не храним**.
+
+#### 3.4.2. `web-<app-key>-<env>-db-env` (DB connection string)
+
+Namespace: `web-<app-key>-<env>`  
+Имя: `web-<app-key>-<env>-db-env` (например `web-synestra-io-dev-db-env`).
+
+Ключи:
+- `DATABASE_URI`
+
+Источник правды: `databases/<app-key>-initdb-secret` + фиксированный host для CNPG write service.  
+Материализация в web‑namespace делается CronJob’ом в `databases` (см. раздел 4.1).
+
+#### 3.4.3. (опционально) `web-<app-key>-<env>-s3-env` (object storage creds)
+
+Namespace: `web-<app-key>-<env>`  
+Имя: `web-<app-key>-<env>-s3-env`.
+
+Ключи:
+- `S3_ACCESS_KEY_ID`
+- `S3_SECRET_ACCESS_KEY`
 
 ---
 
@@ -91,11 +121,15 @@ Namespace: `web-<app-key>-<env>`
 Должно содержать:
 - SOPS‑секреты:
   - `secrets/databases/<app-key>-initdb-secret.yaml`
-  - `secrets/web-<app-key>-<env>/web-<app-key>-<env>-env.yaml` (включая `DATABASE_URI`)
+  - `secrets/web-<app-key>-<env>/web-<app-key>-<env>-env.yaml` (**без** `DATABASE_URI`)
+  - (опционально) `secrets/web-<app-key>-<env>/web-<app-key>-<env>-s3-env.yaml`
 - Манифесты CNPG Cluster’ов (в `databases`):
   - `infra/databases/cloudnativepg/<app-key>/cluster.yaml` (prod)
   - `infra/databases/cloudnativepg/<app-key>-dev/cluster.yaml` (dev)
   - (позже) `infra/databases/cloudnativepg/<app-key>-stage/cluster.yaml` (stage)
+- Манифесты “проекции” `DATABASE_URI` в web‑namespace:
+  - `infra/databases/cloudnativepg/<app-key>/db-uri-sync.yaml` (prod)
+  - `infra/databases/cloudnativepg/<app-key>-dev/db-uri-sync.yaml` (dev)
 - ArgoCD Applications, которые применяют эти манифесты:
   - `argocd/apps/infra-<app-key>-db.yaml`
   - `argocd/apps/infra-<app-key>-dev-db.yaml`
@@ -103,10 +137,11 @@ Namespace: `web-<app-key>-<env>`
 ### 4.2. `web-core` (приложение + GitOps артефакты)
 
 Должно содержать:
-- values для env:
-  - `deploy/env/<env>/<app-key>.yaml`
-    - `envFrom.secretRef: web-<app-key>-<env>-env`
-    - `postgres.enabled: false` (для platform-managed DB)
+  - values для env:
+    - `deploy/env/<env>/<app-key>.yaml`
+      - `envFrom.secretRef: web-<app-key>-<env>-env`
+      - `envFrom.extraSecretRefs[]` включает `web-<app-key>-<env>-db-env` (и опционально `web-<app-key>-<env>-s3-env`)
+      - `postgres.enabled: false` (для platform-managed DB)
 - ArgoCD Applications:
   - `deploy/argocd/apps/dev/<app-key>.yaml`
   - `deploy/argocd/apps/prod/<app-key>.yaml`
@@ -130,7 +165,7 @@ Namespace: `web-<app-key>-<env>`
 - `synestra-io-cnpg-rw.databases.svc.cluster.local`
 - `synestra-io-dev-cnpg-rw.databases.svc.cluster.local`
 
-`DATABASE_URI` храним **в runtime env secret** приложения (в web‑namespace), пример формата:
+`DATABASE_URI` попадает в pod из runtime Secret **`web-<app-key>-<env>-db-env`** (в web‑namespace), пример формата:
 
 ```text
 postgresql://<username>:<password>@<cluster>-rw.databases.svc.cluster.local:5432/<database>
@@ -139,6 +174,7 @@ postgresql://<username>:<password>@<cluster>-rw.databases.svc.cluster.local:5432
 Важно:
 - не печатать секреты в логах/CI;
 - не хранить `DATABASE_URI` в `web-core`.
+- не хранить `DATABASE_URI` в SOPS‑секретах `web-*-env` (во избежание рассинхрона).
 
 ---
 
@@ -199,8 +235,9 @@ postgresql://<username>:<password>@<cluster>-rw.databases.svc.cluster.local:5432
 1) `synestra-platform`: создать `<app-key>-initdb-secret` (SOPS) в `secrets/databases/`.
 2) `synestra-platform`: добавить CNPG Cluster manifests для dev/prod в `infra/databases/cloudnativepg/`.
 3) `synestra-platform`: добавить ArgoCD Applications `infra-<app-key>-db` и `infra-<app-key>-dev-db`.
-4) `synestra-platform`: добавить/обновить `web-<app-key>-<env>-env` secret’ы с `DATABASE_URI`.
-5) `web-core`: поставить `postgres.enabled=false` и указать `envFrom.secretRef`.
+4) `synestra-platform`: создать `web-<app-key>-<env>-env` (SOPS) **без** `DATABASE_URI` (и опционально `web-<app-key>-<env>-s3-env`).
+5) `synestra-platform`: добавить `db-uri-sync.yaml` для dev/prod (CronJob создаёт `web-<app-key>-<env>-db-env`).
+6) `web-core`: поставить `postgres.enabled=false` и указать `envFrom.secretRef` + `envFrom.extraSecretRefs` (включая `web-<app-key>-<env>-db-env`).
 6) Порядок синхронизации:
    - `infra-secrets` (чтобы secrets появились),
    - DB apps (`infra-<app-key>-db`, `infra-<app-key>-dev-db`),

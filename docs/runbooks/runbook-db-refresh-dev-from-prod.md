@@ -158,7 +158,13 @@ kubectl -n databases delete job/refresh-synestra-io-dev-db-from-prod
 
 Это и есть причина, зачем мы поднимали S3‑совместимое object storage: чтобы делать **каноничный клон prod → dev** через CNPG (`Backup` в S3 → `bootstrap.recovery` dev‑кластера из этого backup).
 
-Ключевой момент: при восстановлении dev‑кластера из prod‑backup **пароль роли приложения в БД тоже “переезжает” из prod**, поэтому после restore dev‑сайт может начать отдавать 500 из‑за `password authentication failed`. Это нормально и лечится одной операцией — привести пароль роли в dev‑БД к тому, который использует dev‑окружение (например, из `DATABASE_URI` в секретах dev‑приложения).
+Ключевой момент: при восстановлении dev‑кластера из prod‑backup **пароль роли приложения в БД тоже “переезжает” из prod**.
+
+В нашем текущем каноне это **не проблема**, если:
+- dev+prod используют **один** `databases/<app-key>-initdb-secret` (допустимо на старте), и
+- `DATABASE_URI` в dev берётся из `web-<app>-dev-db-env`, который синхронизируется CronJob’ом из initdb secret.
+
+Если же dev/prod используют **разные** креды (разные initdb secret’ы) — после restore dev может начать отдавать 500 из‑за `password authentication failed`. Тогда нужно привести пароль роли в dev‑БД к dev‑секретам (см. 5.3).
 
 ### 5.1. Создать on-demand Backup в prod
 
@@ -234,10 +240,10 @@ kubectl -n web-synestra-io-dev scale deploy/web-synestra-io-dev-web-app --replic
 
 Если после restore dev сайт отдаёт 500 и в логах `password authentication failed for user "synestra_io"`, поменяйте пароль роли в dev‑кластере на тот, который использует dev окружение.
 
-Пример (парсим пароль из `DATABASE_URI` в `web-synestra-io-dev-env` и применяем в dev‑БД):
+Пример (парсим пароль из `DATABASE_URI` в `web-synestra-io-dev-db-env` и применяем в dev‑БД):
 
 ```bash
-uri=$(kubectl -n web-synestra-io-dev get secret web-synestra-io-dev-env -o jsonpath='{.data.DATABASE_URI}' | base64 -d)
+uri=$(kubectl -n web-synestra-io-dev get secret web-synestra-io-dev-db-env -o jsonpath='{.data.DATABASE_URI}' | base64 -d)
 rest=${uri#*://}
 auth_and_host=${rest%%/*}
 auth=${auth_and_host%%@*}
@@ -248,6 +254,15 @@ pass_sql=${pass//"'"/"''"}
 pod=$(kubectl -n databases get pod -l cnpg.io/cluster=synestra-io-dev-cnpg,role=primary -o jsonpath='{.items[0].metadata.name}')
 kubectl -n databases exec \"$pod\" -c postgres -- psql -U postgres -d postgres -c \"ALTER ROLE \\\"${user}\\\" WITH PASSWORD '${pass_sql}';\"
 
+kubectl -n web-synestra-io-dev rollout restart deploy/web-synestra-io-dev-web-app
+```
+
+Альтернатива (предпочтительнее при каноне `db-uri-sync`): просто пересоздать `web-synestra-io-dev-db-env`, запустив разово CronJob‑sync, и затем сделать rollout приложения:
+
+```bash
+kubectl -n databases create job --from=cronjob/synestra-io-dev-db-uri-sync synestra-io-dev-db-uri-sync-now
+kubectl -n databases wait --for=condition=complete job/synestra-io-dev-db-uri-sync-now --timeout=2m
+kubectl -n databases delete job synestra-io-dev-db-uri-sync-now
 kubectl -n web-synestra-io-dev rollout restart deploy/web-synestra-io-dev-web-app
 ```
 
