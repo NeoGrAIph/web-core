@@ -54,8 +54,9 @@ spec:
               mc alias set src "${SRC_ENDPOINT}" "${SRC_ACCESS_KEY_ID}" "${SRC_SECRET_ACCESS_KEY}" >/dev/null
               mc alias set dst "${DST_ENDPOINT}" "${DST_ACCESS_KEY_ID}" "${DST_SECRET_ACCESS_KEY}" >/dev/null
 
-              echo "Ensuring destination bucket exists..."
-              mc mb --ignore-existing "dst/${DST_BUCKET}" >/dev/null
+              echo "Checking destination bucket exists and is accessible..."
+              # Bucket lifecycle is managed by platform (MinIO Helm values). Mirror job should not require CreateBucket.
+              mc ls "dst/${DST_BUCKET}" >/dev/null
 
               args=""
               if [ "${MIRROR_OVERWRITE:-true}" = "true" ]; then
