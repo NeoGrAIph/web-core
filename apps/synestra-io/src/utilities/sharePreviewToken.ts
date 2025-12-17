@@ -14,7 +14,7 @@ type SharePreviewPayloadV2 = SharePreviewPayloadV1 & {
 export type SharePreviewPayload = SharePreviewPayloadV1 | SharePreviewPayloadV2
 export type SharePreviewTokenInput =
   | { path: string }
-  | { path: string; collection: 'pages' | 'posts'; docID: string; versionID: string }
+  | { path: string; collection: 'pages' | 'posts'; docID: string | number; versionID: string | number }
 
 function base64UrlEncode(input: string | Buffer): string {
   const buf = typeof input === 'string' ? Buffer.from(input, 'utf8') : input
@@ -52,7 +52,16 @@ export function createSharePreviewToken({
   if (!payload.path.startsWith('/')) throw new Error('Share preview supports only relative paths')
 
   const exp = Math.floor(now.getTime() / 1000) + ttlSeconds
-  const tokenPayload = { ...payload, exp } as SharePreviewPayload
+  const normalizedPayload =
+    'collection' in payload
+      ? {
+          ...payload,
+          docID: String(payload.docID),
+          versionID: String(payload.versionID),
+        }
+      : payload
+
+  const tokenPayload = { ...normalizedPayload, exp } as SharePreviewPayload
   const payloadB64 = base64UrlEncode(JSON.stringify(tokenPayload))
   const sigB64 = signHmacSha256(payloadB64, secret)
   return `${payloadB64}.${sigB64}`
@@ -87,14 +96,30 @@ export function verifySharePreviewToken({
 
   // Optional v2 fields (bound to a specific version)
   if ('collection' in payload || 'docID' in payload || 'versionID' in payload) {
-    const p = payload as Partial<SharePreviewPayloadV2>
+    const p = payload as Partial<{
+      collection: unknown
+      docID: unknown
+      versionID: unknown
+    }>
     if (p.collection !== 'pages' && p.collection !== 'posts') throw new Error('Invalid token collection')
-    if (!p.docID || typeof p.docID !== 'string') throw new Error('Invalid token docID')
-    if (!p.versionID || typeof p.versionID !== 'string') throw new Error('Invalid token versionID')
+
+    const docID = typeof p.docID === 'number' || typeof p.docID === 'string' ? String(p.docID) : ''
+    const versionID = typeof p.versionID === 'number' || typeof p.versionID === 'string' ? String(p.versionID) : ''
+    if (!docID) throw new Error('Invalid token docID')
+    if (!versionID) throw new Error('Invalid token versionID')
   }
 
   const nowSec = Math.floor(now.getTime() / 1000)
   if (payload.exp < nowSec) throw new Error('Token expired')
+
+  // Normalize v2 IDs to strings for downstream comparisons.
+  if ('collection' in payload) {
+    return {
+      ...(payload as SharePreviewPayloadV2),
+      docID: String((payload as SharePreviewPayloadV2).docID),
+      versionID: String((payload as SharePreviewPayloadV2).versionID),
+    }
+  }
 
   return payload
 }

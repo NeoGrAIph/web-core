@@ -79,8 +79,8 @@ export async function POST(req: Request): Promise<Response> {
       collection,
       slug,
       kind: 'share',
-      docID: id,
-      versionID: version.id,
+      docID: String(id),
+      versionID: String(version.id),
     })
 
     if (!relative) {
