@@ -50,6 +50,7 @@ Example (single app): `pnpm --filter @synestra/corporate-website dev`
 ## Working Docs (Keep Updated)
 
 - `docs/notes.md` (Useful facts / Open questions)
+- `docs/backlog/README.md` + `docs/backlog/*` (техдолг/инциденты: контекст → root cause → канон → план/DoD)
 - `docs/research/research.md`
 - `docs/research/templates-research.md` + `docs/research/templates/*`
 - `docs/architecture/repo-structure.md`
