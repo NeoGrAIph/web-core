@@ -16,6 +16,10 @@
 Если у приложения медиа хранится на PVC (например, `apps/<app>/public/media`), то после refresh dev‑БД ссылки на файлы из prod будут существовать в данных, но сами файлы в dev могут отсутствовать → на фронте/в админке будут `404` на `/api/media/file/...`.
 Решение: либо дополнительно синхронизировать media‑PVC (см. раздел 6), либо переводить хранение медиа на object storage (S3/MinIO) и уже тогда refresh “БД из backup” будет достаточен.
 
+Канон на **2025-12-18** для `synestra-io`: медиа хранится в object storage (MinIO / S3), поэтому **синхронизировать media‑PVC не нужно**. См.:
+- `docs/runbooks/runbook-media-migrate-to-object-storage.md`
+- `docs/backlog/next-media-route.md` (важно: не перехватывать `/api/media/file/*` кастомным Next route)
+
 ---
 
 ## 0) Термины и предпосылки
@@ -249,7 +253,7 @@ kubectl -n web-synestra-io-dev rollout restart deploy/web-synestra-io-dev-web-ap
 
 ---
 
-## 6) (Опционально) Refresh media PVC: перенести uploads из prod в dev
+## 6) (Legacy) Refresh media PVC: перенести uploads из prod в dev
 
 Когда нужен этот шаг:
 - в данных (Payload `media` коллекция) есть записи, указывающие на файлы;
@@ -257,6 +261,7 @@ kubectl -n web-synestra-io-dev rollout restart deploy/web-synestra-io-dev-web-ap
 - после refresh dev‑БД появились ссылки на файлы из prod, но в dev они отсутствуют.
 
 Важно:
+- этот шаг нужен **только если** медиа хранится локально (PVC + `public/media`) и **не используется** `SYNESTRA_MEDIA_STORAGE=s3`;
 - этот шаг **не GitOps** (как и refresh БД): это управляемое исключение для dev;
 - выполняйте только для dev namespace;
 - перед копированием лучше остановить dev‑приложение, чтобы файлы не менялись во время синка.
@@ -284,3 +289,4 @@ kubectl -n web-<app>-dev scale deploy/web-<app>-dev-web-app --replicas=1
 
 Примечание:
 - если медиа будет переведено на S3/MinIO (как часть канона хранения медиа), шаг 6 обычно перестаёт быть необходимым: dev будет читать те же объекты/ключи, что и prod (при корректной изоляции bucket/prefix по окружениям).
+ - если вы уже на S3/MinIO — используйте runbook: `docs/runbooks/runbook-media-migrate-to-object-storage.md`.

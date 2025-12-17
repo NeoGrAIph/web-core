@@ -21,7 +21,7 @@
 - В `deploy/env/{dev,prod}/<app>.yaml` выставлены:
   - `SYNESTRA_MEDIA_STORAGE=s3`
   - `S3_ENDPOINT`, `S3_BUCKET`, `S3_REGION`, `S3_FORCE_PATH_STYLE`
-- В secret `web-<app>-<env>-env` есть креды:
+- В Secret’ах, подключённых через `envFrom` (см. `docs/runbooks/runbook-dev-prod-flow.md`), есть креды:
   - `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
 
 Важно: в `web-core` секреты не коммитим. В GitOps values храним только **имя Secret**.

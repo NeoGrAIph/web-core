@@ -35,6 +35,20 @@ Runbook: как мы одновременно используем **dev (hot)**
    - `SYNESTRA_ENV` (`dev|prod`)
    - ссылки на Secret’ы (в т.ч. `DATABASE_URI`) и настройки подключения к БД (см. `docs/architecture/database-cnpg.md`)
 
+### Secrets: один или несколько Secret’ов на приложение
+
+Канон: plaintext секреты не храним в `web-core`. В values указываем только ссылки на Secret names.
+
+Для удобства и изоляции можно подключать **несколько** Secret’ов через Helm values:
+- основной secret: `envFrom.secretRef`
+- дополнительные: `envFrom.extraSecretRefs[]`
+
+Пример (когда S3 креды живут отдельно от основного env secret):
+- `web-<app>-<env>-env` — `DATABASE_URI`, `PAYLOAD_SECRET`, `PREVIEW_SECRET`, …
+- `web-<app>-<env>-s3-env` — `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
+
+Это снижает риск “перезатирания” ключей и упрощает ротацию доступов к object storage.
+
 ArgoCD Application подключает оба valueFiles, например:
 - `../../env/release-dev/corporate.yaml` (dev) / `../../env/release-prod/corporate.yaml` (prod)
 - `../../env/dev/corporate.yaml`
