@@ -48,6 +48,21 @@ Okteto remote execution / catalog deploy использует BuildKit и regist
 - Если SAN не содержит этот hostname, `okteto deploy --remote` упадёт с ошибкой `x509: certificate is valid for ... not kubernetes.services.synestra.tech`.
 - Исправление делается на control-plane узле (k3s) добавлением hostname в `tls-san` и рестартом k3s.
 
+Шаги исправления (control-plane `core.synestra.io`, нужен sudo):
+
+```bash
+echo "Добавляю kubernetes.services.synestra.tech в tls-san k3s"
+sudo sed -i '/^tls-san:/a\\  - kubernetes.services.synestra.tech' /etc/rancher/k3s/config.yaml
+
+echo "Перезапускаю k3s, чтобы пересобрался serving cert"
+sudo systemctl restart k3s
+
+echo "Проверяю, что SAN на 6443 теперь содержит kubernetes.services.synestra.tech"
+echo | openssl s_client -connect kubernetes.services.synestra.tech:6443 -servername kubernetes.services.synestra.tech 2>/dev/null | openssl x509 -noout -text | rg "Subject Alternative Name" -n -C 1
+```
+
+После этого `okteto deploy --remote` должен перестать падать по TLS и сможет запускать refresh jobs.
+
 3) Secret для mirror job в namespace `web-synestra-io-dev`:
 - `web-synestra-io-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
 
