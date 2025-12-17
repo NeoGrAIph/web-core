@@ -1,0 +1,17 @@
+import { NextResponse } from 'next/server'
+
+import { isSharePreviewRequest } from '@/utilities/isSharePreviewRequest'
+
+export async function GET(req: Request): Promise<Response> {
+  const url = new URL(req.url)
+  const path = url.searchParams.get('path') || ''
+
+  if (!path.startsWith('/')) {
+    return NextResponse.json({ ok: false, message: 'Invalid path' }, { status: 400 })
+  }
+
+  const active = await isSharePreviewRequest({ path, searchParams: { sp: '1' } })
+
+  return NextResponse.json({ ok: true, active })
+}
+
