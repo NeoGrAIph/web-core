@@ -14,7 +14,6 @@ env:
 envFrom:
   secretRef: "web-synestra-io-prod-env"
   extraSecretRefs:
-    - "web-synestra-io-prod-db-env"
     - "web-synestra-io-prod-s3-env"
 
 ingress:
