@@ -79,6 +79,21 @@ echo | openssl s_client -connect kubernetes.services.synestra.tech:6443 -servern
 
 ## 4) Что делать, если refresh не сработал
 
+- Если `okteto deploy --remote ...` падает/зависает **до** запуска наших Job’ов:
+  - Проверь DNS:
+    - `buildkit.okteto.synestra.tech`
+    - `registry.okteto.synestra.tech`
+    - `kubernetes.services.synestra.tech`
+  - Проверь BuildKit:
+    - Симптом: `Failed to get BuildKit service info ... HTTP 500`.
+    - Частая причина: Traefik пытается валидировать backend TLS по **pod IP** и падает с `x509: cannot validate certificate ... doesn't contain any IP SANs`.
+    - Каноничное исправление (в `synestra-platform`): задать `buildkit.service.annotations` и `ServersTransport` (SNI/serverName) для `buildkit.okteto.synestra.tech`.
+  - Проверь RBAC для remote execution:
+    - Симптом: `jobs.batch ... is forbidden: User "system:serviceaccount:okteto:okteto-cluster-admin" cannot ...`.
+    - Исправление (в `synestra-platform`): `ClusterRoleBinding` для `ServiceAccount okteto-cluster-admin` на `cluster-admin`.
+  - Проверь cookie secret Okteto (если в логах `okteto-api` есть `crypto/aes: invalid key size 64`):
+    - `OKTETO_COOKIE_SECRET` должен быть ключом на **32 bytes** (base64 от 32 bytes), иначе Okteto может ломать часть internal flows.
+
 - DB refresh:
   - проверь, что dev app не держит активных соединений к БД (лучше временно scale down).
   - посмотри логи job `refresh-synestra-io-dev-db-from-prod` в namespace `databases`.
