@@ -73,4 +73,3 @@ okteto namespace web-synestra-io-dev
 2) Запускаем те же команды `kubectl apply/wait/logs`, но уже в Okteto‑контексте (kubeconfig/namespace подхватятся автоматически).
 
 Если в будущем понадобится запускать refresh как часть “одной кнопки” (`okteto deploy`/pipeline) — можно вынести эти команды в `deploy:` секцию Okteto manifest или в отдельный pipeline.
-

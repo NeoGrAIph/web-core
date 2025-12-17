@@ -30,7 +30,11 @@
 
 Bucket должен существовать до переключения приложения на S3.
 
-Пример bucket: `payload-media`.
+Канон: разные bucket’ы для окружений (или минимум разные `prefix`).
+
+Пример:
+- prod: `payload-media-prod`
+- dev: `payload-media-dev`
 
 ## 2) Перенести текущие файлы из PVC в bucket (один раз)
 
