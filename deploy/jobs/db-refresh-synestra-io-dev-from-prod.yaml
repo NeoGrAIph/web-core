@@ -26,15 +26,25 @@ spec:
           image: ghcr.io/cloudnative-pg/postgresql:17.7
           imagePullPolicy: IfNotPresent
           env:
-            - name: PGUSER
+            - name: PROD_PGUSER
               valueFrom:
                 secretKeyRef:
                   name: synestra-io-initdb-secret
                   key: username
-            - name: PGPASSWORD
+            - name: PROD_PGPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: synestra-io-initdb-secret
+                  key: password
+            - name: DEV_PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: synestra-io-dev-cnpg-app
+                  key: username
+            - name: DEV_PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: synestra-io-dev-cnpg-app
                   key: password
             - name: DB_NAME
               value: synestra_io
@@ -66,9 +76,8 @@ spec:
               # Notes:
               # - This runs entirely inside the cluster (no local dump files).
               # - Assumes dev workload is scaled down / no active connections to avoid lock conflicts.
-              pg_dump -h "${PROD_HOST}" -U "${PGUSER}" -d "${DB_NAME}" -Fc \
-                | pg_restore -h "${DEV_HOST}" -U "${PGUSER}" -d "${DB_NAME}" \
+              PGPASSWORD="${PROD_PGPASSWORD}" pg_dump -h "${PROD_HOST}" -U "${PROD_PGUSER}" -d "${DB_NAME}" -Fc \
+                | PGPASSWORD="${DEV_PGPASSWORD}" pg_restore -h "${DEV_HOST}" -U "${DEV_PGUSER}" -d "${DB_NAME}" \
                   --clean --if-exists --no-owner --no-privileges
 
               echo "Done."
-
