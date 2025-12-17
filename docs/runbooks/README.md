@@ -16,3 +16,5 @@
 - `docs/runbooks/runbook-first-site-synestra-io.md` — bootstrap `synestra.io` + `dev.synestra.io` (что сделано и почему)
 - `docs/runbooks/runbook-synestra-io-release-promotion.md` — привести `synestra.io`/`dev.synestra.io` к канону promotion (release-dev → release-prod)
 - `docs/runbooks/runbook-add-app-from-payload-template.md` — как добавить новый app из официального Payload template
+- `docs/runbooks/runbook-media-migrate-to-object-storage.md` — перевести хранение Media на object storage (MinIO/S3)
+- `docs/runbooks/runbook-media-refresh-dev-from-prod.md` — refresh dev media bucket из prod (MinIO/S3) через `mc mirror`
