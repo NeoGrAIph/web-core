@@ -40,7 +40,7 @@ Okteto remote execution / catalog deploy использует BuildKit и regist
 Если эти имена не резолвятся на локальной машине, то и `okteto deploy --remote ...` будет “висеть” на этапе подключения к BuildKit (и тоже не дойдёт до запуска Job’ов).
 
 Также для Okteto CLI важен Kubernetes API endpoint.
-В нашей конфигурации это `https://kubernetes.services.synestra.tech:6443` (TLS завершается на Traefik, см. `synestra-platform/infra/ingress/traefik/resources/kubernetes-services-api-proxy.yaml`).
+В нашей конфигурации это `https://kubernetes.services.synestra.tech` (TLS завершается на Traefik, см. `synestra-platform/infra/ingress/traefik/resources/kubernetes-services-api-proxy.yaml`).
 Этот hostname должен резолвиться на машине разработчика, иначе `okteto deploy --remote` не сможет обратиться к Kubernetes API.
 
 3) Secret для mirror job в namespace `web-synestra-io-dev`:
