@@ -15,5 +15,3 @@ deploy:
   - kubectl apply -f deploy/jobs/db-refresh-synestra-io-dev-from-prod.yaml
   - kubectl -n databases wait --for=condition=complete job/refresh-synestra-io-dev-db-from-prod --timeout=60m
   - kubectl -n databases logs job/refresh-synestra-io-dev-db-from-prod
-  - kubectl -n databases delete job refresh-synestra-io-dev-db-from-prod --ignore-not-found
-

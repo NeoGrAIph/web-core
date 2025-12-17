@@ -30,10 +30,21 @@
 - prod bucket: `payload-media-prod`
 - dev bucket: `payload-media-dev`
 
-2) Secret для mirror job в namespace `web-synestra-io-dev`:
+2) DNS для Okteto registry/buildkit
+
+Okteto remote execution / catalog deploy использует BuildKit и registry endpoints:
+- `buildkit.services.synestra.tech`
+- `registry.services.synestra.tech`
+
+Если эти имена не резолвятся из кластера (NXDOMAIN), кнопки будут “висеть” ещё до запуска наших Job’ов.
+
+Временный GitOps‑фикс (пока не заведены публичные DNS записи): добавить эти имена в CoreDNS NodeHosts.
+Сейчас это делается в `synestra-platform` через `clusters/core/coredns.yaml`.
+
+3) Secret для mirror job в namespace `web-synestra-io-dev`:
 - `web-synestra-io-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
 
-3) Два CatalogItem ресурса в namespace `okteto`, которые появятся в UI как отдельные пункты каталога.
+4) Два CatalogItem ресурса в namespace `okteto`, которые появятся в UI как отдельные пункты каталога.
 
 ## 3) Как запускать из Okteto UI
 
@@ -54,3 +65,5 @@
   - проверь логи job `media-mirror-dev-from-prod` в namespace `web-synestra-io-dev`.
   - bucket должен существовать (создаётся платформой); mirror job не создаёт bucket.
 
+Примечание про логи:
+- `.okteto/refresh-*.yml` удаляет Job в начале (чтобы можно было запускать повторно), но не удаляет в конце — чтобы логи можно было посмотреть руками.
