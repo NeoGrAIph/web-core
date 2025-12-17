@@ -53,7 +53,15 @@ Ecommerce template:
 
 Практика:
 - оставляем `blockName` включённым по умолчанию для page builder;
-- если фронтенд использует `blockName` для `id`/якорей, обязательно иметь fallback (например, `\`${blockType}-${index}\``), чтобы пустое имя не ломало навигацию.
+- если фронтенд использует `blockName` для `id`/якорей, обязательно иметь fallback (например, `\`${blockType}-${index}\``), чтобы пустое имя не ломало навигацию;
+- избегаем “хрупких” `blockName!`: имя может быть пустым или повторяться — это нормальный сценарий для редактора.
+
+Практика `web-core` (референс реализации):
+- `apps/synestra-io/src/blocks/RenderBlocks.tsx` вычисляет `id` для обёртки блока как:
+  - `toKebabCase(blockName)` если `blockName` непустой;
+  - иначе `\`${blockType}-${index + 1}\``;
+  - при дубликатах добавляется суффикс `-2`, `-3`, …
+- аналогично в `templates/payload/website/src/blocks/RenderBlocks.tsx`.
 
 ### 3.3. RowLabel для вложенных `array` внутри блоков
 
@@ -82,6 +90,9 @@ Ecommerce template:
 
 Это соответствует паттерну official templates (`upstream/.../config.ts` → `components.RowLabel: '@/.../RowLabel#RowLabel'`).
 
+Важно:
+- если app использует shared schema из `@synestra/cms-blocks` / `@synestra/cms-fields`, он **обязан** иметь этот entrypoint (иначе `payload generate:importmap`/`generate:types` упадёт, потому что Component Path не зарезолвится).
+
 ---
 
 ## 5) Definition of Done (для “хорошего UX” блока)
@@ -91,4 +102,3 @@ Ecommerce template:
 - блоки различимы (`blockName` включён или есть иной понятный лейбл);
 - все вложенные array‑списки имеют RowLabel (и он понятен из данных);
 - при изменении schema зафиксировано: “нужна ли миграция”.
-
