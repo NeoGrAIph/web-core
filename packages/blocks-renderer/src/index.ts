@@ -5,6 +5,11 @@ export type BlockLike = {
   id?: string | number | null
 }
 
+export type BlockAnchorLike = {
+  blockType?: string | null
+  blockName?: string | null
+}
+
 export type BlockComponentMap = Record<string, React.ComponentType<any>>
 
 export type RenderBlocksOptions<TBlock extends BlockLike> = {
@@ -63,3 +68,54 @@ export function renderBlocks<TBlock extends BlockLike>(
   return React.createElement(React.Fragment, null, ...nodes)
 }
 
+type BlockAnchorOptions = {
+  indexOffset?: number
+  fallbackPrefix?: string
+}
+
+function normalizeAnchorPart(input: string): string {
+  return input
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^[-_]+|[-_]+$/g, '')
+}
+
+/**
+ * Produces stable HTML id attributes for blocks.
+ *
+ * Canon:
+ * - use `blockName` if present (slugified)
+ * - otherwise fallback to `${blockType}-${index + 1}`
+ * - dedupe duplicates by appending `-2`, `-3`, ...
+ */
+export function computeBlockAnchorIDs<TBlock extends BlockAnchorLike>(
+  blocks: readonly TBlock[] | null | undefined,
+  options: BlockAnchorOptions = {},
+): string[] {
+  if (!blocks || blocks.length === 0) return []
+
+  const indexOffset = options.indexOffset ?? 1
+  const fallbackPrefix = options.fallbackPrefix ?? 'block'
+
+  const counts = new Map<string, number>()
+
+  return blocks.map((block, index) => {
+    const rawName = typeof block.blockName === 'string' ? block.blockName.trim() : ''
+    const named = rawName.length > 0 ? normalizeAnchorPart(rawName) : ''
+
+    const safeType =
+      typeof block.blockType === 'string' && block.blockType.trim().length > 0
+        ? normalizeAnchorPart(block.blockType)
+        : ''
+
+    const base = named || `${safeType || fallbackPrefix}-${index + indexOffset}`
+
+    const used = counts.get(base) ?? 0
+    counts.set(base, used + 1)
+
+    return used === 0 ? base : `${base}-${used + 1}`
+  })
+}

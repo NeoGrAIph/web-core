@@ -3,6 +3,10 @@ import type { Block } from 'payload'
 export const Code: Block = {
   slug: 'code',
   interfaceName: 'CodeBlock',
+  labels: {
+    plural: 'Code Blocks',
+    singular: 'Code Block',
+  },
   fields: [
     {
       name: 'language',
@@ -31,4 +35,3 @@ export const Code: Block = {
     },
   ],
 }
-

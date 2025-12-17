@@ -44,3 +44,31 @@ export const ContentColumnRowLabel: React.FC<RowLabelProps> = () => {
   return <div>{`Column ${rowNumber !== undefined ? rowNumber + 1 : ''}: ${size}${suffix}`}</div>
 }
 
+type PopulatedAuthorRowData = {
+  name?: string | null
+  id?: string | null
+} | null
+
+export const PopulatedAuthorRowLabel: React.FC<RowLabelProps> = () => {
+  const row = useRowLabel<PopulatedAuthorRowData>()
+  const rowNumber = row?.rowNumber
+
+  const label = row?.data?.name || row?.data?.id || 'Row'
+
+  return <div>{`Author ${rowNumber !== undefined ? rowNumber + 1 : ''}: ${label}`}</div>
+}
+
+type SearchCategoryRowData = {
+  title?: string | null
+  relationTo?: string | null
+  categoryID?: string | null
+} | null
+
+export const SearchCategoryRowLabel: React.FC<RowLabelProps> = () => {
+  const row = useRowLabel<SearchCategoryRowData>()
+  const rowNumber = row?.rowNumber
+
+  const label = row?.data?.title || row?.data?.categoryID || row?.data?.relationTo || 'Row'
+
+  return <div>{`Category ${rowNumber !== undefined ? rowNumber + 1 : ''}: ${label}`}</div>
+}

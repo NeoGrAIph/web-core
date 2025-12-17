@@ -200,6 +200,9 @@ export const Posts: CollectionConfig<'posts'> = {
       admin: {
         disabled: true,
         readOnly: true,
+        components: {
+          RowLabel: '@/payload/admin/rowLabels#PopulatedAuthorRowLabel',
+        },
       },
       fields: [
         {

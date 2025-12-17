@@ -42,6 +42,9 @@ export const searchFields: Field[] = [
     type: 'array',
     admin: {
       readOnly: true,
+      components: {
+        RowLabel: '@/payload/admin/rowLabels#SearchCategoryRowLabel',
+      },
     },
     fields: [
       {

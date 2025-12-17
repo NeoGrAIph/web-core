@@ -35,6 +35,12 @@ import { renderBlocks } from '@synestra/blocks-renderer'
   - `wrap`: обёртка вокруг каждого блока (удобно для spacing/containers, которые должны оставаться в app‑слое).
   - `renderUnknown`: fallback для неизвестных/битых блоков (по умолчанию `null`).
 
+`computeBlockAnchorIDs(blocks, options?)`:
+
+- помогает стабильно генерировать HTML `id` для секций блоков (якоря/навигация);
+- использует `blockName`, если он задан; иначе fallback `\`${blockType}-${index + 1}\``;
+- при дубликатах добавляет суффиксы `-2`, `-3`, ...
+
 ## Типизация registry (рекомендуется)
 
 Идея: типизировать ключи registry через сгенерированные Payload types, чтобы переименования `slug`/полей ловились на `typecheck`.

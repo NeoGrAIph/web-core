@@ -40,6 +40,19 @@ Ecommerce template:
 
 ## 3) Канон `web-core` (UX)
 
+### 3.0. Идентичность блока: `slug` + `labels` + миграции
+
+Базовый принцип: `slug` блока — это **публичный API**.
+
+Почему:
+- в Payload `slug` блока сохраняется в данных как `blockType` (и именно по нему работает frontend registry `blockType → component`);
+- поэтому переименование `slug` = изменение данных, требующее миграции (и обновления рендера).
+
+Практика:
+- каждому блоку задаём `interfaceName` (для читаемых TS типов);
+- каждому блоку задаём `labels` (как минимум `singular/plural`), чтобы редактор видел понятные названия в UI (список “Add block” и т.п.);
+- `slug` меняем только осознанно и только вместе с миграцией (и обновлением seed/примеров).
+
 ### 3.1. `Blocks` field: включаем “структуру”
 
 Рекомендации:
@@ -57,11 +70,9 @@ Ecommerce template:
 - избегаем “хрупких” `blockName!`: имя может быть пустым или повторяться — это нормальный сценарий для редактора.
 
 Практика `web-core` (референс реализации):
-- `apps/synestra-io/src/blocks/RenderBlocks.tsx` вычисляет `id` для обёртки блока как:
-  - `toKebabCase(blockName)` если `blockName` непустой;
-  - иначе `\`${blockType}-${index + 1}\``;
-  - при дубликатах добавляется суффикс `-2`, `-3`, …
-- аналогично в `templates/payload/website/src/blocks/RenderBlocks.tsx`.
+- `apps/synestra-io/src/blocks/RenderBlocks.tsx` и `templates/payload/website/src/blocks/RenderBlocks.tsx` ставят `id` на обёртку блока через shared helper:
+  - `computeBlockAnchorIDs(blocks)` из `@synestra/blocks-renderer`
+  - правило: `blockName` → slugify → fallback `\`${blockType}-${index + 1}\`` → дедупликация `-2`, `-3`, …
 
 ### 3.3. RowLabel для вложенных `array` внутри блоков
 
