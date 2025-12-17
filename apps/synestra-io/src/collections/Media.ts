@@ -43,6 +43,10 @@ export const Media: CollectionConfig = {
     // Default local storage location. When `@payloadcms/storage-s3` is enabled, it automatically switches
     // the collection to `disableLocalStorage: true`.
     staticDir: path.resolve(dirname, '../../public/media'),
+    modifyResponseHeaders: ({ headers }) => {
+      headers.set('Cache-Control', 'public, max-age=31536000, immutable')
+      return headers
+    },
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

@@ -7,7 +7,7 @@
 - Миграции: добавлена baseline‑миграция в `src/migrations/**` (чтобы prod “с 0” поднимался через `payload migrate`).
 - i18n: включены `en` + `ru` (в админке появится выбор языка).
 - Seed: исправлены падения при `Seed your database` (последовательные media uploads) + `disableRevalidate`.
-- Media files: добавлен Next route `src/app/api/media/file/[filename]/route.ts` с поддержкой `GET`+`HEAD` для корректной работы `next/image` в self-hosted окружении.
+- Media files: используем стандартный Payload endpoint `/api/media/file/<filename>`; для кэширования добавлен `upload.modifyResponseHeaders` (Cache-Control).
 - Next Image: `remotePatterns` учитывают `NEXT_PUBLIC_SERVER_URL`.
 - Конфиги: `eslint.config.mjs` и `tsconfig.json` соответствуют стандартам `web-core`.
 - Preview (external, без логина): добавлен share-preview через **подписанный токен в URL fragment** (`#token=...`) с TTL **7 дней**, без утечек секретов в querystring/access logs.
