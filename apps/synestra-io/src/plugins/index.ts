@@ -13,7 +13,6 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
-import { env } from '@/env'
 import { Media } from '@/collections/Media'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
@@ -26,28 +25,49 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
+const s3MediaStoragePlugin: Plugin = (incomingConfig) => {
+  // Evaluate at Payload init-time (runtime) to avoid baking env-dependent behavior into builds.
+  const s3Enabled = process.env.SYNESTRA_MEDIA_STORAGE === 's3'
+
+  if (s3Enabled) {
+    const required = [
+      'S3_ENDPOINT',
+      'S3_BUCKET',
+      'S3_ACCESS_KEY_ID',
+      'S3_SECRET_ACCESS_KEY',
+      'S3_REGION',
+    ] as const
+
+    const missing = required.filter((key) => !process.env[key])
+    if (missing.length > 0) {
+      throw new Error(
+        `SYNESTRA_MEDIA_STORAGE=s3, but missing required env vars: ${missing.join(', ')}`,
+      )
+    }
+  }
+
+  return s3Storage({
+    enabled: s3Enabled,
+    collections: {
+      [Media.slug]: true,
+    },
+    bucket: process.env.S3_BUCKET || 'payload-media',
+    config: s3Enabled
+      ? {
+          region: process.env.S3_REGION || 'us-east-1',
+          endpoint: process.env.S3_ENDPOINT!,
+          forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
+          credentials: {
+            accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+          },
+        }
+      : {},
+  })(incomingConfig)
+}
+
 export const plugins: Plugin[] = [
-  ...(env.SYNESTRA_MEDIA_STORAGE === 's3'
-    ? [
-        s3Storage({
-          collections: {
-            [Media.slug]: {
-              disableLocalStorage: true,
-            },
-          },
-          bucket: env.S3_BUCKET!,
-          config: {
-            region: env.S3_REGION || 'us-east-1',
-            endpoint: env.S3_ENDPOINT!,
-            forcePathStyle: env.S3_FORCE_PATH_STYLE === 'true',
-            credentials: {
-              accessKeyId: env.S3_ACCESS_KEY_ID!,
-              secretAccessKey: env.S3_SECRET_ACCESS_KEY!,
-            },
-          },
-        }),
-      ]
-    : []),
+  s3MediaStoragePlugin,
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
