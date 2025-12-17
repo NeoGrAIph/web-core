@@ -1,7 +1,0 @@
-# Release values for shop deployment (dev).
-
-image:
-  repository: "REPLACE_ME_REGISTRY/web-shop"
-  tag: "REPLACE_ME_TAG"
-  pullSecrets:
-    - name: gitlab-regcred
