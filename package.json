@@ -18,14 +18,12 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json,yaml,yml}\"",
-    "prune:corp": "turbo prune --scope=@synestra/corporate-website --docker --out-dir=out/corporate-website",
-    "prune:shop": "turbo prune --scope=@synestra/ecommerce-store --docker --out-dir=out/ecommerce-store",
-    "prune:exp": "turbo prune --scope=@synestra/experiments --docker --out-dir=out/experiments",
-    "dev:corp": "pnpm --filter @synestra/corporate-website dev",
-    "dev:shop": "pnpm --filter @synestra/ecommerce-store dev",
-    "dev:exp": "pnpm --filter @synestra/experiments dev"
+    "prune:synestra-io": "turbo prune --scope=@synestra/synestra-io --docker --out-dir=out/synestra-io",
+    "dev:synestra-io": "pnpm --filter @synestra/synestra-io dev",
+    "gen": "turbo gen"
   },
   "devDependencies": {
+    "@turbo/gen": "^2.6.3",
     "prettier": "^3.4.2",
     "turbo": "2.6.3",
     "typescript": "5.7.3"
