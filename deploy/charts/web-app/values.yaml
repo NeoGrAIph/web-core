@@ -38,6 +38,9 @@ env: {}
 envFrom:
   secretRef: ""
   # secretRef: web-corporate-dev-env
+  extraSecretRefs: []
+  # extraSecretRefs:
+  #   - web-corporate-dev-s3-env
 
 resources: {}
   # requests:

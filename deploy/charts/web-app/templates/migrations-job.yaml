@@ -33,9 +33,16 @@ spec:
             - name: {{ $k | quote }}
               value: {{ $v | quote }}
             {{- end }}
-          {{- if .Values.envFrom.secretRef }}
+          {{- $extraEnvSecrets := .Values.envFrom.extraSecretRefs | default (list) }}
+          {{- if or .Values.envFrom.secretRef (gt (len $extraEnvSecrets) 0) }}
           envFrom:
+            {{- if .Values.envFrom.secretRef }}
             - secretRef:
                 name: {{ .Values.envFrom.secretRef | quote }}
+            {{- end }}
+            {{- range $extraEnvSecrets }}
+            - secretRef:
+                name: {{ . | quote }}
+            {{- end }}
           {{- end }}
 {{- end }}
