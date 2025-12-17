@@ -22,9 +22,11 @@ export const linkGroup: LinkGroupFieldBuilder = ({ appearances, overrides = {} }
     ],
     admin: {
       initCollapsed: true,
+      components: {
+        RowLabel: '@/payload/admin/rowLabels#LinkGroupRowLabel',
+      },
     },
   }
 
   return deepMerge(generatedLinkGroup, overrides)
 }
-

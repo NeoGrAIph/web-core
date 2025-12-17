@@ -13,6 +13,8 @@
   `https://payloadcms.com/docs/custom-components/overview`
 - Docs: Custom Components — Root Components  
   `https://payloadcms.com/docs/custom-components/root-components`
+- Docs: Fields — Array (`admin.components.RowLabel`)  
+  `https://payloadcms.com/docs/fields/array`
 - Docs: Fields — Overview (Custom Components / Default Field Component Props)  
   `https://payloadcms.com/docs/fields/overview`
 - Docs: Admin — React Hooks (`useField`, `useFormFields`, и т.д.)  
@@ -80,6 +82,7 @@ apps/<app>/src/payload/admin/
 Payload config ссылается только на них, например:
 - `src/payload/admin/components#BeforeDashboard`
 - `src/payload/admin/fields#HeroLayoutField`
+- `src/payload/admin/rowLabels#LinkGroupRowLabel`
 
 А внутри entrypoints:
 - допускаются импорты из workspace‑пакетов (`@synestra/*`), если реализация переиспользуется.
@@ -106,3 +109,19 @@ Root Components — официальные точки расширения ад�
 - использовать для брендинга/навигации/интеграций;
 - держать лёгкими и предсказуемыми (особенно если server component).
 
+---
+
+## 7) RowLabel для Array/Blocks: минимальный UX must-have
+
+Официально Payload поддерживает `admin.components.RowLabel` у array‑полей.
+Это один из самых дешёвых способов сильно улучшить UX редактора:
+- вместо “Row 1 / Row 2” показываем смысл (например, label ссылки, тип, размер колонки и т.п.);
+- редакторам проще ориентироваться в списках, меньше ошибочных правок.
+
+Практика `web-core`:
+- RowLabel компоненты считаем частью “app-local entrypoints” (см. раздел 4) и держим в `src/payload/admin/rowLabels.tsx`;
+- shared schema (`@synestra/cms-fields`, `@synestra/cms-blocks`) может ссылаться на **единый** Component Path (например `@/payload/admin/rowLabels#LinkGroupRowLabel`), а app/template обязаны предоставить этот экспорт.
+
+Референс (официальные templates Payload, `upstream/`):
+- `upstream/payload/templates/website/src/Header/config.ts` + `RowLabel`
+- `upstream/payload/templates/website/src/Footer/config.ts` + `RowLabel`

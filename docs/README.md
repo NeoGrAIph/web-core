@@ -33,6 +33,7 @@
   - `docs/research/templates/payload-ecommerce.md`
   - `docs/research/payload/payload-blocks-best-practices.md`
   - `docs/research/payload/payload-admin-custom-components-best-practices.md`
+  - `docs/research/payload/payload-page-builder-admin-ux-best-practices.md`
   - `docs/research/payload/payload-migrations-best-practices.md`
   - `docs/research/payload/payload-media-storage-best-practices.md`
   - `docs/research/payload/payload-lexical-blocksfeature-best-practices.md`

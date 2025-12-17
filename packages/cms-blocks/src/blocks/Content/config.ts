@@ -72,6 +72,9 @@ export const Content: Block = {
       type: 'array',
       admin: {
         initCollapsed: true,
+        components: {
+          RowLabel: '@/payload/admin/rowLabels#ContentColumnRowLabel',
+        },
       },
       fields: columnFields,
     },
