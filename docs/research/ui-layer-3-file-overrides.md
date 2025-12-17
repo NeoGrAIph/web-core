@@ -13,9 +13,10 @@
 - `docs/research/ui-layer-1-parameterization.md` (tokens/variants/slots)
 - `docs/research/ui-layer-2-registry.md` (registry + shared schema/renderer)
 - Payload Custom Components (Import Map): `https://payloadcms.com/docs/custom-components/overview`
+- Next.js: Absolute Imports / Module Aliases (tsconfig/jsconfig paths): `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
 - Next.js: `transpilePackages`: `https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages`
 - Next.js: кастомизация webpack (алиасы и мердж): `https://nextjs.org/docs/app/api-reference/config/next-config-js/webpack`
-- Next.js: конфиг Turbopack (resolveAlias): `https://nextjs.org/docs/app/api-reference/config/next-config-js/turbo`
+- Next.js: конфиг Turbopack (resolveAlias): `https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack`
 - Docusaurus: swizzling: `https://docusaurus.io/docs/swizzling`
 
 ---
@@ -42,6 +43,25 @@
 - если “часто хочется менять только одну деталь”, сначала пытаемся решить в слоях 1–2 (tokens/variants/registry);
 - если всё равно нужен форк поведения — добавляем **wrapper‑точку** в app и документируем её как “override boundary”.
 
+### 1.1. Рекомендуемая реализация “Bitrix-подобного” file override без магии резолвера
+
+Ключевая идея: приложение **никогда не импортирует** shared‑пакет напрямую, вместо этого оно импортирует “канонический” путь внутри app.
+
+Канон:
+- shared UI живёт в `packages/ui` (`@synestra/ui/*`);
+- в каждом app есть “фасад” `src/ui/*`, который по умолчанию реэкспортит shared‑реализации;
+- весь код app импортирует UI только из `@/ui/*` (или `@/ui`).
+
+Почему это работает:
+- Next.js официально поддерживает `baseUrl/paths` в `tsconfig.json`/`jsconfig.json`, а алиас `@/* → ./src/*` уже является стандартом наших apps/templates;
+- override делается обычным git‑диффом: заменяем файл `apps/<site>/src/ui/<component>.tsx`.
+
+Пример (как должно выглядеть в app):
+
+- wrapper по умолчанию: `apps/<site>/src/ui/button.tsx`:
+  - `export { Button } from '@synestra/ui/button'`
+- использование: `import { Button } from '@/ui/button'`
+
 ---
 
 ## 2) Когда нужен более “битрикс‑подобный” override (shadowing/swizzle)
@@ -62,6 +82,10 @@
 
 Рекомендация:
 - держать shadowing как **опциональный режим** (под задачу), а основным способом считать wrapper‑файлы.
+
+Практический критерий “можно включать shadowing”:
+- команда готова поддерживать **2 режима резолвинга** (dev turbopack и prod webpack);
+- есть тестовый чек (build) и документ “как отлаживать override”.
 
 ---
 
@@ -84,3 +108,13 @@ Payload позволяет подключать/заменять админск�
 - в `docs/architecture/component-system.md` или в app README описано, что именно можно/нельзя менять;
 - если boundary касается schema (Payload) — есть понимание, нужна ли миграция при изменении.
 
+---
+
+## 5) Источники (цитируемые страницы)
+
+- Next.js Absolute Imports / Module Aliases: `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
+- Next.js `transpilePackages`: `https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages`
+- Next.js `webpack` config (про мердж/алиасы): `https://nextjs.org/docs/app/api-reference/config/next-config-js/webpack`
+- Next.js `turbopack` config (`resolveAlias`): `https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack`
+- Payload Custom Components overview (Import Map): `https://payloadcms.com/docs/custom-components/overview`
+- Docusaurus swizzle: `https://docusaurus.io/docs/swizzling`

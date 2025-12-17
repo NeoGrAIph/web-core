@@ -126,7 +126,9 @@
 
 ### Импорты (как в курсе: named exports)
 
-Предпочтительный стиль:
+#### Внутри shared‑пакетов (`packages/*`)
+
+Предпочтительный стиль (subpath exports):
 
 - `import { Button } from '@synestra/ui/button'`
 
@@ -139,6 +141,20 @@
 
 Уточнение (Next.js):
 - Если мы массово используем barrel‑импорты (`@synestra/ui`) и пакет начинает разрастаться, у Next.js есть официальный механизм `experimental.optimizePackageImports`. Но архитектурно проще держать основной путь импорта через subpath exports (`@synestra/ui/button`) и оставлять barrel как “удобный, но не обязательный”.
+
+#### Внутри apps (`apps/*`)
+
+Канон для возможности **точечных file overrides** (слой 3): apps импортируют UI не из shared‑пакетов, а через app‑фасад.
+
+- ✅ `import { Button } from '@/ui/button'` (или `import { Button } from '@/ui'`)
+- ❌ `import { Button } from '@synestra/ui/button'` (в app‑коде)
+
+Фасад по умолчанию — это wrapper‑файлы, которые просто реэкспортят shared реализацию:
+- `apps/<site>/src/ui/button.tsx` → `export { Button } from '@synestra/ui/button'`
+
+Источники:
+- Next.js Absolute Imports / Module Aliases: `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
+- Канон слоя 3: `docs/research/ui-layer-3-file-overrides.md`
 
 ### Рекомендуемая структура `packages/ui` (эволюционная)
 
