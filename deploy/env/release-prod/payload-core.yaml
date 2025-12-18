@@ -5,6 +5,6 @@ env:
 
 image:
   repository: "registry.gitlab.com/synestra/synestra-platform/web-payload-core"
-  tag: "13d512c4913a-r1"
+  tag: "2276c2d267a9-r1"
   pullSecrets:
     - name: gitlab-regcred
