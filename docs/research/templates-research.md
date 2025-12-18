@@ -19,8 +19,8 @@
 
 ## Индекс
 
-- Payload — шаблон `website`: `docs/research/templates/payload-website.md`
-- Payload — шаблон `ecommerce`: `docs/research/templates/payload-ecommerce.md`
+- Payload — шаблон `website`: `docs/research/templates/payload-website/README.md`
+- Payload — шаблон `ecommerce`: `docs/research/templates/payload-ecommerce/README.md`
 
 ## Статус по решениям (из шаблонов)
 

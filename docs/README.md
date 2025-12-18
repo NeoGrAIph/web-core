@@ -33,8 +33,8 @@
   - `docs/research/ui-layer-2-registry.md`
   - `docs/research/ui-layer-2-unification-matrix.md`
   - `docs/research/ui-layer-3-file-overrides.md`
-  - `docs/research/templates/payload-website.md`
-  - `docs/research/templates/payload-ecommerce.md`
+  - `docs/research/templates/payload-website/README.md`
+  - `docs/research/templates/payload-ecommerce/README.md`
   - `docs/research/payload/payload-blocks-best-practices.md`
   - `docs/research/payload/payload-admin-custom-components-best-practices.md`
   - `docs/research/payload/payload-page-builder-admin-ux-best-practices.md`
