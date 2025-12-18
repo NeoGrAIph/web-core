@@ -155,6 +155,20 @@
 - Next.js Absolute Imports / Module Aliases: `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
 - Канон слоя 3: `docs/research/ui-layer-3-file-overrides.md`
 
+##### Разделение фасадов: frontend vs Payload Admin (best practice)
+
+В Next.js app у нас два разных “мира”, которые не стоит смешивать стилями и зависимостями:
+
+- **Frontend (публичный сайт)**: использует фасад `@/ui/*` (`apps/<site>/src/ui/*`).
+- **Payload Admin кастомизации**: держим отдельным фасадом `@/admin-ui/*` (`apps/<site>/src/admin-ui/*`), а подключение происходит через Payload `admin.components` (component paths + import map).
+
+Почему так:
+- Payload Admin официально работает через **component paths + import map**, т.е. “файловая подмена” встроена в платформу и лучше держать её изолированной от frontend UI;
+- глобальные стили и UI‑библиотеки админки (`@payloadcms/ui`) не должны “протекать” в frontend и наоборот.
+
+Ссылки:
+- Payload Custom Components (Import Map): `https://payloadcms.com/docs/custom-components/overview`
+
 ### Рекомендуемая структура `packages/ui` (эволюционная)
 
 Пока компонентов мало — допустима “плоская” структура (как сейчас):
