@@ -1,0 +1,1580 @@
+{
+  "schema": "synestra.upstream-tree.v1",
+  "rootPath": "upstream/payload/templates/website",
+  "tree": {
+    "type": "dir",
+    "name": "website",
+    "children": [
+      {
+        "type": "dir",
+        "name": ".vscode",
+        "children": [
+          {
+            "type": "file",
+            "name": "extensions.json",
+            "bytes": 78
+          },
+          {
+            "type": "file",
+            "name": "launch.json",
+            "bytes": 758
+          },
+          {
+            "type": "file",
+            "name": "settings.json",
+            "bytes": 1124
+          }
+        ]
+      },
+      {
+        "type": "dir",
+        "name": "public",
+        "children": [
+          {
+            "type": "file",
+            "name": "favicon.ico",
+            "bytes": 15086
+          },
+          {
+            "type": "file",
+            "name": "favicon.svg",
+            "bytes": 4407
+          },
+          {
+            "type": "file",
+            "name": "website-template-OG.webp",
+            "bytes": 101500
+          }
+        ]
+      },
+      {
+        "type": "dir",
+        "name": "src",
+        "children": [
+          {
+            "type": "dir",
+            "name": "access",
+            "children": [
+              {
+                "type": "file",
+                "name": "anyone.ts",
+                "bytes": 80
+              },
+              {
+                "type": "file",
+                "name": "authenticated.ts",
+                "bytes": 244
+              },
+              {
+                "type": "file",
+                "name": "authenticatedOrPublished.ts",
+                "bytes": 213
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "app",
+            "children": [
+              {
+                "type": "dir",
+                "name": "(frontend)",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "(sitemaps)",
+                    "children": [
+                      {
+                        "type": "dir",
+                        "name": "pages-sitemap.xml",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 1571
+                          }
+                        ]
+                      },
+                      {
+                        "type": "dir",
+                        "name": "posts-sitemap.xml",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 1274
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "[slug]",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "page.client.tsx",
+                        "bytes": 398
+                      },
+                      {
+                        "type": "file",
+                        "name": "page.tsx",
+                        "bytes": 2867
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "next",
+                    "children": [
+                      {
+                        "type": "dir",
+                        "name": "exit-preview",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 193
+                          }
+                        ]
+                      },
+                      {
+                        "type": "dir",
+                        "name": "preview",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 1660
+                          }
+                        ]
+                      },
+                      {
+                        "type": "dir",
+                        "name": "seed",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 1090
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "posts",
+                    "children": [
+                      {
+                        "type": "dir",
+                        "name": "[slug]",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "page.client.tsx",
+                            "bytes": 397
+                          },
+                          {
+                            "type": "file",
+                            "name": "page.tsx",
+                            "bytes": 3074
+                          }
+                        ]
+                      },
+                      {
+                        "type": "dir",
+                        "name": "page",
+                        "children": [
+                          {
+                            "type": "dir",
+                            "name": "[pageNumber]",
+                            "children": [
+                              {
+                                "type": "file",
+                                "name": "page.client.tsx",
+                                "bytes": 398
+                              },
+                              {
+                                "type": "file",
+                                "name": "page.tsx",
+                                "bytes": 2256
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "file",
+                        "name": "page.client.tsx",
+                        "bytes": 398
+                      },
+                      {
+                        "type": "file",
+                        "name": "page.tsx",
+                        "bytes": 1539
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "search",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "page.client.tsx",
+                        "bytes": 398
+                      },
+                      {
+                        "type": "file",
+                        "name": "page.tsx",
+                        "bytes": 2117
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "globals.css",
+                    "bytes": 1948
+                  },
+                  {
+                    "type": "file",
+                    "name": "layout.tsx",
+                    "bytes": 1480
+                  },
+                  {
+                    "type": "file",
+                    "name": "not-found.tsx",
+                    "bytes": 468
+                  },
+                  {
+                    "type": "file",
+                    "name": "page.tsx",
+                    "bytes": 121
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "(payload)",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "admin",
+                    "children": [
+                      {
+                        "type": "dir",
+                        "name": "[[...segments]]",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "not-found.tsx",
+                            "bytes": 731
+                          },
+                          {
+                            "type": "file",
+                            "name": "page.tsx",
+                            "bytes": 715
+                          }
+                        ]
+                      },
+                      {
+                        "type": "file",
+                        "name": "importMap.js",
+                        "bytes": 6356
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "api",
+                    "children": [
+                      {
+                        "type": "dir",
+                        "name": "[...slug]",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 551
+                          }
+                        ]
+                      },
+                      {
+                        "type": "dir",
+                        "name": "graphql",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 315
+                          }
+                        ]
+                      },
+                      {
+                        "type": "dir",
+                        "name": "graphql-playground",
+                        "children": [
+                          {
+                            "type": "file",
+                            "name": "route.ts",
+                            "bytes": 305
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "custom.scss",
+                    "bytes": 0
+                  },
+                  {
+                    "type": "file",
+                    "name": "layout.tsx",
+                    "bytes": 810
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "blocks",
+            "children": [
+              {
+                "type": "dir",
+                "name": "ArchiveBlock",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 1732
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 2090
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Banner",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 835
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 841
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "CallToAction",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 828
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 908
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Code",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.client.tsx",
+                    "bytes": 1042
+                  },
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 442
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 581
+                  },
+                  {
+                    "type": "file",
+                    "name": "CopyButton.tsx",
+                    "bytes": 765
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Content",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 1164
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 1432
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Form",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "Checkbox",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1322
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Country",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1848
+                      },
+                      {
+                        "type": "file",
+                        "name": "options.ts",
+                        "bytes": 12745
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Email",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1029
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Error",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 356
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Message",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 386
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Number",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1000
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Select",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1846
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "State",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1822
+                      },
+                      {
+                        "type": "file",
+                        "name": "options.ts",
+                        "bytes": 1954
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Text",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 959
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Textarea",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1080
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "Width",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 312
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 4948
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 1091
+                  },
+                  {
+                    "type": "file",
+                    "name": "fields.tsx",
+                    "bytes": 503
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "MediaBlock",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 1453
+                  },
+                  {
+                    "type": "file",
+                    "name": "config.ts",
+                    "bytes": 250
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "RelatedPosts",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Component.tsx",
+                    "bytes": 936
+                  }
+                ]
+              },
+              {
+                "type": "file",
+                "name": "RenderBlocks.tsx",
+                "bytes": 1378
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "collections",
+            "children": [
+              {
+                "type": "dir",
+                "name": "Pages",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "hooks",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "revalidatePage.ts",
+                        "bytes": 1278
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.ts",
+                    "bytes": 3659
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Posts",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "hooks",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "populateAuthors.ts",
+                        "bytes": 1223
+                      },
+                      {
+                        "type": "file",
+                        "name": "revalidatePost.ts",
+                        "bytes": 1203
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.ts",
+                    "bytes": 6022
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Users",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.ts",
+                    "bytes": 501
+                  }
+                ]
+              },
+              {
+                "type": "file",
+                "name": "Categories.ts",
+                "bytes": 555
+              },
+              {
+                "type": "file",
+                "name": "Media.ts",
+                "bytes": 1690
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "components",
+            "children": [
+              {
+                "type": "dir",
+                "name": "AdminBar",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.scss",
+                    "bytes": 96
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 2345
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "BeforeDashboard",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "SeedButton",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.scss",
+                        "bytes": 173
+                      },
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 2208
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.scss",
+                    "bytes": 302
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 2034
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "BeforeLogin",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 269
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Card",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 2730
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "CollectionArchive",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 860
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Link",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 1742
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "LivePreviewListener",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 400
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Logo",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "Logo.tsx",
+                    "bytes": 787
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Media",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "ImageMedia",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 4077
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "VideoMedia",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1078
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 613
+                  },
+                  {
+                    "type": "file",
+                    "name": "types.ts",
+                    "bytes": 717
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "PageRange",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 1414
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Pagination",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 2533
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "PayloadRedirects",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 1535
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "RichText",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 2447
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "ui",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "button.tsx",
+                    "bytes": 1779
+                  },
+                  {
+                    "type": "file",
+                    "name": "card.tsx",
+                    "bytes": 1645
+                  },
+                  {
+                    "type": "file",
+                    "name": "checkbox.tsx",
+                    "bytes": 979
+                  },
+                  {
+                    "type": "file",
+                    "name": "input.tsx",
+                    "bytes": 740
+                  },
+                  {
+                    "type": "file",
+                    "name": "label.tsx",
+                    "bytes": 635
+                  },
+                  {
+                    "type": "file",
+                    "name": "pagination.tsx",
+                    "bytes": 2483
+                  },
+                  {
+                    "type": "file",
+                    "name": "select.tsx",
+                    "bytes": 4919
+                  },
+                  {
+                    "type": "file",
+                    "name": "textarea.tsx",
+                    "bytes": 678
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "endpoints",
+            "children": [
+              {
+                "type": "dir",
+                "name": "seed",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "contact-form.ts",
+                    "bytes": 2504
+                  },
+                  {
+                    "type": "file",
+                    "name": "contact-page.ts",
+                    "bytes": 1284
+                  },
+                  {
+                    "type": "file",
+                    "name": "home-static.ts",
+                    "bytes": 2268
+                  },
+                  {
+                    "type": "file",
+                    "name": "home.ts",
+                    "bytes": 20229
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-1.ts",
+                    "bytes": 1627
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-2.ts",
+                    "bytes": 1627
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-3.ts",
+                    "bytes": 1628
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-hero-1.ts",
+                    "bytes": 179
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-hero1.webp",
+                    "bytes": 771366
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-post1.webp",
+                    "bytes": 117606
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-post2.webp",
+                    "bytes": 168786
+                  },
+                  {
+                    "type": "file",
+                    "name": "image-post3.webp",
+                    "bytes": 112146
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.ts",
+                    "bytes": 7739
+                  },
+                  {
+                    "type": "file",
+                    "name": "post-1.ts",
+                    "bytes": 11258
+                  },
+                  {
+                    "type": "file",
+                    "name": "post-2.ts",
+                    "bytes": 7834
+                  },
+                  {
+                    "type": "file",
+                    "name": "post-3.ts",
+                    "bytes": 9824
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "fields",
+            "children": [
+              {
+                "type": "file",
+                "name": "defaultLexical.ts",
+                "bytes": 1362
+              },
+              {
+                "type": "file",
+                "name": "link.ts",
+                "bytes": 3095
+              },
+              {
+                "type": "file",
+                "name": "linkGroup.ts",
+                "bytes": 626
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "Footer",
+            "children": [
+              {
+                "type": "dir",
+                "name": "hooks",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "revalidateFooter.ts",
+                    "bytes": 334
+                  }
+                ]
+              },
+              {
+                "type": "file",
+                "name": "Component.tsx",
+                "bytes": 1124
+              },
+              {
+                "type": "file",
+                "name": "config.ts",
+                "bytes": 604
+              },
+              {
+                "type": "file",
+                "name": "RowLabel.tsx",
+                "bytes": 429
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "Header",
+            "children": [
+              {
+                "type": "dir",
+                "name": "hooks",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "revalidateHeader.ts",
+                    "bytes": 334
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Nav",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 660
+                  }
+                ]
+              },
+              {
+                "type": "file",
+                "name": "Component.client.tsx",
+                "bytes": 1303
+              },
+              {
+                "type": "file",
+                "name": "Component.tsx",
+                "bytes": 327
+              },
+              {
+                "type": "file",
+                "name": "config.ts",
+                "bytes": 604
+              },
+              {
+                "type": "file",
+                "name": "RowLabel.tsx",
+                "bytes": 429
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "heros",
+            "children": [
+              {
+                "type": "dir",
+                "name": "HighImpact",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 1447
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "LowImpact",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 615
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "MediumImpact",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 1284
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "PostHero",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 2601
+                  }
+                ]
+              },
+              {
+                "type": "file",
+                "name": "config.ts",
+                "bytes": 1468
+              },
+              {
+                "type": "file",
+                "name": "RenderHero.tsx",
+                "bytes": 593
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "hooks",
+            "children": [
+              {
+                "type": "file",
+                "name": "populatePublishedAt.ts",
+                "bytes": 379
+              },
+              {
+                "type": "file",
+                "name": "revalidateRedirects.ts",
+                "bytes": 291
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "plugins",
+            "children": [
+              {
+                "type": "file",
+                "name": "index.ts",
+                "bytes": 2905
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "providers",
+            "children": [
+              {
+                "type": "dir",
+                "name": "HeaderTheme",
+                "children": [
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 999
+                  }
+                ]
+              },
+              {
+                "type": "dir",
+                "name": "Theme",
+                "children": [
+                  {
+                    "type": "dir",
+                    "name": "InitTheme",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1275
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dir",
+                    "name": "ThemeSelector",
+                    "children": [
+                      {
+                        "type": "file",
+                        "name": "index.tsx",
+                        "bytes": 1258
+                      },
+                      {
+                        "type": "file",
+                        "name": "types.ts",
+                        "bytes": 127
+                      }
+                    ]
+                  },
+                  {
+                    "type": "file",
+                    "name": "index.tsx",
+                    "bytes": 1877
+                  },
+                  {
+                    "type": "file",
+                    "name": "shared.ts",
+                    "bytes": 443
+                  },
+                  {
+                    "type": "file",
+                    "name": "types.ts",
+                    "bytes": 276
+                  }
+                ]
+              },
+              {
+                "type": "file",
+                "name": "index.tsx",
+                "bytes": 326
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "search",
+            "children": [
+              {
+                "type": "file",
+                "name": "beforeSync.ts",
+                "bytes": 1518
+              },
+              {
+                "type": "file",
+                "name": "Component.tsx",
+                "bytes": 1015
+              },
+              {
+                "type": "file",
+                "name": "fieldOverrides.ts",
+                "bytes": 960
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "utilities",
+            "children": [
+              {
+                "type": "file",
+                "name": "canUseDOM.ts",
+                "bytes": 101
+              },
+              {
+                "type": "file",
+                "name": "deepMerge.ts",
+                "bytes": 843
+              },
+              {
+                "type": "file",
+                "name": "formatAuthors.ts",
+                "bytes": 883
+              },
+              {
+                "type": "file",
+                "name": "formatDateTime.ts",
+                "bytes": 714
+              },
+              {
+                "type": "file",
+                "name": "generateMeta.ts",
+                "bytes": 1225
+              },
+              {
+                "type": "file",
+                "name": "generatePreviewPath.ts",
+                "bytes": 832
+              },
+              {
+                "type": "file",
+                "name": "getDocument.ts",
+                "bytes": 805
+              },
+              {
+                "type": "file",
+                "name": "getGlobals.ts",
+                "bytes": 661
+              },
+              {
+                "type": "file",
+                "name": "getMediaUrl.ts",
+                "bytes": 820
+              },
+              {
+                "type": "file",
+                "name": "getMeUser.ts",
+                "bytes": 988
+              },
+              {
+                "type": "file",
+                "name": "getRedirects.ts",
+                "bytes": 675
+              },
+              {
+                "type": "file",
+                "name": "getURL.ts",
+                "bytes": 708
+              },
+              {
+                "type": "file",
+                "name": "mergeOpenGraph.ts",
+                "bytes": 597
+              },
+              {
+                "type": "file",
+                "name": "toKebabCase.ts",
+                "bytes": 151
+              },
+              {
+                "type": "file",
+                "name": "ui.ts",
+                "bytes": 405
+              },
+              {
+                "type": "file",
+                "name": "useClickableCard.ts",
+                "bytes": 2624
+              },
+              {
+                "type": "file",
+                "name": "useDebounce.ts",
+                "bytes": 376
+              }
+            ]
+          },
+          {
+            "type": "file",
+            "name": "cssVariables.js",
+            "bytes": 219
+          },
+          {
+            "type": "file",
+            "name": "environment.d.ts",
+            "bytes": 357
+          },
+          {
+            "type": "file",
+            "name": "payload-types.ts",
+            "bytes": 42245
+          },
+          {
+            "type": "file",
+            "name": "payload.config.ts",
+            "bytes": 2756
+          }
+        ]
+      },
+      {
+        "type": "dir",
+        "name": "tests",
+        "children": [
+          {
+            "type": "dir",
+            "name": "e2e",
+            "children": [
+              {
+                "type": "file",
+                "name": "frontend.e2e.spec.ts",
+                "bytes": 529
+              }
+            ]
+          },
+          {
+            "type": "dir",
+            "name": "int",
+            "children": [
+              {
+                "type": "file",
+                "name": "api.int.spec.ts",
+                "bytes": 467
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "file",
+        "name": ".editorconfig",
+        "bytes": 170
+      },
+      {
+        "type": "file",
+        "name": ".env.example",
+        "bytes": 494
+      },
+      {
+        "type": "file",
+        "name": ".gitignore",
+        "bytes": 254
+      },
+      {
+        "type": "file",
+        "name": ".npmrc",
+        "bytes": 51
+      },
+      {
+        "type": "file",
+        "name": ".prettierignore",
+        "bytes": 140
+      },
+      {
+        "type": "file",
+        "name": ".prettierrc.json",
+        "bytes": 90
+      },
+      {
+        "type": "file",
+        "name": "components.json",
+        "bytes": 360
+      },
+      {
+        "type": "file",
+        "name": "docker-compose.yml",
+        "bytes": 531
+      },
+      {
+        "type": "file",
+        "name": "Dockerfile",
+        "bytes": 2443
+      },
+      {
+        "type": "file",
+        "name": "eslint.config.mjs",
+        "bytes": 959
+      },
+      {
+        "type": "file",
+        "name": "next-env.d.ts",
+        "bytes": 211
+      },
+      {
+        "type": "file",
+        "name": "next-sitemap.config.cjs",
+        "bytes": 532
+      },
+      {
+        "type": "file",
+        "name": "next.config.js",
+        "bytes": 993
+      },
+      {
+        "type": "file",
+        "name": "package.json",
+        "bytes": 3526
+      },
+      {
+        "type": "file",
+        "name": "playwright.config.ts",
+        "bytes": 1233
+      },
+      {
+        "type": "file",
+        "name": "pnpm-lock.yaml",
+        "bytes": 347409
+      },
+      {
+        "type": "file",
+        "name": "postcss.config.js",
+        "bytes": 103
+      },
+      {
+        "type": "file",
+        "name": "README.md",
+        "bytes": 15548
+      },
+      {
+        "type": "file",
+        "name": "redirects.js",
+        "bytes": 466
+      },
+      {
+        "type": "file",
+        "name": "tailwind.config.mjs",
+        "bytes": 3840
+      },
+      {
+        "type": "file",
+        "name": "test.env",
+        "bytes": 62
+      },
+      {
+        "type": "file",
+        "name": "tsconfig.json",
+        "bytes": 922
+      },
+      {
+        "type": "file",
+        "name": "vitest.config.mts",
+        "bytes": 332
+      },
+      {
+        "type": "file",
+        "name": "vitest.setup.ts",
+        "bytes": 87
+      }
+    ]
+  }
+}
