@@ -35,7 +35,7 @@
 - ArgoCD root app-of-apps: `~/synestra-platform/argocd/apps/synestra-platform.yaml`
 - Secrets application: `~/synestra-platform/argocd/apps/infra-secrets.yaml` (SOPS plugin)
 - CNPG operator: `~/synestra-platform/argocd/apps/infra-cloudnativepg.yaml`
-- Сейчас уже есть “legacy” деплой Payload в namespace `webcore`: `~/synestra-platform/argocd/apps/infra-payload.yaml` + `~/synestra-platform/infra/webcore/payload/values*.yaml` (в т.ч. dev-only `values.dev-hot.yaml` с `hostPath`).
+- Историческая заметка: ранее существовал dev-only подход “hostPath + build внутри Pod” для Payload (не масштабируется). Сейчас целевой dev‑loop — Okteto поверх GitOps (см. `docs/runbooks/runbook-okteto-dev.md`).
 
 ### `~/repo/web-core` (продукт/сайты)
 
@@ -228,7 +228,7 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 
 ## 10) Hot‑разработка: Okteto (вместо hostPath)
 
-В `synestra-platform` сейчас есть dev-only “hostPath + build внутри Pod” подход (`infra/webcore/payload/values.dev-hot.yaml`). Он не масштабируется и привязан к одной ноде/пути.
+Историческая заметка: ранее для dev использовался подход “hostPath + build внутри Pod” (например, `infra/webcore/payload/values.dev-hot.yaml`). Он не масштабируется и привязан к одной ноде/пути, поэтому целевым остаётся Okteto.
 
 Важно: Okteto Self‑Hosted уже развернут на платформе (через Argo CD) и предоставляет:
 - control‑plane: `okteto.synestra.tech`,
@@ -253,23 +253,14 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 
 ## 11) CI/CD контракт (GitLab + GitOps)
 
-Фиксируем ожидание:
+Фиксируем ожидание (source of truth):
 
 - `web-core` хранит **истину** по деплою (values/manifests).
 - `synestra-platform` (GitLab CI) строит образы и пушит в registry.
 
-Рекомендуемый базовый механизм для `dev`:
-
-1) Образ тегируется **immutable tag** (например SHA коммита `web-core`).
-2) Pipeline (в `synestra-platform`) после сборки делает **git commit** в `web-core` (обновляет `deploy/env/dev/<app>.yaml` с новым image tag).
-3) ArgoCD подхватывает commit и деплоит.
-
-Примечание (актуальная схема dev+prod на старте):
-- image tag держим в раздельных release‑слоях:
-  - `deploy/env/release-dev/<app>.yaml` (dev release),
-  - `deploy/env/release-prod/<app>.yaml` (prod release);
-- promotion = обновление `release-prod` на tag, проверенный в dev;
-- env‑специфика (домены, `SYNESTRA_ENV`, Secret refs) остаётся в `deploy/env/<env>/<app>.yaml`.
+Канон вынесен в отдельные документы:
+- self-host контракт между репозиториями + правила “что триггерит деплой”: `docs/architecture/ci-cd-contract.md`
+- dev → prod promotion (release‑слои): `docs/architecture/release-promotion.md`
 Runbooks:
 - `docs/runbooks/runbook-dev-prod-flow.md`
 - `docs/runbooks/runbook-ci-dev-to-prod.md`

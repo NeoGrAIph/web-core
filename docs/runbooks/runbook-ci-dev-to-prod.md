@@ -32,6 +32,10 @@ Runbook: CI‑контракт для переноса изменений **dev 
 
 ## 4) Сборка образа из монорепы
 
+Есть два допустимых подхода к сборке (важно: это *реализация* CI, а не GitOps-истина):
+
+### Вариант A (каноничный для monorepo): `turbo prune` + Docker build
+
 Рекомендуем собирать образы через `turbo prune`:
 
 1) Сформировать pruned workspace (пример для corporate):
@@ -40,6 +44,12 @@ Runbook: CI‑контракт для переноса изменений **dev 
    - `docker build -f docker/Dockerfile.turbo --build-arg APP_NAME=@synestra/corporate-website out/corporate-website`
 
 Dockerfile: `docker/Dockerfile.turbo`.
+
+### Вариант B (platform-driven): сборка в `synestra-platform` по ref `web-core`
+
+Для некоторых образов (например, `web-synestra-io`) сборка может быть реализована в `synestra-platform`, где CI берёт конкретный commit `web-core` и присваивает ему immutable tag.
+
+Канон контракта и примеры путей: `docs/architecture/ci-cd-contract.md`.
 
 ## 5) Как CI должен обновлять GitOps
 

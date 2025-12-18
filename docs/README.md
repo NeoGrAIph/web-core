@@ -12,6 +12,7 @@
 - Архитектура и структура репозитория
   - `docs/architecture/architecture.md`
   - `docs/architecture/canon-v0.md`
+  - `docs/architecture/ci-cd-contract.md`
   - `docs/architecture/component-system.md`
   - `docs/architecture/database-cnpg.md`
   - `docs/architecture/payload-migrations.md`
