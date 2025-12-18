@@ -12,42 +12,42 @@ import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getSharePreviewContext } from '@/utilities/sharePreviewContext'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
-export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const posts = await payload.find({
+    collection: 'posts',
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
+  })
+
+  const params = posts.docs.map(({ slug }) => {
+    return { slug }
+  })
+
+  return params
+}
 
 type Args = {
   params: Promise<{
     slug?: string
   }>
-  searchParams: Promise<{
-    sp?: string
-  }>
 }
 
-export default async function Post({ params: paramsPromise, searchParams: searchParamsPromise }: Args) {
-  const { isEnabled: internalDraft } = await draftMode()
+export default async function Post({ params: paramsPromise }: Args) {
+  const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
-  const searchParams = await searchParamsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/posts/' + decodedSlug
-  const shareCtx = await getSharePreviewContext({
-    path: `/posts/${encodeURIComponent(decodedSlug)}`,
-    searchParams,
-  })
-  const sharePayload = shareCtx?.payload
-  const shareDraft = Boolean(
-    shareCtx && (sharePayload ? !('collection' in sharePayload) || sharePayload.collection === 'posts' : false),
-  )
-  const draft = internalDraft || shareDraft
-
-  const post =
-    shareDraft && !internalDraft && sharePayload && 'versionID' in sharePayload
-      ? await queryPostByVersionID({ versionID: sharePayload.versionID, docID: sharePayload.docID })
-      : await queryPostBySlug({ slug: decodedSlug, draft })
+  const post = await queryPostBySlug({ slug: decodedSlug })
 
   if (!post) return <PayloadRedirects url={url} />
 
@@ -58,7 +58,7 @@ export default async function Post({ params: paramsPromise, searchParams: search
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {internalDraft && <LivePreviewListener />}
+      {draft && <LivePreviewListener />}
 
       <PostHero post={post} />
 
@@ -81,12 +81,14 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const post = await queryPostBySlug({ slug: decodedSlug, draft: false })
+  const post = await queryPostBySlug({ slug: decodedSlug })
 
   return generateMeta({ doc: post })
 }
 
-const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
+const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+  const { isEnabled: draft } = await draftMode()
+
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -103,21 +105,4 @@ const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boo
   })
 
   return result.docs?.[0] || null
-})
-
-const queryPostByVersionID = cache(async ({ versionID, docID }: { versionID: string; docID: string }) => {
-  const payload = await getPayload({ config: configPromise })
-
-  const version = await payload.findVersionByID({
-    collection: 'posts',
-    id: versionID,
-    depth: 1,
-    overrideAccess: true,
-    disableErrors: true,
-  })
-
-  if (!version) return null
-  if (String(version.parent) !== String(docID)) return null
-
-  return version.version || null
 })

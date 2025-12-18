@@ -1,31 +1,51 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
-import { computeBlockAnchorIDs, defineBlockCatalog, renderBlocks } from '@synestra/blocks-renderer'
 
-import { PAGE_LAYOUT_BLOCKS } from '@/blocks/pageBuilder'
-import { PAGE_BLOCK_COMPONENTS } from '@/blocks/registry'
+import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { ContentBlock } from '@/blocks/Content/Component'
+import { FormBlock } from '@/blocks/Form/Component'
+import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
-const { components: blockComponents } = defineBlockCatalog({
-  name: '@synestra/synestra-io pages.layout',
-  blocks: PAGE_LAYOUT_BLOCKS,
-  components: PAGE_BLOCK_COMPONENTS,
-  strict: process.env.NODE_ENV !== 'production',
-})
+const blockComponents = {
+  archive: ArchiveBlock,
+  content: ContentBlock,
+  cta: CallToActionBlock,
+  formBlock: FormBlock,
+  mediaBlock: MediaBlock,
+}
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
 }> = (props) => {
   const { blocks } = props
 
-  const anchorIDs = computeBlockAnchorIDs(blocks)
+  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
-  return renderBlocks(blocks, blockComponents, {
-    componentProps: { disableInnerContainer: true },
-    wrap: ({ children, index }) => (
-      <div className="my-16" id={anchorIDs[index]}>
-        {children}
-      </div>
-    ),
-  })
+  if (hasBlocks) {
+    return (
+      <Fragment>
+        {blocks.map((block, index) => {
+          const { blockType } = block
+
+          if (blockType && blockType in blockComponents) {
+            const Block = blockComponents[blockType]
+
+            if (Block) {
+              return (
+                <div className="my-16" key={index}>
+                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                  <Block {...block} disableInnerContainer />
+                </div>
+              )
+            }
+          }
+          return null
+        })}
+      </Fragment>
+    )
+  }
+
+  return null
 }

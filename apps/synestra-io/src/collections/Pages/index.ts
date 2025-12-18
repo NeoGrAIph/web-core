@@ -2,7 +2,11 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { PAGE_LAYOUT_BLOCKS } from '@/blocks/pageBuilder'
+import { Archive } from '../../blocks/ArchiveBlock/config'
+import { CallToAction } from '../../blocks/CallToAction/config'
+import { Content } from '../../blocks/Content/config'
+import { FormBlock } from '../../blocks/Form/config'
+import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -35,36 +39,22 @@ export const Pages: CollectionConfig<'pages'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data }) =>
+      url: ({ data, req }) =>
         generatePreviewPath({
           slug: data?.slug,
           collection: 'pages',
-          kind: 'internal',
+          req,
         }),
     },
-    preview: (data) =>
+    preview: (data, { req }) =>
       generatePreviewPath({
         slug: data?.slug as string,
         collection: 'pages',
-        kind: 'internal',
+        req,
       }),
     useAsTitle: 'title',
   },
   fields: [
-    {
-      name: 'sharePreview',
-      type: 'ui',
-      label: {
-        en: 'Share preview',
-        ru: 'Share preview',
-      },
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: '@/components/CopySharePreviewLink',
-        },
-      },
-    },
     {
       name: 'title',
       type: 'text',
@@ -82,7 +72,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: PAGE_LAYOUT_BLOCKS,
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
               required: true,
               admin: {
                 initCollapsed: true,

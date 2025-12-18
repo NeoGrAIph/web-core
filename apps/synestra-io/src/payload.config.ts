@@ -1,37 +1,32 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
-import { en } from 'payload/i18n/en'
-import { ru } from 'payload/i18n/ru'
-import { Users } from '@synestra/cms-core'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { env } from './env'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-const isProd = process.env.NODE_ENV === 'production'
 
 export default buildConfig({
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeLogin: ['@/admin-ui/BeforeLogin'],
+      beforeLogin: ['@/components/BeforeLogin'],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['@/admin-ui/BeforeDashboard'],
+      beforeDashboard: ['@/components/BeforeDashboard'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -62,23 +57,14 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  i18n: {
-    fallbackLanguage: 'en',
-    supportedLanguages: { en, ru },
-  },
-  db: postgresAdapter({
-    pool: {
-      connectionString:
-        env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/web_synestra_io',
-    },
-    migrationDir: path.resolve(dirname, 'migrations'),
-    push: !isProd,
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URI,
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
-  secret: env.PAYLOAD_SECRET || 'dev-secret',
+  secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -93,11 +79,7 @@ export default buildConfig({
         // for the Vercel Cron secret to be present as an
         // Authorization header:
         const authHeader = req.headers.get('authorization')
-        const cronSecret = env.CRON_SECRET
-
-        if (!cronSecret) return false
-
-        return authHeader === `Bearer ${cronSecret}`
+        return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
     tasks: [],

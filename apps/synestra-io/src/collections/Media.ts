@@ -40,13 +40,8 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Default local storage location. When `@payloadcms/storage-s3` is enabled, it automatically switches
-    // the collection to `disableLocalStorage: true`.
+    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     staticDir: path.resolve(dirname, '../../public/media'),
-    modifyResponseHeaders: ({ headers }) => {
-      headers.set('Cache-Control', 'public, max-age=31536000, immutable')
-      return headers
-    },
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

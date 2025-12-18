@@ -1,15 +1,10 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
 
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
-import { image3 } from './image-3'
 import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
@@ -42,10 +37,6 @@ export const seed = async ({
 }): Promise<void> => {
   payload.logger.info('Seeding database...')
 
-  const context = {
-    disableRevalidate: true,
-  }
-
   // we need to clear the media directory before seeding
   // as well as the collections and globals
   // this is because while `yarn seed` drops the database
@@ -61,8 +52,9 @@ export const seed = async ({
           navItems: [],
         },
         depth: 0,
-        req,
-        context,
+        context: {
+          disableRevalidate: true,
+        },
       }),
     ),
   )
@@ -82,8 +74,6 @@ export const seed = async ({
   await payload.delete({
     collection: 'users',
     depth: 0,
-    req,
-    context,
     where: {
       email: {
         equals: 'demo-author@example.com',
@@ -94,74 +84,59 @@ export const seed = async ({
   payload.logger.info(`— Seeding media...`)
 
   const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
-    readSeedFile(new URL('./image-post1.webp', import.meta.url)),
-    readSeedFile(new URL('./image-post2.webp', import.meta.url)),
-    readSeedFile(new URL('./image-post3.webp', import.meta.url)),
-    readSeedFile(new URL('./image-hero1.webp', import.meta.url)),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
+    ),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
+    ),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
+    ),
+    fetchFileByURL(
+      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
+    ),
   ])
 
-  // IMPORTANT:
-  // Local API file uploads use `req.file` under the hood.
-  // If we run multiple `payload.create({ file })` calls in parallel with the same `req`,
-  // they will race and overwrite `req.file`, causing intermittent (or constant) failures.
-  // So media uploads must be sequential (or use separate request objects per call).
-
-  const demoAuthor = await payload.create({
-    collection: 'users',
-    req,
-    context,
-    data: {
-      name: 'Demo Author',
-      email: 'demo-author@example.com',
-      password: 'password',
-    },
-  })
-
-  const image1Doc = await payload.create({
-    collection: 'media',
-    req,
-    context,
-    data: image1,
-    file: image1Buffer,
-  })
-
-  const image2Doc = await payload.create({
-    collection: 'media',
-    req,
-    context,
-    data: image2,
-    file: image2Buffer,
-  })
-
-  const image3Doc = await payload.create({
-    collection: 'media',
-    req,
-    context,
-    data: image3,
-    file: image3Buffer,
-  })
-
-  const imageHomeDoc = await payload.create({
-    collection: 'media',
-    req,
-    context,
-    data: imageHero1,
-    file: hero1Buffer,
-  })
-
-  await Promise.all(
+  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
+    payload.create({
+      collection: 'users',
+      data: {
+        name: 'Demo Author',
+        email: 'demo-author@example.com',
+        password: 'password',
+      },
+    }),
+    payload.create({
+      collection: 'media',
+      data: image1,
+      file: image1Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: image2,
+      file: image2Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: image2,
+      file: image3Buffer,
+    }),
+    payload.create({
+      collection: 'media',
+      data: imageHero1,
+      file: hero1Buffer,
+    }),
     categories.map((category) =>
       payload.create({
         collection: 'categories',
-        req,
-        context,
         data: {
           title: category,
           slug: category,
         },
       }),
     ),
-  )
+  ])
 
   payload.logger.info(`— Seeding posts...`)
 
@@ -170,24 +145,27 @@ export const seed = async ({
   const post1Doc = await payload.create({
     collection: 'posts',
     depth: 0,
-    req,
-    context,
+    context: {
+      disableRevalidate: true,
+    },
     data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
   })
 
   const post2Doc = await payload.create({
     collection: 'posts',
     depth: 0,
-    req,
-    context,
+    context: {
+      disableRevalidate: true,
+    },
     data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
   })
 
   const post3Doc = await payload.create({
     collection: 'posts',
     depth: 0,
-    req,
-    context,
+    context: {
+      disableRevalidate: true,
+    },
     data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
   })
 
@@ -195,8 +173,6 @@ export const seed = async ({
   await payload.update({
     id: post1Doc.id,
     collection: 'posts',
-    req,
-    context,
     data: {
       relatedPosts: [post2Doc.id, post3Doc.id],
     },
@@ -204,8 +180,6 @@ export const seed = async ({
   await payload.update({
     id: post2Doc.id,
     collection: 'posts',
-    req,
-    context,
     data: {
       relatedPosts: [post1Doc.id, post3Doc.id],
     },
@@ -213,8 +187,6 @@ export const seed = async ({
   await payload.update({
     id: post3Doc.id,
     collection: 'posts',
-    req,
-    context,
     data: {
       relatedPosts: [post1Doc.id, post2Doc.id],
     },
@@ -225,8 +197,6 @@ export const seed = async ({
   const contactForm = await payload.create({
     collection: 'forms',
     depth: 0,
-    req,
-    context,
     data: contactFormData,
   })
 
@@ -236,15 +206,11 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      req,
-      context,
       data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
-      req,
-      context,
       data: contactPageData({ contactForm: contactForm }),
     }),
   ])
@@ -254,8 +220,6 @@ export const seed = async ({
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
-      req,
-      context,
       data: {
         navItems: [
           {
@@ -280,8 +244,6 @@ export const seed = async ({
     }),
     payload.updateGlobal({
       slug: 'footer',
-      req,
-      context,
       data: {
         navItems: [
           {
@@ -315,16 +277,22 @@ export const seed = async ({
   payload.logger.info('Seeded database successfully!')
 }
 
-async function readSeedFile(fileUrl: URL): Promise<File> {
-  const filePath = fileURLToPath(fileUrl)
-  const data = await readFile(filePath)
-  const name = path.basename(filePath)
-  const ext = path.extname(name).slice(1)
+async function fetchFileByURL(url: string): Promise<File> {
+  const res = await fetch(url, {
+    credentials: 'include',
+    method: 'GET',
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch file from ${url}, status: ${res.status}`)
+  }
+
+  const data = await res.arrayBuffer()
 
   return {
-    name,
-    data,
-    mimetype: ext ? `image/${ext}` : 'application/octet-stream',
+    name: url.split('/').pop() || `file-${Date.now()}`,
+    data: Buffer.from(data),
+    mimetype: `image/${url.split('.').pop()}`,
     size: data.byteLength,
   }
 }

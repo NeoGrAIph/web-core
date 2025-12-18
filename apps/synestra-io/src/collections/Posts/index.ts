@@ -11,7 +11,9 @@ import {
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { RICH_TEXT_BLOCKS } from '@/blocks/richTextCatalog'
+import { Banner } from '../../blocks/Banner/config'
+import { Code } from '../../blocks/Code/config'
+import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
@@ -48,36 +50,22 @@ export const Posts: CollectionConfig<'posts'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data }) =>
+      url: ({ data, req }) =>
         generatePreviewPath({
           slug: data?.slug,
           collection: 'posts',
-          kind: 'internal',
+          req,
         }),
     },
-    preview: (data) =>
+    preview: (data, { req }) =>
       generatePreviewPath({
         slug: data?.slug as string,
         collection: 'posts',
-        kind: 'internal',
+        req,
       }),
     useAsTitle: 'title',
   },
   fields: [
-    {
-      name: 'sharePreview',
-      type: 'ui',
-      label: {
-        en: 'Share preview',
-        ru: 'Share preview',
-      },
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: '@/components/CopySharePreviewLink',
-        },
-      },
-    },
     {
       name: 'title',
       type: 'text',
@@ -101,7 +89,7 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: RICH_TEXT_BLOCKS }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -214,9 +202,6 @@ export const Posts: CollectionConfig<'posts'> = {
       admin: {
         disabled: true,
         readOnly: true,
-        components: {
-          RowLabel: '@/payload/admin/rowLabels#PopulatedAuthorRowLabel',
-        },
       },
       fields: [
         {

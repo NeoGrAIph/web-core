@@ -3,7 +3,6 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { s3Storage } from '@payloadcms/storage-s3'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -13,7 +12,6 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
-import { Media } from '@/collections/Media'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -25,49 +23,7 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
-const s3MediaStoragePlugin: Plugin = (incomingConfig) => {
-  // Evaluate at Payload init-time (runtime) to avoid baking env-dependent behavior into builds.
-  const s3Enabled = process.env.SYNESTRA_MEDIA_STORAGE === 's3'
-
-  if (s3Enabled) {
-    const required = [
-      'S3_ENDPOINT',
-      'S3_BUCKET',
-      'S3_ACCESS_KEY_ID',
-      'S3_SECRET_ACCESS_KEY',
-      'S3_REGION',
-    ] as const
-
-    const missing = required.filter((key) => !process.env[key])
-    if (missing.length > 0) {
-      throw new Error(
-        `SYNESTRA_MEDIA_STORAGE=s3, but missing required env vars: ${missing.join(', ')}`,
-      )
-    }
-  }
-
-  return s3Storage({
-    enabled: s3Enabled,
-    collections: {
-      [Media.slug]: true,
-    },
-    bucket: process.env.S3_BUCKET || 'payload-media',
-    config: s3Enabled
-      ? {
-          region: process.env.S3_REGION || 'us-east-1',
-          endpoint: process.env.S3_ENDPOINT!,
-          forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
-          credentials: {
-            accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-          },
-        }
-      : {},
-  })(incomingConfig)
-}
-
 export const plugins: Plugin[] = [
-  s3MediaStoragePlugin,
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
