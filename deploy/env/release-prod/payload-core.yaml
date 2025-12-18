@@ -5,7 +5,6 @@ env:
 
 image:
   repository: "registry.gitlab.com/synestra/synestra-platform/web-payload-core"
-  tag: "TBD"
+  tag: "13d512c4913a-r1"
   pullSecrets:
     - name: gitlab-regcred
-
