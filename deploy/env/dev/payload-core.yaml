@@ -23,6 +23,9 @@ ingress:
         - path: /
           pathType: Prefix
 
+persistence:
+  media:
+    enabled: false
+
 postgres:
   enabled: false
-
