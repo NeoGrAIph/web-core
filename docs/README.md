@@ -62,3 +62,10 @@
   - `docs/runbooks/runbook-dev-deploy-corporate.md`
 - GitOps деплой
   - `deploy/README.md`
+- Разработка (единая точка входа)
+  - `docs/development/README.md`
+  - `docs/development/01-app-facade.md`
+  - `docs/development/02-payload-dev-workbench.md`
+  - `docs/development/03-dev-environments.md`
+  - `docs/development/04-workflow-shared-changes.md`
+  - `docs/development/05-troubleshooting.md`
