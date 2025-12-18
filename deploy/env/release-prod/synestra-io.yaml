@@ -4,6 +4,7 @@ env:
   APP_NAME: "@synestra/synestra-io"
 
 image:
-  repository: "registry.gitlab.com/synestra/synestra-platform/web-synestra-io"9f968d0fe458-r1"
+  repository: "registry.gitlab.com/synestra/synestra-platform/web-synestra-io"
+  tag: "9f968d0fe458-r1"
   pullSecrets:
     - name: gitlab-regcred
