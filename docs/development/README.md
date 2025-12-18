@@ -6,7 +6,12 @@
 
 ## Ключевой канон: `App-level facade (@/ui/*) поверх shared (@synestra/ui/*)`
 
-Мы реализуем “битрикс‑подобный” подход к UI:
+Корректное название в терминах индустрии — **facade/indirection layer с локальными overrides**:
+- **Facade (GoF)**: фасад даёт единый, стабильный интерфейс для доступа к подсистеме. В нашем случае это стабильные импорт‑пути `@/ui/*`. См. определение Facade: `https://people.csail.mit.edu/addy/pattern/pat4e.htm`.
+- **Module path aliases** (Next.js): технический механизм, который позволяет `@/ui/*` резолвить в `apps/<site>/src/ui/*`. См. Next.js: `https://nextjs.org/docs/14/app/building-your-application/configuring/absolute-imports-and-module-aliases`.
+- Для **Payload Admin** похожий “override по файлу” механизм есть официально и так и называется: **Swap in your own React components / Custom Components** (Component Paths + Import Map). См. Payload: `https://payloadcms.com/docs/custom-components/overview`.
+
+Дальше в документах мы используем термины: **“app-level фасад”**, **“override”**, **“shared UI”**.
 
 1) **Shared слой** (`@synestra/ui/*`)
 - Живёт в `packages/ui` и экспортирует публичный API через subpath exports (например `@synestra/ui/button`).
@@ -69,4 +74,3 @@ apps/synestra-io/
 - `docs/development/03-dev-environments.md` — как мы называем dev/prod окружения (домены/namespaces) и почему.
 - `docs/development/04-workflow-shared-changes.md` — workflow разработки shared‑компонентов через `payload-dev`.
 - `docs/development/05-troubleshooting.md` — типовые проверки и быстрый дебаг.
-

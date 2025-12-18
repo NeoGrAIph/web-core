@@ -64,7 +64,15 @@
 
 ---
 
-## 2) Когда нужен более “битрикс‑подобный” override (shadowing/swizzle)
+## 2) Когда нужен override через фасад (facade/indirection layer)
+
+Термины:
+- **Facade/indirection layer**: стабильная точка входа/импорт‑путь, за которым скрыта реализация и допускаются локальные подмены.
+- **Override (file override)**: точечная замена реализации конкретного модуля/компонента без изменения импорт‑путей в остальном коде.
+
+См. также:
+- Facade (GoF): `https://people.csail.mit.edu/addy/pattern/pat4e.htm`
+- Next.js module aliases: `https://nextjs.org/docs/14/app/building-your-application/configuring/absolute-imports-and-module-aliases`
 
 Иногда хочется, чтобы код импортировал “канонический модуль”, а реализация подменялась автоматически, если в app есть файл с тем же именем (shadowing).
 
