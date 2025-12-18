@@ -3,6 +3,8 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import { en } from 'payload/i18n/en'
+import { ru } from 'payload/i18n/ru'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
@@ -59,6 +61,10 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
+  i18n: {
+    fallbackLanguage: 'ru',
+    supportedLanguages: { ru, en },
+  },
   db: postgresAdapter({
     pool: {
       connectionString:
