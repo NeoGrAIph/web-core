@@ -233,6 +233,21 @@ Runbook: `docs/runbooks/runbook-add-app-from-payload-template.md`.
 - `packages/cms-blocks` — общие blocks/sections
 - `packages/env` — контракт и runtime‑валидация env vars
 
+### 9.1. Эталонный “upstream workbench”: `payload-core` + `payload-dev`
+
+Чтобы развивать shared‑слои (`packages/*`) и подход **`App-level facade (@/ui/*) поверх shared (@synestra/ui/*)`** без доменной “грязи” конкретных сайтов, мы держим отдельный эталонный сайт на базе официального Payload website template:
+
+- **prod эталон**: `apps/payload-core` → `web-payload-core` → `https://payload.services.synestra.tech`
+  - назначение: стабильная “чистая” сборка/деплой, демонстрация канона.
+- **dev‑контур разработки**: `apps/payload-core` → `web-payload-dev` → `https://payload.dev.synestra.tech`
+  - назначение: здесь ведём разработку shared‑кода/компонентов и правил фасадов, прежде чем переносить изменения в доменные сайты.
+
+Практическое следствие:
+- любые изменения `packages/ui` и канона `@/ui/*` сначала проверяем в `payload-dev`;
+- перенос в доменные apps (например `synestra-io`) делаем после стабилизации, точечными override’ами через `apps/<site>/src/ui/*`.
+
+Нормативный документ по фасадам/overrides: `docs/architecture/component-system.md`.
+
 ---
 
 ## 10) Требования к “удобству для LLM‑агентов” (канон v0)

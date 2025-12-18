@@ -6,12 +6,13 @@
 
 - Запустить всё (все `apps/*`, если подключены в turbo/pnpm scripts):
   - `pnpm dev`
-- Запустить один app:
+ - Запустить один app:
   - `pnpm --filter <package-name> dev`
   - примеры:
     - `pnpm --filter @synestra/corporate-website dev`
     - `pnpm --filter @synestra/ecommerce-store dev`
     - `pnpm --filter @synestra/experiments dev`
+    - `pnpm --filter @synestra/payload-core dev` (эталонный upstream workbench)
 - Запустить несколько apps:
   - `pnpm --filter <app-1> --filter <app-2> dev`
 - Тесты UI пакета (`packages/ui`):
@@ -48,6 +49,7 @@
 - Если меняешь `packages/ui`:
   - держи запущенным хотя бы один app, который использует UI,
   - параллельно держи `dev:test`/`test` для UI пакета (Vitest), чтобы ловить регрессии.
+  - каноничный dev‑контур в кластере для этих изменений: `payload-dev` (`https://payload.dev.synestra.tech`)
 
 ## VS Code
 

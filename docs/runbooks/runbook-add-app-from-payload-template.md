@@ -9,6 +9,10 @@
 - hot dev: Okteto (в `synestra-platform`)
 - секреты: **только в `synestra-platform`**, в `web-core` — `.env.example` и ссылки на Secret names/keys
 
+Примечание (канон): у нас есть эталонный “чистый” Payload‑сайт `apps/payload-core`, и **вся разработка shared‑слоёв** (например `@synestra/ui/*` + фасад `@/ui/*`) ведётся в `payload-dev`:
+- dev: `https://payload.dev.synestra.tech` (`web-payload-dev`)
+- prod эталон: `https://payload.services.synestra.tech` (`web-payload-core`)
+
 ---
 
 ## 0) Соглашения (прежде чем начать)

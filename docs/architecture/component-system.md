@@ -155,6 +155,18 @@
 - Next.js Absolute Imports / Module Aliases: `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
 - Канон слоя 3: `docs/research/ui-layer-3-file-overrides.md`
 
+##### Где проверяем shared UI (канон)
+
+Эталонный контур для разработки shared‑кода (включая `@synestra/ui/*` и фасады `@/ui/*`) — **`payload-dev`**:
+
+- приложение: `apps/payload-core`
+- dev deployment: `web-payload-dev` (`https://payload.dev.synestra.tech`)
+- prod эталон (стабильный): `web-payload-core` (`https://payload.services.synestra.tech`)
+
+Почему это важно:
+- шаблон Payload “чистый” и не содержит доменных оверрайдов вроде `synestra.io`, поэтому регрессии shared‑слоя видны быстрее;
+- доменные сайты подключают shared‑слой через `@/ui/*`, и любые отличия оформляются как file‑override внутри app, а не форк shared‑пакета.
+
 ##### Разделение фасадов: frontend vs Payload Admin (best practice)
 
 В Next.js app у нас два разных “мира”, которые не стоит смешивать стилями и зависимостями:
