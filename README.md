@@ -51,13 +51,24 @@
   - ESLint: `packages/eslint-config` (flat config), подключается в `apps/*/eslint.config.mjs`;
   - TypeScript: `packages/typescript-config` (configs `base.json`, `nextjs.json`), используется через `extends`.
     Важно: потребители должны иметь `@synestra/typescript-config` в `devDependencies` (обычно `"workspace:*"`), иначе TypeScript не сможет резолвить `extends`.
-- **Shared UI**: `packages/ui` — общий UI‑слой; поддерживаем импорт из корня и subpath exports (`@synestra/ui/button`, `@synestra/ui/card`).
+- **Shared UI + overrides (канон)**:
+  - shared UI живёт в `packages/ui` и публикуется как `@synestra/ui/*` (предпочтительно subpath exports: `@synestra/ui/button`, `@synestra/ui/card`);
+  - приложения **не импортируют** UI напрямую из `@synestra/ui/*` — весь UI в app‑коде берётся только через **app-level фасад** `@/ui/*` (`apps/<site>/src/ui/*`);
+  - точечные отличия конкретного сайта реализуются как file‑override в `apps/<site>/src/ui/*`, без форка shared‑пакета.
 - **Тестовый контур**: базовые UI‑тесты на Vitest в `packages/ui`; запускаются через `pnpm test` (Turborepo).
 - **CI (референс)**: в репо есть пример workflow `.github/workflows/ci.yml` (основной CI всё равно может быть в `synestra-platform`).
+
+## Где ведём разработку shared‑слоя
+
+Канон: изменения shared‑слоёв (особенно `packages/ui` + фасад `@/ui/*`) обкатываем в dev‑контуре **`payload-dev`**:
+
+- dev: `https://payload.dev.synestra.tech` (deployment/namespace: `web-payload-dev`)
+- prod эталон: `https://payload.services.synestra.tech` (deployment/namespace: `web-payload-core`)
 
 ## Документация
 
 Начни с индекса: `docs/README.md`.
+Для разработки — с “точки входа”: `docs/development/README.md`.
 
 ## Структура репозитория (кратко)
 
@@ -96,6 +107,12 @@ pnpm install
 
 ```bash
 pnpm --filter @synestra/corporate-website dev
+```
+
+Эталонный workbench (payload template):
+
+```bash
+pnpm --filter @synestra/payload-core dev
 ```
 
 4) Быстрые проверки (перед пушем):
