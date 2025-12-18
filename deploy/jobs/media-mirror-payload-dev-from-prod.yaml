@@ -1,0 +1,74 @@
+# One-off Job: refresh `payload` dev media bucket from prod media bucket using MinIO Client (`mc`).
+#
+# IMPORTANT:
+# - This file is intentionally not wired into ArgoCD/Helm by default.
+# - Apply it manually (or via Okteto deploy/pipeline) when you need a refresh.
+#
+# Expected env vars (provide via `envFrom.secretRef`):
+#   - SRC_ENDPOINT, SRC_ACCESS_KEY_ID, SRC_SECRET_ACCESS_KEY, SRC_BUCKET
+#   - DST_ENDPOINT, DST_ACCESS_KEY_ID, DST_SECRET_ACCESS_KEY, DST_BUCKET
+# Optional:
+#   - MIRROR_REMOVE=true|false (default true) — delete objects in dst that are not in src
+#   - MIRROR_OVERWRITE=true|false (default true)
+#
+# Example endpoints for in-cluster MinIO:
+#   http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: media-mirror-payload-dev-from-prod
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mc
+          image: minio/mc:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MIRROR_REMOVE
+              value: "true"
+            - name: MIRROR_OVERWRITE
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: web-payload-dev-media-mirror-env
+          command:
+            - sh
+            - -lc
+            - |
+              set -euo pipefail
+
+              : "${SRC_ENDPOINT:?}"
+              : "${SRC_ACCESS_KEY_ID:?}"
+              : "${SRC_SECRET_ACCESS_KEY:?}"
+              : "${SRC_BUCKET:?}"
+
+              : "${DST_ENDPOINT:?}"
+              : "${DST_ACCESS_KEY_ID:?}"
+              : "${DST_SECRET_ACCESS_KEY:?}"
+              : "${DST_BUCKET:?}"
+
+              echo "Configuring mc aliases..."
+              mc alias set src "${SRC_ENDPOINT}" "${SRC_ACCESS_KEY_ID}" "${SRC_SECRET_ACCESS_KEY}" >/dev/null
+              mc alias set dst "${DST_ENDPOINT}" "${DST_ACCESS_KEY_ID}" "${DST_SECRET_ACCESS_KEY}" >/dev/null
+
+              echo "Checking destination bucket exists and is accessible..."
+              # Bucket lifecycle is managed by platform (MinIO Helm values). Mirror job should not require CreateBucket.
+              mc ls "dst/${DST_BUCKET}" >/dev/null
+
+              args=""
+              if [ "${MIRROR_OVERWRITE:-true}" = "true" ]; then
+                args="$args --overwrite"
+              fi
+              if [ "${MIRROR_REMOVE:-true}" = "true" ]; then
+                args="$args --remove"
+              fi
+
+              echo "Mirroring src/${SRC_BUCKET} -> dst/${DST_BUCKET} ..."
+              # Note: `mc mirror` preserves object keys (paths) exactly — это критично для Payload.
+              mc mirror $args "src/${SRC_BUCKET}" "dst/${DST_BUCKET}"
+
+              echo "Done."
+
