@@ -56,6 +56,11 @@
   - shared UI живёт в `packages/ui` и публикуется как `@synestra/ui/*` (предпочтительно subpath exports: `@synestra/ui/button`, `@synestra/ui/card`);
   - приложения **не импортируют** UI напрямую из `@synestra/ui/*` — весь UI в app‑коде берётся только через **app-level фасад** `@/ui/*` (`apps/<site>/src/ui/*`);
   - точечные отличия конкретного сайта реализуются как file‑override в `apps/<site>/src/ui/*`, без форка shared‑пакета.
+  - как это выглядит:
+    - app‑код: `import { Button } from '@/ui/button'`
+    - по умолчанию фасад‑реэкспорт: `apps/<site>/src/ui/button.tsx` → `export { Button } from '@synestra/ui/button'`
+    - override для конкретного сайта: `apps/<site>/src/ui/button.tsx` → экспортирует локальную реализацию (не меняя импорт‑пути по всему app)
+  - детали канона: `docs/development/01-app-facade.md`
 - **Тестовый контур**: базовые UI‑тесты на Vitest в `packages/ui`; запускаются через `pnpm test` (Turborepo).
 - **CI (референс)**: в репо есть пример workflow `.github/workflows/ci.yml` (основной CI всё равно может быть в `synestra-platform`).
 
