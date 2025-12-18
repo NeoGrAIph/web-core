@@ -1,3 +1,2 @@
-export { Button } from '@synestra/ui/button'
-export type { ButtonProps, ButtonSize, ButtonVariant } from '@synestra/ui/button'
-
+export { Button, buttonVariants } from '@/components/ui/button'
+export type { ButtonProps } from '@/components/ui/button'

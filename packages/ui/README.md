@@ -16,13 +16,10 @@
 
 ## Публичный API
 
-Поддерживаем оба стиля импортов:
+Канон: только **subpath exports** (чтобы публичный API был явным и не “раздувался” barrel‑импортами):
 
-- из корня:
-  - `import { Button } from '@synestra/ui'`
-- subpath exports:
-  - `import { Button } from '@synestra/ui/button'`
-  - `import { Card } from '@synestra/ui/card'`
+- `import { Button } from '@synestra/ui/button'`
+- `import { Card } from '@synestra/ui/card'`
 
 ## Стили и “tokens”
 

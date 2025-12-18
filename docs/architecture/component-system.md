@@ -32,7 +32,7 @@
 Назначение:
 - примитивы и композиции, которые должны работать в нескольких apps;
 - минимальная стилизация через **CSS variables/tokens + props**, без привязки к Tailwind major;
-- публичный API через **named exports** (subpath exports) + опционально barrel из корня.
+- публичный API через **named exports** (subpath exports), без root‑barrel (явные границы API + меньше рисков циклов/связанности).
 
 Запреты:
 - не тянуть app-специфичную бизнес-логику;
@@ -132,15 +132,11 @@
 
 - `import { Button } from '@synestra/ui/button'`
 
-Допускается (для удобства, но не “дефолт”):
-
-- `import { Button } from '@synestra/ui'`
-
 Запрещаем deep-imports вида:
 - `@synestra/ui/src/...` (ломает инкапсуляцию и усложняет рефакторинг).
 
 Уточнение (Next.js):
-- Если мы массово используем barrel‑импорты (`@synestra/ui`) и пакет начинает разрастаться, у Next.js есть официальный механизм `experimental.optimizePackageImports`. Но архитектурно проще держать основной путь импорта через subpath exports (`@synestra/ui/button`) и оставлять barrel как “удобный, но не обязательный”.
+- Если пакет начинает разрастаться, у Next.js есть официальный механизм `experimental.optimizePackageImports`, но архитектурно проще держать основной путь импорта через subpath exports (`@synestra/ui/button`).
 
 #### Внутри apps (`apps/*`)
 
@@ -151,6 +147,9 @@
 
 Фасад по умолчанию — это wrapper‑файлы, которые просто реэкспортят shared реализацию:
 - `apps/<site>/src/ui/button.tsx` → `export { Button } from '@synestra/ui/button'`
+
+Когда конкретному сайту нужен отличающийся UI — этот же файл становится override’ом и экспортирует локальную реализацию:
+- `apps/<site>/src/ui/button.tsx` → `export { Button } from '@/components/ui/button'` (или другая site‑локальная реализация)
 
 Источники:
 - Next.js Absolute Imports / Module Aliases: `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`

@@ -1,3 +1,8 @@
-export { Card } from '@synestra/ui/card'
-export type { CardProps } from '@synestra/ui/card'
-
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
