@@ -11,18 +11,15 @@
         "children": [
           {
             "type": "file",
-            "name": "extensions.json",
-            "bytes": 78
+            "name": "extensions.json"
           },
           {
             "type": "file",
-            "name": "launch.json",
-            "bytes": 758
+            "name": "launch.json"
           },
           {
             "type": "file",
-            "name": "settings.json",
-            "bytes": 1124
+            "name": "settings.json"
           }
         ]
       },
@@ -32,18 +29,15 @@
         "children": [
           {
             "type": "file",
-            "name": "favicon.ico",
-            "bytes": 15086
+            "name": "favicon.ico"
           },
           {
             "type": "file",
-            "name": "favicon.svg",
-            "bytes": 4407
+            "name": "favicon.svg"
           },
           {
             "type": "file",
-            "name": "website-template-OG.webp",
-            "bytes": 101500
+            "name": "website-template-OG.webp"
           }
         ]
       },
@@ -57,18 +51,15 @@
             "children": [
               {
                 "type": "file",
-                "name": "anyone.ts",
-                "bytes": 80
+                "name": "anyone.ts"
               },
               {
                 "type": "file",
-                "name": "authenticated.ts",
-                "bytes": 244
+                "name": "authenticated.ts"
               },
               {
                 "type": "file",
-                "name": "authenticatedOrPublished.ts",
-                "bytes": 213
+                "name": "authenticatedOrPublished.ts"
               }
             ]
           },
@@ -90,8 +81,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 1571
+                            "name": "route.ts"
                           }
                         ]
                       },
@@ -101,8 +91,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 1274
+                            "name": "route.ts"
                           }
                         ]
                       }
@@ -114,13 +103,11 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "page.client.tsx",
-                        "bytes": 398
+                        "name": "page.client.tsx"
                       },
                       {
                         "type": "file",
-                        "name": "page.tsx",
-                        "bytes": 2867
+                        "name": "page.tsx"
                       }
                     ]
                   },
@@ -134,8 +121,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 193
+                            "name": "route.ts"
                           }
                         ]
                       },
@@ -145,8 +131,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 1660
+                            "name": "route.ts"
                           }
                         ]
                       },
@@ -156,8 +141,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 1090
+                            "name": "route.ts"
                           }
                         ]
                       }
@@ -173,13 +157,11 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "page.client.tsx",
-                            "bytes": 397
+                            "name": "page.client.tsx"
                           },
                           {
                             "type": "file",
-                            "name": "page.tsx",
-                            "bytes": 3074
+                            "name": "page.tsx"
                           }
                         ]
                       },
@@ -193,13 +175,11 @@
                             "children": [
                               {
                                 "type": "file",
-                                "name": "page.client.tsx",
-                                "bytes": 398
+                                "name": "page.client.tsx"
                               },
                               {
                                 "type": "file",
-                                "name": "page.tsx",
-                                "bytes": 2256
+                                "name": "page.tsx"
                               }
                             ]
                           }
@@ -207,13 +187,11 @@
                       },
                       {
                         "type": "file",
-                        "name": "page.client.tsx",
-                        "bytes": 398
+                        "name": "page.client.tsx"
                       },
                       {
                         "type": "file",
-                        "name": "page.tsx",
-                        "bytes": 1539
+                        "name": "page.tsx"
                       }
                     ]
                   },
@@ -223,35 +201,29 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "page.client.tsx",
-                        "bytes": 398
+                        "name": "page.client.tsx"
                       },
                       {
                         "type": "file",
-                        "name": "page.tsx",
-                        "bytes": 2117
+                        "name": "page.tsx"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "globals.css",
-                    "bytes": 1948
+                    "name": "globals.css"
                   },
                   {
                     "type": "file",
-                    "name": "layout.tsx",
-                    "bytes": 1480
+                    "name": "layout.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "not-found.tsx",
-                    "bytes": 468
+                    "name": "not-found.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "page.tsx",
-                    "bytes": 121
+                    "name": "page.tsx"
                   }
                 ]
               },
@@ -269,20 +241,17 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "not-found.tsx",
-                            "bytes": 731
+                            "name": "not-found.tsx"
                           },
                           {
                             "type": "file",
-                            "name": "page.tsx",
-                            "bytes": 715
+                            "name": "page.tsx"
                           }
                         ]
                       },
                       {
                         "type": "file",
-                        "name": "importMap.js",
-                        "bytes": 6356
+                        "name": "importMap.js"
                       }
                     ]
                   },
@@ -296,8 +265,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 551
+                            "name": "route.ts"
                           }
                         ]
                       },
@@ -307,8 +275,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 315
+                            "name": "route.ts"
                           }
                         ]
                       },
@@ -318,8 +285,7 @@
                         "children": [
                           {
                             "type": "file",
-                            "name": "route.ts",
-                            "bytes": 305
+                            "name": "route.ts"
                           }
                         ]
                       }
@@ -327,13 +293,11 @@
                   },
                   {
                     "type": "file",
-                    "name": "custom.scss",
-                    "bytes": 0
+                    "name": "custom.scss"
                   },
                   {
                     "type": "file",
-                    "name": "layout.tsx",
-                    "bytes": 810
+                    "name": "layout.tsx"
                   }
                 ]
               }
@@ -349,13 +313,11 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 1732
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 2090
+                    "name": "config.ts"
                   }
                 ]
               },
@@ -365,13 +327,11 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 835
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 841
+                    "name": "config.ts"
                   }
                 ]
               },
@@ -381,13 +341,11 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 828
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 908
+                    "name": "config.ts"
                   }
                 ]
               },
@@ -397,23 +355,19 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.client.tsx",
-                    "bytes": 1042
+                    "name": "Component.client.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 442
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 581
+                    "name": "config.ts"
                   },
                   {
                     "type": "file",
-                    "name": "CopyButton.tsx",
-                    "bytes": 765
+                    "name": "CopyButton.tsx"
                   }
                 ]
               },
@@ -423,13 +377,11 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 1164
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 1432
+                    "name": "config.ts"
                   }
                 ]
               },
@@ -443,8 +395,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1322
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -454,13 +405,11 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1848
+                        "name": "index.tsx"
                       },
                       {
                         "type": "file",
-                        "name": "options.ts",
-                        "bytes": 12745
+                        "name": "options.ts"
                       }
                     ]
                   },
@@ -470,8 +419,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1029
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -481,8 +429,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 356
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -492,8 +439,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 386
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -503,8 +449,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1000
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -514,8 +459,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1846
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -525,13 +469,11 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1822
+                        "name": "index.tsx"
                       },
                       {
                         "type": "file",
-                        "name": "options.ts",
-                        "bytes": 1954
+                        "name": "options.ts"
                       }
                     ]
                   },
@@ -541,8 +483,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 959
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -552,8 +493,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1080
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -563,25 +503,21 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 312
+                        "name": "index.tsx"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 4948
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 1091
+                    "name": "config.ts"
                   },
                   {
                     "type": "file",
-                    "name": "fields.tsx",
-                    "bytes": 503
+                    "name": "fields.tsx"
                   }
                 ]
               },
@@ -591,13 +527,11 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 1453
+                    "name": "Component.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "config.ts",
-                    "bytes": 250
+                    "name": "config.ts"
                   }
                 ]
               },
@@ -607,15 +541,13 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Component.tsx",
-                    "bytes": 936
+                    "name": "Component.tsx"
                   }
                 ]
               },
               {
                 "type": "file",
-                "name": "RenderBlocks.tsx",
-                "bytes": 1378
+                "name": "RenderBlocks.tsx"
               }
             ]
           },
@@ -633,15 +565,13 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "revalidatePage.ts",
-                        "bytes": 1278
+                        "name": "revalidatePage.ts"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "index.ts",
-                    "bytes": 3659
+                    "name": "index.ts"
                   }
                 ]
               },
@@ -655,20 +585,17 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "populateAuthors.ts",
-                        "bytes": 1223
+                        "name": "populateAuthors.ts"
                       },
                       {
                         "type": "file",
-                        "name": "revalidatePost.ts",
-                        "bytes": 1203
+                        "name": "revalidatePost.ts"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "index.ts",
-                    "bytes": 6022
+                    "name": "index.ts"
                   }
                 ]
               },
@@ -678,20 +605,17 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.ts",
-                    "bytes": 501
+                    "name": "index.ts"
                   }
                 ]
               },
               {
                 "type": "file",
-                "name": "Categories.ts",
-                "bytes": 555
+                "name": "Categories.ts"
               },
               {
                 "type": "file",
-                "name": "Media.ts",
-                "bytes": 1690
+                "name": "Media.ts"
               }
             ]
           },
@@ -705,13 +629,11 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.scss",
-                    "bytes": 96
+                    "name": "index.scss"
                   },
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 2345
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -725,25 +647,21 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.scss",
-                        "bytes": 173
+                        "name": "index.scss"
                       },
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 2208
+                        "name": "index.tsx"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "index.scss",
-                    "bytes": 302
+                    "name": "index.scss"
                   },
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 2034
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -753,8 +671,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 269
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -764,8 +681,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 2730
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -775,8 +691,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 860
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -786,8 +701,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 1742
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -797,8 +711,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 400
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -808,8 +721,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "Logo.tsx",
-                    "bytes": 787
+                    "name": "Logo.tsx"
                   }
                 ]
               },
@@ -823,8 +735,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 4077
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -834,20 +745,17 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1078
+                        "name": "index.tsx"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 613
+                    "name": "index.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "types.ts",
-                    "bytes": 717
+                    "name": "types.ts"
                   }
                 ]
               },
@@ -857,8 +765,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 1414
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -868,8 +775,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 2533
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -879,8 +785,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 1535
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -890,8 +795,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 2447
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -901,43 +805,35 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "button.tsx",
-                    "bytes": 1779
+                    "name": "button.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "card.tsx",
-                    "bytes": 1645
+                    "name": "card.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "checkbox.tsx",
-                    "bytes": 979
+                    "name": "checkbox.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "input.tsx",
-                    "bytes": 740
+                    "name": "input.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "label.tsx",
-                    "bytes": 635
+                    "name": "label.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "pagination.tsx",
-                    "bytes": 2483
+                    "name": "pagination.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "select.tsx",
-                    "bytes": 4919
+                    "name": "select.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "textarea.tsx",
-                    "bytes": 678
+                    "name": "textarea.tsx"
                   }
                 ]
               }
@@ -953,83 +849,67 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "contact-form.ts",
-                    "bytes": 2504
+                    "name": "contact-form.ts"
                   },
                   {
                     "type": "file",
-                    "name": "contact-page.ts",
-                    "bytes": 1284
+                    "name": "contact-page.ts"
                   },
                   {
                     "type": "file",
-                    "name": "home-static.ts",
-                    "bytes": 2268
+                    "name": "home-static.ts"
                   },
                   {
                     "type": "file",
-                    "name": "home.ts",
-                    "bytes": 20229
+                    "name": "home.ts"
                   },
                   {
                     "type": "file",
-                    "name": "image-1.ts",
-                    "bytes": 1627
+                    "name": "image-1.ts"
                   },
                   {
                     "type": "file",
-                    "name": "image-2.ts",
-                    "bytes": 1627
+                    "name": "image-2.ts"
                   },
                   {
                     "type": "file",
-                    "name": "image-3.ts",
-                    "bytes": 1628
+                    "name": "image-3.ts"
                   },
                   {
                     "type": "file",
-                    "name": "image-hero-1.ts",
-                    "bytes": 179
+                    "name": "image-hero-1.ts"
                   },
                   {
                     "type": "file",
-                    "name": "image-hero1.webp",
-                    "bytes": 771366
+                    "name": "image-hero1.webp"
                   },
                   {
                     "type": "file",
-                    "name": "image-post1.webp",
-                    "bytes": 117606
+                    "name": "image-post1.webp"
                   },
                   {
                     "type": "file",
-                    "name": "image-post2.webp",
-                    "bytes": 168786
+                    "name": "image-post2.webp"
                   },
                   {
                     "type": "file",
-                    "name": "image-post3.webp",
-                    "bytes": 112146
+                    "name": "image-post3.webp"
                   },
                   {
                     "type": "file",
-                    "name": "index.ts",
-                    "bytes": 7739
+                    "name": "index.ts"
                   },
                   {
                     "type": "file",
-                    "name": "post-1.ts",
-                    "bytes": 11258
+                    "name": "post-1.ts"
                   },
                   {
                     "type": "file",
-                    "name": "post-2.ts",
-                    "bytes": 7834
+                    "name": "post-2.ts"
                   },
                   {
                     "type": "file",
-                    "name": "post-3.ts",
-                    "bytes": 9824
+                    "name": "post-3.ts"
                   }
                 ]
               }
@@ -1041,18 +921,15 @@
             "children": [
               {
                 "type": "file",
-                "name": "defaultLexical.ts",
-                "bytes": 1362
+                "name": "defaultLexical.ts"
               },
               {
                 "type": "file",
-                "name": "link.ts",
-                "bytes": 3095
+                "name": "link.ts"
               },
               {
                 "type": "file",
-                "name": "linkGroup.ts",
-                "bytes": 626
+                "name": "linkGroup.ts"
               }
             ]
           },
@@ -1066,25 +943,21 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "revalidateFooter.ts",
-                    "bytes": 334
+                    "name": "revalidateFooter.ts"
                   }
                 ]
               },
               {
                 "type": "file",
-                "name": "Component.tsx",
-                "bytes": 1124
+                "name": "Component.tsx"
               },
               {
                 "type": "file",
-                "name": "config.ts",
-                "bytes": 604
+                "name": "config.ts"
               },
               {
                 "type": "file",
-                "name": "RowLabel.tsx",
-                "bytes": 429
+                "name": "RowLabel.tsx"
               }
             ]
           },
@@ -1098,8 +971,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "revalidateHeader.ts",
-                    "bytes": 334
+                    "name": "revalidateHeader.ts"
                   }
                 ]
               },
@@ -1109,30 +981,25 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 660
+                    "name": "index.tsx"
                   }
                 ]
               },
               {
                 "type": "file",
-                "name": "Component.client.tsx",
-                "bytes": 1303
+                "name": "Component.client.tsx"
               },
               {
                 "type": "file",
-                "name": "Component.tsx",
-                "bytes": 327
+                "name": "Component.tsx"
               },
               {
                 "type": "file",
-                "name": "config.ts",
-                "bytes": 604
+                "name": "config.ts"
               },
               {
                 "type": "file",
-                "name": "RowLabel.tsx",
-                "bytes": 429
+                "name": "RowLabel.tsx"
               }
             ]
           },
@@ -1146,8 +1013,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 1447
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -1157,8 +1023,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 615
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -1168,8 +1033,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 1284
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -1179,20 +1043,17 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 2601
+                    "name": "index.tsx"
                   }
                 ]
               },
               {
                 "type": "file",
-                "name": "config.ts",
-                "bytes": 1468
+                "name": "config.ts"
               },
               {
                 "type": "file",
-                "name": "RenderHero.tsx",
-                "bytes": 593
+                "name": "RenderHero.tsx"
               }
             ]
           },
@@ -1202,13 +1063,11 @@
             "children": [
               {
                 "type": "file",
-                "name": "populatePublishedAt.ts",
-                "bytes": 379
+                "name": "populatePublishedAt.ts"
               },
               {
                 "type": "file",
-                "name": "revalidateRedirects.ts",
-                "bytes": 291
+                "name": "revalidateRedirects.ts"
               }
             ]
           },
@@ -1218,8 +1077,7 @@
             "children": [
               {
                 "type": "file",
-                "name": "index.ts",
-                "bytes": 2905
+                "name": "index.ts"
               }
             ]
           },
@@ -1233,8 +1091,7 @@
                 "children": [
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 999
+                    "name": "index.tsx"
                   }
                 ]
               },
@@ -1248,8 +1105,7 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1275
+                        "name": "index.tsx"
                       }
                     ]
                   },
@@ -1259,37 +1115,31 @@
                     "children": [
                       {
                         "type": "file",
-                        "name": "index.tsx",
-                        "bytes": 1258
+                        "name": "index.tsx"
                       },
                       {
                         "type": "file",
-                        "name": "types.ts",
-                        "bytes": 127
+                        "name": "types.ts"
                       }
                     ]
                   },
                   {
                     "type": "file",
-                    "name": "index.tsx",
-                    "bytes": 1877
+                    "name": "index.tsx"
                   },
                   {
                     "type": "file",
-                    "name": "shared.ts",
-                    "bytes": 443
+                    "name": "shared.ts"
                   },
                   {
                     "type": "file",
-                    "name": "types.ts",
-                    "bytes": 276
+                    "name": "types.ts"
                   }
                 ]
               },
               {
                 "type": "file",
-                "name": "index.tsx",
-                "bytes": 326
+                "name": "index.tsx"
               }
             ]
           },
@@ -1299,18 +1149,15 @@
             "children": [
               {
                 "type": "file",
-                "name": "beforeSync.ts",
-                "bytes": 1518
+                "name": "beforeSync.ts"
               },
               {
                 "type": "file",
-                "name": "Component.tsx",
-                "bytes": 1015
+                "name": "Component.tsx"
               },
               {
                 "type": "file",
-                "name": "fieldOverrides.ts",
-                "bytes": 960
+                "name": "fieldOverrides.ts"
               }
             ]
           },
@@ -1320,110 +1167,89 @@
             "children": [
               {
                 "type": "file",
-                "name": "canUseDOM.ts",
-                "bytes": 101
+                "name": "canUseDOM.ts"
               },
               {
                 "type": "file",
-                "name": "deepMerge.ts",
-                "bytes": 843
+                "name": "deepMerge.ts"
               },
               {
                 "type": "file",
-                "name": "formatAuthors.ts",
-                "bytes": 883
+                "name": "formatAuthors.ts"
               },
               {
                 "type": "file",
-                "name": "formatDateTime.ts",
-                "bytes": 714
+                "name": "formatDateTime.ts"
               },
               {
                 "type": "file",
-                "name": "generateMeta.ts",
-                "bytes": 1225
+                "name": "generateMeta.ts"
               },
               {
                 "type": "file",
-                "name": "generatePreviewPath.ts",
-                "bytes": 832
+                "name": "generatePreviewPath.ts"
               },
               {
                 "type": "file",
-                "name": "getDocument.ts",
-                "bytes": 805
+                "name": "getDocument.ts"
               },
               {
                 "type": "file",
-                "name": "getGlobals.ts",
-                "bytes": 661
+                "name": "getGlobals.ts"
               },
               {
                 "type": "file",
-                "name": "getMediaUrl.ts",
-                "bytes": 820
+                "name": "getMediaUrl.ts"
               },
               {
                 "type": "file",
-                "name": "getMeUser.ts",
-                "bytes": 988
+                "name": "getMeUser.ts"
               },
               {
                 "type": "file",
-                "name": "getRedirects.ts",
-                "bytes": 675
+                "name": "getRedirects.ts"
               },
               {
                 "type": "file",
-                "name": "getURL.ts",
-                "bytes": 708
+                "name": "getURL.ts"
               },
               {
                 "type": "file",
-                "name": "mergeOpenGraph.ts",
-                "bytes": 597
+                "name": "mergeOpenGraph.ts"
               },
               {
                 "type": "file",
-                "name": "toKebabCase.ts",
-                "bytes": 151
+                "name": "toKebabCase.ts"
               },
               {
                 "type": "file",
-                "name": "ui.ts",
-                "bytes": 405
+                "name": "ui.ts"
               },
               {
                 "type": "file",
-                "name": "useClickableCard.ts",
-                "bytes": 2624
+                "name": "useClickableCard.ts"
               },
               {
                 "type": "file",
-                "name": "useDebounce.ts",
-                "bytes": 376
+                "name": "useDebounce.ts"
               }
             ]
           },
           {
             "type": "file",
-            "name": "cssVariables.js",
-            "bytes": 219
+            "name": "cssVariables.js"
           },
           {
             "type": "file",
-            "name": "environment.d.ts",
-            "bytes": 357
+            "name": "environment.d.ts"
           },
           {
             "type": "file",
-            "name": "payload-types.ts",
-            "bytes": 42245
+            "name": "payload-types.ts"
           },
           {
             "type": "file",
-            "name": "payload.config.ts",
-            "bytes": 2756
+            "name": "payload.config.ts"
           }
         ]
       },
@@ -1437,8 +1263,7 @@
             "children": [
               {
                 "type": "file",
-                "name": "frontend.e2e.spec.ts",
-                "bytes": 529
+                "name": "frontend.e2e.spec.ts"
               }
             ]
           },
@@ -1448,8 +1273,7 @@
             "children": [
               {
                 "type": "file",
-                "name": "api.int.spec.ts",
-                "bytes": 467
+                "name": "api.int.spec.ts"
               }
             ]
           }
@@ -1457,123 +1281,99 @@
       },
       {
         "type": "file",
-        "name": ".editorconfig",
-        "bytes": 170
+        "name": ".editorconfig"
       },
       {
         "type": "file",
-        "name": ".env.example",
-        "bytes": 494
+        "name": ".env.example"
       },
       {
         "type": "file",
-        "name": ".gitignore",
-        "bytes": 254
+        "name": ".gitignore"
       },
       {
         "type": "file",
-        "name": ".npmrc",
-        "bytes": 51
+        "name": ".npmrc"
       },
       {
         "type": "file",
-        "name": ".prettierignore",
-        "bytes": 140
+        "name": ".prettierignore"
       },
       {
         "type": "file",
-        "name": ".prettierrc.json",
-        "bytes": 90
+        "name": ".prettierrc.json"
       },
       {
         "type": "file",
-        "name": "components.json",
-        "bytes": 360
+        "name": "components.json"
       },
       {
         "type": "file",
-        "name": "docker-compose.yml",
-        "bytes": 531
+        "name": "docker-compose.yml"
       },
       {
         "type": "file",
-        "name": "Dockerfile",
-        "bytes": 2443
+        "name": "Dockerfile"
       },
       {
         "type": "file",
-        "name": "eslint.config.mjs",
-        "bytes": 959
+        "name": "eslint.config.mjs"
       },
       {
         "type": "file",
-        "name": "next-env.d.ts",
-        "bytes": 211
+        "name": "next-env.d.ts"
       },
       {
         "type": "file",
-        "name": "next-sitemap.config.cjs",
-        "bytes": 532
+        "name": "next-sitemap.config.cjs"
       },
       {
         "type": "file",
-        "name": "next.config.js",
-        "bytes": 993
+        "name": "next.config.js"
       },
       {
         "type": "file",
-        "name": "package.json",
-        "bytes": 3526
+        "name": "package.json"
       },
       {
         "type": "file",
-        "name": "playwright.config.ts",
-        "bytes": 1233
+        "name": "playwright.config.ts"
       },
       {
         "type": "file",
-        "name": "pnpm-lock.yaml",
-        "bytes": 347409
+        "name": "pnpm-lock.yaml"
       },
       {
         "type": "file",
-        "name": "postcss.config.js",
-        "bytes": 103
+        "name": "postcss.config.js"
       },
       {
         "type": "file",
-        "name": "README.md",
-        "bytes": 15548
+        "name": "README.md"
       },
       {
         "type": "file",
-        "name": "redirects.js",
-        "bytes": 466
+        "name": "redirects.js"
       },
       {
         "type": "file",
-        "name": "tailwind.config.mjs",
-        "bytes": 3840
+        "name": "tailwind.config.mjs"
       },
       {
         "type": "file",
-        "name": "test.env",
-        "bytes": 62
+        "name": "test.env"
       },
       {
         "type": "file",
-        "name": "tsconfig.json",
-        "bytes": 922
+        "name": "tsconfig.json"
       },
       {
         "type": "file",
-        "name": "vitest.config.mts",
-        "bytes": 332
+        "name": "vitest.config.mts"
       },
       {
         "type": "file",
-        "name": "vitest.setup.ts",
-        "bytes": 87
+        "name": "vitest.setup.ts"
       }
     ]
   }
