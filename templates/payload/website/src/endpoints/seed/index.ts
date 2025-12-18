@@ -316,8 +316,8 @@ export const seed = async ({
 }
 
 async function readSeedFile(fileUrl: URL): Promise<File> {
-  const data = await readFile(fileUrl)
   const filePath = fileURLToPath(fileUrl)
+  const data = await readFile(filePath)
   const name = path.basename(filePath)
   const ext = path.extname(name).slice(1)
 
