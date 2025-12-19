@@ -1,29 +1,4 @@
 * @NeoGrAIph
 
-# Docs / GitOps / tooling
-/docs/ @NeoGrAIph
-/deploy/ @NeoGrAIph
-/turbo.json @NeoGrAIph
-/package.json @NeoGrAIph
-/pnpm-workspace.yaml @NeoGrAIph
-/AGENTS.md @NeoGrAIph
-
-# Apps
-/apps/corporate-website/ @NeoGrAIph
-/apps/ecommerce-store/ @NeoGrAIph
-/apps/saas-webapp/ @NeoGrAIph
-/apps/landings/ @NeoGrAIph
-/apps/experiments/ @NeoGrAIph
-
-# Shared packages
-/packages/ui/ @NeoGrAIph
-/packages/cms-core/ @NeoGrAIph
-/packages/cms-blocks/ @NeoGrAIph
-/packages/cms-ecommerce/ @NeoGrAIph
-/packages/utils/ @NeoGrAIph
-/packages/typescript-config/ @NeoGrAIph
-/packages/eslint-config/ @NeoGrAIph
-/packages/plugins/ @NeoGrAIph
-
 # CI / Deploy
 /.gitlab-ci.yml @NeoGrAIph
