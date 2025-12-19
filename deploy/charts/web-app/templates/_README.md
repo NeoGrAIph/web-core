@@ -14,6 +14,8 @@
 - `cnpg-cluster.yaml` — `postgresql.cnpg.io/Cluster` (CloudNativePG), опционально (включается `values.postgres.enabled`).
 - `migrations-job.yaml` — `Job` для миграций Payload как ArgoCD hook (опционально, `values.migrations.enabled`).
 
+Примечание: если app использует Payload Admin custom components, import map должен быть сгенерирован на этапе сборки образа (см. `deploy/charts/web-app/README.md`).
+
 ## Где настраивать
 
 - Базовые defaults: `deploy/charts/web-app/values.yaml`.

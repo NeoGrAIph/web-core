@@ -26,6 +26,15 @@ TLS по умолчанию:
 Где задаются секреты:
 - `envFrom.secretRef` — имя Secret (создаётся в `synestra-platform` через SOPS).
 
+## Payload Admin UI и import map (важно для деплоя)
+
+Payload Admin кастомизируется через **component paths + import map**. Это влияет на сборку образа:
+
+- если приложение использует custom components для админки, в pipeline сборки образа необходимо выполнять:
+  - `payload generate:importmap`
+  - (обычно) `payload generate:types`
+- сами компоненты админки рекомендуется держать отдельно от frontend‑UI (см. `docs/architecture/component-system.md`).
+
 Где описан контракт env vars:
 - `docs/architecture/env-contract.md`
 

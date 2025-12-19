@@ -7,6 +7,10 @@
 - В `web-core` **нет plaintext‑секретов**. В манифестах/values можно ссылаться на Secret names/keys, но сами Secret’ы создаются и хранятся в `~/synestra-platform` (SOPS).
 - На старте поддерживаем `dev → stage → prod`, но реально используем **`dev` + `prod`** (без `stage`).
 - Каждый deployment изолирован: **отдельный namespace + отдельная БД**.
+- Деплоим **одно** Next.js+Payload приложение, внутри которого есть два слоя UI:
+  - frontend (публичный сайт): канон импорта UI через app‑facade `@/ui/*` (`apps/<site>/src/ui/*`);
+  - Payload Admin: кастомизации держим отдельно (например `@/admin-ui/*`) и подключаем через Payload import map (custom components), чтобы зависимости и стили админки не “протекали” в frontend.
+  - детали: `docs/development/01-app-facade.md` и `docs/architecture/component-system.md`.
 
 Структура (заготовка):
 
