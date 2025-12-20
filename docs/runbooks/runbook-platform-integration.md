@@ -124,6 +124,11 @@ Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 - Dev образ Payload: `synestra-platform/docker/payload/dev/Dockerfile`, тег `docker/payload/VERSION`; используется в `values.dev.yaml`, команда `next dev --port 3000` и `NODE_ENV=development`.
 - Для обновления тега меняем соответствующий `values.*.yaml`, рендерим `helm template` + `kubeconform`, затем ArgoCD sync.
 
+### Dev‑режим payload.dev
+- `payload.dev.synestra.tech` работает на Next.js 15 в **`next dev`** (горячая перезагрузка, HMR, без standalone build).
+- Payload CMS 3 запущен в dev‑mode (`NODE_ENV=development`), поэтому отражает изменения схем/блоков сразу после sync образа.
+- Dev‑образ: `registry.gitlab.com/synestra/synestra-platform/payload:<docker/payload/VERSION>`; сборка управляется `build_payload_dev` в CI `synestra-platform`.
+
 ## 6) Проверка интеграции
 
 После подключения root Application `web-core` в ArgoCD должны появиться child Applications:
