@@ -62,13 +62,13 @@
 - Зафиксировать обязательную проверку миграций Payload в dev‑образе (hook job) при любых изменениях schema.
 
 ## Порядок обработки (этапы)
-1) **Разбор upstream**: классифицировать файлы шаблона, занести решения/статусы в `processing-progress.md`.
-2) **Подготовка каркаса**: убедиться, что фасады и базовые пакеты созданы (через генераторы при необходимости).
-3) **Экстракция**: перенос групп из upstream в shared/packages или app‑фасад с фиксацией решения.
-4) **Конвертация/registry**: собрать registry блоков (schema+renderer), настроить фасады `@/ui/*`, `@/admin-ui/*`, сформировать import map Payload.
-5) **Схемы и данные**: при изменении schema добавить миграции/seed (см. `docs/runbooks/runbook-payload-migrations.md`, `runbook-payload-seeding.md`).
-6) **Проверка в dev**: собрать dev‑образ (`build_payload_dev`), обновить `values.dev.yaml`, `helm template` + `kubeconform`, ArgoCD sync `web-payload-dev`, smoke‑тест домена.
-7) **Промо/перенос**: зафиксировать решение в `apps/payload-core` (эталон), при необходимости добавить overrides в `apps/synestra-io`; поднять тег в `values.prod.yaml`, повторить проверки и sync prod‑приложений.
+1) **Разбор upstream** — классифицировать файлы шаблона, занести решения/статусы в `processing-progress.md`.
+2) **Каркас shared/фасадов** — убедиться, что базовые пакеты и фасады созданы (генераторы ui/admin-ui/cms-blocks/cms-fields/utils при необходимости).
+3) **Экстракция** — перенос групп из upstream → shared/packages или app‑фасад с фиксацией решения.
+4) **Конвертация и registry** — собрать registry блоков (schema + renderer), настроить фасады `@/ui/*`, `@/admin-ui/*`, сформировать import map Payload.
+5) **Схемы и данные** — при изменении schema добавить миграции/seed (см. `docs/runbooks/runbook-payload-migrations.md`, `runbook-payload-seeding.md`); проверить hook job в dev‑образе.
+6) **Проверка в dev** — собрать dev‑образ (`build_payload_dev`), обновить `values.dev.yaml`, `helm template` + `kubeconform`, ArgoCD sync `web-payload-dev`, smoke‑тест `payload.dev.synestra.tech`.
+7) **Промо/перенос** — зафиксировать решение в `apps/payload-core` (эталон), при необходимости добавить overrides в `apps/synestra-io`; поднять тег в `values.prod.yaml`, повторить проверки и sync prod‑приложений.
 
 ## Журнал обработки (заполняется по мере работы)
 
