@@ -5,9 +5,9 @@ Runbook: какие шаги нужны в `synestra-platform`, чтобы **п�
 - `dev` (hot через Okteto) на dev‑домене (обычно `sitename.dev.synestra.tech` или `dev.sitename.synestra.tech`; для корневых доменов — `dev.<root>`, например `dev.synestra.io`)
 - `prod` (GitOps‑строго) на прод‑домене `*.synestra.io`
 
-Этот документ специально “стыкует” два репозитория:
-- `~/repo/web-core` — код и GitOps‑артефакты приложений (values/charts/ArgoCD Applications)
-- `~/synestra-platform` — кластерная инфраструктура (Traefik, cert-manager, Okteto, ArgoCD, секреты, runner/CI)
+Этот документ стыкует два репозитория:
+- `~/repo/web-core` — код приложений и Helm‑чарт `deploy/charts/web-app`.
+- `~/repo/synestra-platform` — инфраструктура (Traefik, cert-manager, Okteto, ArgoCD, SOPS) **и единственный источник deploy‑values/Applications** для web‑core.
 
 ## 0) Что уже есть в `synestra-platform` (важно знать)
 
@@ -47,41 +47,39 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 - `*.dev.synestra.tech` → Traefik LB IP
 - `*.synestra.io` → Traefik LB IP
 
-## 2) Доступ ArgoCD к репозиторию `web-core`
+## 2) Доступ ArgoCD к репозиториям
 
-Если репозиторий `web-core` публичный — ArgoCD может читать его без credentials.
+ArgoCD должен читать **оба** репозитория:
+- `web-core` (Helm chart `deploy/charts/web-app`)
+- `synestra-platform` (values и ArgoCD Applications)
 
-Если приватный — нужно добавить repo credentials в ArgoCD (в `synestra-platform`, через SOPS‑секрет в namespace `argo`).
+Если `web-core` приватный — добавьте repo credentials в ArgoCD (`argo` ns, SOPS‑секрет). `synestra-platform` уже подключён как git@gitlab.com:synestra/synestra-platform.git.
 
-Цель: ArgoCD должен уметь читать:
-- `deploy/charts/web-app`
-- `deploy/env/**`
-- `deploy/argocd/apps/**`
+## 3) AppProject и приложения ArgoCD (истина в `synestra-platform`)
 
-## 3) AppProject для web‑приложений (рекомендуется)
+- AppProject: `synestra-platform/argocd/apps/app-projects.yaml` содержит `synestra-web` (whitelist web‑namespaces, репозитории GitHub/GitLab).
+- Приложения находятся **в платформенном репозитории**:
+  - `argocd/apps/web-payload-dev.yaml`
+  - `argocd/apps/web-payload-core.yaml`
+  - `argocd/apps/web-synestra-io-dev.yaml`
+  - `argocd/apps/web-synestra-io-prod.yaml`
 
-В `synestra-platform` стоит завести отдельный AppProject, например `synestra-web`, который разрешает:
-- destinations: `web-*-dev`, `web-*-prod` (и позже stage)
-- cluster resources: `Namespace` (если используем `CreateNamespace=true` для stage/prod или отдельных случаев).
+Паттерн: multi-source Helm
+```
+sources:
+  - repoURL: https://github.com/NeoGrAIph/web-core.git
+    path: deploy/charts/web-app
+  - repoURL: git@gitlab.com:synestra/synestra-platform.git
+    ref: values
+    targetRevision: main
+    helm:
+      valueFiles:
+        - $values/infra/web-core/<app>/values.yaml
+        - $values/infra/web-core/<app>/values.<env>.yaml
+```
+Таким образом, **chart живёт в web-core**, а **values и Applications — в synestra-platform**.
 
-Примечание (Okteto dev‑loop):
-- для dev namespaces в нашей схеме обычно **не** используем `CreateNamespace=true`,
-- потому что dev namespace должен быть создан как Okteto namespace, иначе он не появится в Okteto UI/CLI.
-
-Файл: `synestra-platform/argocd/apps/app-projects.yaml`.
-
-После этого в `web-core/deploy/argocd/apps/**` нужно заменить `spec.project: default` на `synestra-web`.
-
-## 4) Root Application “web-core” в `synestra-platform`
-
-В `synestra-platform/argocd/apps/` добавляется один root Application (app‑of‑apps), который применяет child Applications из `web-core`.
-
-Рекомендуемый паттерн:
-- root: `argocd/apps/web-core.yaml` в `synestra-platform`
-- source repoURL: репозиторий `web-core`
-- path: `deploy/argocd/apps` (recurse)
-
-Это позволит подключить все сайты одной точкой и дальше управлять ими из `web-core`.
+Dev‑namespaces создаём через Okteto; в Applications включён `CreateNamespace=true` только где это безопасно.
 
 ## 5) Секреты для сайтов (SOPS, `synestra-platform`)
 
@@ -119,11 +117,18 @@ Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 После добавления секретов:
 - синхронизировать `infra-secrets` в ArgoCD (`synestra-platform/argocd/apps/infra-secrets.yaml`).
 
+## 6) Values и образы (где лежат)
+
+- Общие и средовые values: `synestra-platform/infra/web-core/<app>/values.yaml|values.dev.yaml|values.prod.yaml`.
+- Образы для prod: собираются в `synestra-platform/docker/web-*/` (CI `build_web_*`), теги пишутся в `values.prod.yaml`.
+- Dev образ Payload: `synestra-platform/docker/payload/dev/Dockerfile`, тег `docker/payload/VERSION`; используется в `values.dev.yaml`, команда `next dev --port 3000` и `NODE_ENV=development`.
+- Для обновления тега меняем соответствующий `values.*.yaml`, рендерим `helm template` + `kubeconform`, затем ArgoCD sync.
+
 ## 6) Проверка интеграции
 
 После подключения root Application `web-core` в ArgoCD должны появиться child Applications:
-- `web-corporate-dev`, `web-corporate-prod`
-- `web-shop-dev`, `web-shop-prod`
+- `web-payload-dev`, `web-payload-core`
+- `web-synestra-io-dev`, `web-synestra-io-prod`
 
 Далее:
 - проверить, что Ingress’ы создаются в правильных namespaces;
@@ -134,11 +139,8 @@ Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 
 ## 7) Okteto dev‑режим поверх dev‑деплоя
 
-Runbook по логике “Okteto поверх ArgoCD” (под монорепу): `docs/runbooks/runbook-okteto-dev.md`.
+Runbook: `docs/runbooks/runbook-okteto-dev.md` (в процессе переноса в платформенную доку).
 
-Важно: чтобы Okteto мог патчить workload в dev, для dev‑Applications обычно нужен режим без self‑heal (см. `docs/runbooks/runbook-dev-prod-flow.md`).
-
-Важно №2 (не повторять прошлую ошибку):
-- dev namespace должен быть создан как **Okteto namespace** (`okteto namespace create web-<app>-dev`),
-- поэтому для dev Applications в `web-core` **не используем** `CreateNamespace=true`,
-- иначе ArgoCD может пересоздать namespace “без Okteto ownership” и он исчезнет из Okteto UI/CLI.
+Напоминание:
+- dev namespace создаём через Okteto (`okteto namespace create web-<app>-dev`), не пересоздаём его Helm’ом.
+- В dev Applications selfHeal выключен, чтобы Okteto патчи не откатывались мгновенно.

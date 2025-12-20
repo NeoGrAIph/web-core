@@ -18,22 +18,14 @@ Runbook: как мы одновременно используем **dev (hot)**
 
 Это удобно для TLS, потому что dev можно покрывать wildcard сертификатом `*.dev.synestra.tech`.
 
-Фактические значения задаются в:
-- `deploy/env/dev/*.yaml` (dev hosts)
-- `deploy/env/prod/*.yaml` (prod hosts)
+Фактические значения теперь лежат в `synestra-platform/infra/web-core/<app>/values.{dev,prod}.yaml` (ингресс‑хосты, ресурсы, env).
 
 ## Как устроен GitOps‑контракт (важно)
 
-Мы разделяем values на два типа слоёв:
-
-1) **Release‑слой** (какой image tag разворачиваем)
-   - dev: `deploy/env/release-dev/<app>.yaml`
-   - prod: `deploy/env/release-prod/<app>.yaml`
-
-2) **Env‑слой**: `deploy/env/<env>/<app>.yaml`
-   - домены/ингресс
-   - `SYNESTRA_ENV` (`dev|prod`)
-   - ссылки на Secret’ы (в т.ч. `DATABASE_URI`) и настройки подключения к БД (см. `docs/runbooks/runbook-database-cnpg.md`)
+Слои сведены в одном месте (платформенный репозиторий):
+- `infra/web-core/<app>/values.yaml` — общие настройки (APP_NAME, repo, pullSecrets).
+- `infra/web-core/<app>/values.dev.yaml` — dev: image tag, dev‑команда (`next dev --port 3000`), NODE_ENV=development, dev хосты, ресурсы.
+- `infra/web-core/<app>/values.prod.yaml` — prod: image tag, prod хосты/ресурсы, NODE_ENV=production.
 
 ### Secrets: один или несколько Secret’ов на приложение
 
@@ -49,25 +41,21 @@ Runbook: как мы одновременно используем **dev (hot)**
 
 Это снижает риск “перезатирания” ключей и упрощает ротацию доступов к object storage.
 
-ArgoCD Application подключает оба valueFiles, например:
-- `../../env/release-dev/corporate.yaml` (dev) / `../../env/release-prod/corporate.yaml` (prod)
-- `../../env/dev/corporate.yaml`
+ArgoCD Application (в `synestra-platform/argocd/apps/web-*.yaml`) подключает chart `web-core/deploy/charts/web-app` + values из `synestra-platform/infra/web-core/...`.
 
 ## Политика ArgoCD (dev vs prod)
 
-- **dev**: `selfHeal: false` (чтобы Okteto мог временно патчить workload и ArgoCD не откатывал это сразу)
-- **prod**: `selfHeal: true` (GitOps‑строго)
+- **dev**: `selfHeal: false` (чтобы Okteto патчи не откатывались мгновенно), auto‑sync + prune.
+- **prod**: GitOps‑строго, auto‑sync + prune, selfHeal по умолчанию.
 
-Файлы:
-- `deploy/argocd/apps/dev/*.yaml`
-- `deploy/argocd/apps/prod/*.yaml`
+Файлы приложений: `synestra-platform/argocd/apps/web-*-dev.yaml`, `web-*-prod.yaml`.
 
 ## Поток работы (рекомендуемый)
 
 ### 1) Baseline dev = prod
 
-Когда dev не в hot‑режиме, он равен prod по “релизу”, если:
-- `deploy/env/release-dev/<app>.yaml:image.tag` равен `deploy/env/release-prod/<app>.yaml:image.tag`.
+Когда dev не в hot‑режиме, он равен prod по релизу, если:
+- `infra/web-core/<app>/values.dev.yaml:image.tag` совпадает с `values.prod.yaml:image.tag`.
 
 ### 2) Hot‑разработка на dev через Okteto
 
@@ -77,15 +65,15 @@ Okteto запускается **поверх** ArgoCD‑деплоя в `web-<ap
 - изменения кода отражаются на dev домене;
 - drift в кластере допустим (поэтому `selfHeal` выключен).
 
-Runbook: `docs/runbooks/runbook-okteto-dev.md`.
+Runbook: `docs/runbooks/runbook-okteto-dev.md` (дополняется сведениями из `synestra-platform/docs/wiki/okteto.md`).
 
 ### 3) “Зафиксировали” → dev release → promotion в prod
 
 После того как изменение готово:
 - коммитим код в Git,
-- CI собирает образ и обновляет `deploy/env/release-dev/<app>.yaml` (image tag),
+- CI платформы собирает образ (jobs `build_payload_dev` или `build_web_*`) и обновляет тег в `infra/web-core/<app>/values.dev.yaml`,
 - ArgoCD автоматически выкатывает обновление **в dev**,
-- после проверки dev CI обновляет `deploy/env/release-prod/<app>.yaml` (promotion),
+- после проверки dev тот же тег переносится в `values.prod.yaml` (promotion),
 - ArgoCD автоматически выкатывает обновление **в prod**.
 
 ### 4) Dev синхронизировался → продолжаем
