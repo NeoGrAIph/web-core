@@ -55,14 +55,20 @@
 - App‑фасады: `apps/*/src/ui/*`, `apps/*/src/admin-ui/*`.
 - Registry блоков и app‑локальные рендереры.
 
+## Техдолги (держать в чек-листе)
+- Убрать лишние lockfile в `apps/payload-core` и `apps/synestra-io` (оставить корневой `pnpm-lock.yaml`).
+- Проверить shared‑пакеты, перенесённые в `old_packages`, и закрыть выявленные ошибки/расхождения.
+- Перенести `pnpm.onlyBuiltDependencies` в корень или убрать из приложений.
+- Зафиксировать обязательную проверку миграций Payload в dev‑образе (hook job) при любых изменениях schema.
+
 ## Порядок обработки (этапы)
-1) **Классификация upstream**: разнести файлы по группам (см. ниже), занести в `processing-progress.md` статус/решение.
-2) **Каркас shared**: удостовериться, что нужные фасады/пакеты есть или создать через генераторы (ui, admin-ui, cms-blocks, cms-fields, utils).
-3) **Экстракция**: переносить группы файлов из upstream → shared/packages или app‑facade, фиксируя решение в прогрессе.
-4) **Сборка схем и блоков**: registry блоков (schema + renderer), admin import map, фасады `@/ui/*` и `@/admin-ui/*`.
-5) **Миграции/seed**: при изменении schema — добавить миграцию/seed (см. `docs/runbooks/runbook-payload-migrations.md`, `runbook-payload-seeding.md`).
+1) **Разбор upstream**: классифицировать файлы шаблона, занести решения/статусы в `processing-progress.md`.
+2) **Подготовка каркаса**: убедиться, что фасады и базовые пакеты созданы (через генераторы при необходимости).
+3) **Экстракция**: перенос групп из upstream в shared/packages или app‑фасад с фиксацией решения.
+4) **Конвертация/registry**: собрать registry блоков (schema+renderer), настроить фасады `@/ui/*`, `@/admin-ui/*`, сформировать import map Payload.
+5) **Схемы и данные**: при изменении schema добавить миграции/seed (см. `docs/runbooks/runbook-payload-migrations.md`, `runbook-payload-seeding.md`).
 6) **Проверка в dev**: собрать dev‑образ (`build_payload_dev`), обновить `values.dev.yaml`, `helm template` + `kubeconform`, ArgoCD sync `web-payload-dev`, smoke‑тест домена.
-7) **Промо в core/prod**: перенести устойчивое решение в `apps/payload-core`, поднять тег в `values.prod.yaml`, пройти те же проверки и sync prod‑приложений.
+7) **Промо/перенос**: зафиксировать решение в `apps/payload-core` (эталон), при необходимости добавить overrides в `apps/synestra-io`; поднять тег в `values.prod.yaml`, повторить проверки и sync prod‑приложений.
 
 ## Журнал обработки (заполняется по мере работы)
 
@@ -84,6 +90,10 @@
 - `public/**` | assets | _pending_
 - `tests/**` | tests | _pending_
 - root configs (`next.config.js`, `tailwind.config.mjs`, `package.json`, etc.) | infra | _pending_
+
+## Движок контроля прогресса
+- Для каждой записи в `processing-progress.md`: статус (pending/in_progress/done/blocked), дата, ответственный, конечный путь в `web-core`.
+- Отдельные колонки: `checked_in_payload-dev (yes/no)` и `promoted_to_payload-core/prod (yes/no)`.
 
 ## Критерии качества (Definition of Done по группе)
 - **UI/blocks/admin**: есть shared реализация, app‑фасад, описан override boundary; import map для admin обновлён.
