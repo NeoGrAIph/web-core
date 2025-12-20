@@ -6,6 +6,13 @@
 ## Метод достижения
 Пошагово обработать файлы официального шаблона Payload Website и привести их к канону `web-core` (shared‑пакеты + фасады + admin‑слой), без изменений в `upstream/`.
 
+## Инфраструктурный контур (фиксируем факт)
+- Chart источник: `deploy/charts/web-app` (в `web-core`).
+- Values и ArgoCD Applications: **только** в `synestra-platform` (`infra/web-core/<app>/values{,.dev,.prod}.yaml`, `argocd/apps/web-*.yaml`, AppProject `synestra-web`).
+- Dev‑режим: `payload.dev.synestra.tech` запускает Next.js 15 в `next dev --port 3000`, Payload CMS 3 в `NODE_ENV=development`, dev‑образ `registry.gitlab.com/synestra/synestra-platform/payload:<docker/payload/VERSION>` (CI job `build_payload_dev`).
+- Prod: образы `web-payload-core`, `web-synestra-io` из `synestra-platform/docker/web-*/`, теги в `values.prod.yaml`.
+- Перед синком — обязательные проверки: `helm template` + `kubeconform` для изменённых values.
+
 ## Инструменты (генераторы)
 В монорепе уже есть генераторы (`pnpm gen` / `turbo gen`). Используем их после стабилизации UI‑контрактов для создания пакетов и компонентов по стандарту, чтобы не плодить копипаст и расхождения структуры.
 См.:
@@ -49,11 +56,13 @@
 - Registry блоков и app‑локальные рендереры.
 
 ## Порядок обработки (этапы)
-1) Классификация файлов по группам.
-2) Подготовка shared‑контуров.
-3) Извлечение блоков, UI‑компонентов, схем и утилит.
-4) Проверка в `payload-dev`.
-5) Перенос в `payload-core` как эталон.
+1) **Классификация upstream**: разнести файлы по группам (см. ниже), занести в `processing-progress.md` статус/решение.
+2) **Каркас shared**: удостовериться, что нужные фасады/пакеты есть или создать через генераторы (ui, admin-ui, cms-blocks, cms-fields, utils).
+3) **Экстракция**: переносить группы файлов из upstream → shared/packages или app‑facade, фиксируя решение в прогрессе.
+4) **Сборка схем и блоков**: registry блоков (schema + renderer), admin import map, фасады `@/ui/*` и `@/admin-ui/*`.
+5) **Миграции/seed**: при изменении schema — добавить миграцию/seed (см. `docs/runbooks/runbook-payload-migrations.md`, `runbook-payload-seeding.md`).
+6) **Проверка в dev**: собрать dev‑образ (`build_payload_dev`), обновить `values.dev.yaml`, `helm template` + `kubeconform`, ArgoCD sync `web-payload-dev`, smoke‑тест домена.
+7) **Промо в core/prod**: перенести устойчивое решение в `apps/payload-core`, поднять тег в `values.prod.yaml`, пройти те же проверки и sync prod‑приложений.
 
 ## Журнал обработки (заполняется по мере работы)
 
@@ -75,6 +84,17 @@
 - `public/**` | assets | _pending_
 - `tests/**` | tests | _pending_
 - root configs (`next.config.js`, `tailwind.config.mjs`, `package.json`, etc.) | infra | _pending_
+
+## Критерии качества (Definition of Done по группе)
+- **UI/blocks/admin**: есть shared реализация, app‑фасад, описан override boundary; import map для admin обновлён.
+- **Schema/fields**: миграции Payload добавлены, seed при необходимости; env‑контракт не нарушен.
+- **Routes/layout**: совместимо с Next.js 15 (app router), dev‑режим работает.
+- **Infra/config**: проверено `next build` (для prod), `next dev` (для dev), линт/типизация не ломаются.
+- **Проверка GitOps**: `helm template` + `kubeconform` на изменённых values; ArgoCD sync dev прошёл.
+
+## Текущее состояние dev/prod (на декабрь 2025)
+- Dev: `payload.dev.synestra.tech` — Next.js `next dev`, Payload CMS 3 `NODE_ENV=development`, образ `payload:v3.68.3-p18`.
+- Prod: `payload.services.synestra.tech` — `web-payload-core` образ `bb3d2611ff3b-r1` (prod режим).
 
 ## Статусы
 - `pending` — не начато
