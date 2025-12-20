@@ -1,0 +1,112 @@
+# Runbook: “кнопки” в Okteto UI для refresh dev (DB / DB+Media)
+
+Статус: актуально на **2025-12-18**.
+
+Цель: дать разработчикам две “кнопки” в Okteto UI для dev‑окружения `web-synestra-io-dev`:
+- **Refresh DB** (dev DB ← prod DB)
+- **Refresh (DB+Media)** (dev DB ← prod DB + dev media bucket ← prod media bucket)
+
+Канон: используем Okteto **Catalog Items** (CRD `catalogitems.git.okteto.com/v1`) как GitOps‑управляемые, read‑only entries в UI.
+
+Официальная документация:
+- Catalog Items через CRD: `https://www.okteto.com/docs/1.39/self-hosted/manage/custom-resource-definitions/`
+- Deploy from Catalog: `https://www.okteto.com/docs/development/deploy/deploy-from-catalog/`
+
+## 1) Что должно быть в репозитории `web-core`
+
+1) One-off Job для refresh DB:
+- `deploy/jobs/db-refresh-synestra-io-dev-from-prod.yaml`
+
+2) One-off Job для refresh media:
+- `deploy/jobs/media-mirror-dev-from-prod.yaml`
+
+3) Два “deploy-only” Okteto manifest’а, которые запускают эти Job’ы:
+- `.okteto/refresh-db.yml`
+- `.okteto/refresh-db-media.yml`
+
+## 2) Что должно быть в `synestra-platform` (GitOps)
+
+1) MinIO bucket’ы и политики:
+- prod bucket: `payload-media-prod`
+- dev bucket: `payload-media-dev`
+
+2) DNS для Okteto registry/buildkit
+
+Okteto remote execution / catalog deploy использует BuildKit и registry endpoints:
+- `buildkit.okteto.synestra.tech`
+- `registry.okteto.synestra.tech`
+
+Если эти имена не резолвятся из кластера (NXDOMAIN), кнопки будут “висеть” ещё до запуска наших Job’ов.
+Если эти имена не резолвятся на локальной машине, то и `okteto deploy --remote ...` будет “висеть” на этапе подключения к BuildKit (и тоже не дойдёт до запуска Job’ов).
+
+Также для Okteto CLI важен Kubernetes API endpoint.
+В нашей конфигурации это `https://kubernetes.services.synestra.tech:6443` (k3s API server напрямую).
+Этот hostname должен резолвиться на машине разработчика, иначе `okteto deploy --remote` не сможет обратиться к Kubernetes API.
+
+Важно про TLS (k3s):
+- k3s API server на `:6443` обязан отдавать сертификат, в SAN которого есть `kubernetes.services.synestra.tech`.
+- Если SAN не содержит этот hostname, `okteto deploy --remote` упадёт с ошибкой `x509: certificate is valid for ... not kubernetes.services.synestra.tech`.
+- Исправление делается на control-plane узле (k3s) добавлением hostname в `tls-san` и рестартом k3s.
+
+Шаги исправления (control-plane `core.synestra.io`, нужен sudo):
+
+```bash
+echo "Добавляю kubernetes.services.synestra.tech в tls-san k3s"
+sudo sed -i '/^tls-san:/a\\  - kubernetes.services.synestra.tech' /etc/rancher/k3s/config.yaml
+
+echo "Перезапускаю k3s, чтобы пересобрался serving cert"
+sudo systemctl restart k3s
+
+echo "Проверяю, что SAN на 6443 теперь содержит kubernetes.services.synestra.tech"
+echo | openssl s_client -connect kubernetes.services.synestra.tech:6443 -servername kubernetes.services.synestra.tech 2>/dev/null | openssl x509 -noout -text | rg "Subject Alternative Name" -n -C 1
+```
+
+После этого `okteto deploy --remote` должен перестать падать по TLS и сможет запускать refresh jobs.
+
+3) Secret для mirror job в namespace `web-synestra-io-dev`:
+- `web-synestra-io-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
+
+4) Два CatalogItem ресурса в namespace `okteto`, которые появятся в UI как отдельные пункты каталога.
+
+## 3) Как запускать из Okteto UI
+
+1) Открыть Okteto UI → `Namespaces` → выбрать `web-synestra-io-dev`.
+2) Нажать `Deploy Dev Environment` → вкладка `Catalog`.
+3) Выбрать один из пунктов:
+   - `synestra-io: Refresh DB`
+   - `synestra-io: Refresh (DB+Media)`
+4) Нажать `Deploy` и дождаться `Success`.
+
+## 4) Что делать, если refresh не сработал
+
+- Важное про “момент” состояния данных:
+  - Refresh DB делает `pg_dump` → `pg_restore` внутри кластера.
+  - Это даёт **консистентный срез** данных (в рамках транзакции `pg_dump`) примерно на **момент старта `pg_dump`**, а не на момент окончания refresh.
+  - Если во время refresh в prod активно пишут данные, dev всё равно получит консистентную БД, но это будет срез “на старт dump’а”.
+  - Если нужен максимально “ровный” срез — на время refresh лучше снизить/остановить запись в prod (например, выключить фоновые задачи/импорт/публикации), либо использовать бэкап/снапшот механизмами БД (если/когда это будет формализовано в платформе).
+
+- Если `okteto deploy --remote ...` падает/зависает **до** запуска наших Job’ов:
+  - Проверь DNS:
+    - `buildkit.okteto.synestra.tech`
+    - `registry.okteto.synestra.tech`
+    - `kubernetes.services.synestra.tech`
+  - Проверь BuildKit:
+    - Симптом: `Failed to get BuildKit service info ... HTTP 500`.
+    - Частая причина: Traefik пытается валидировать backend TLS по **pod IP** и падает с `x509: cannot validate certificate ... doesn't contain any IP SANs`.
+    - Каноничное исправление (в `synestra-platform`): задать `buildkit.service.annotations` и `ServersTransport` (SNI/serverName) для `buildkit.okteto.synestra.tech`.
+  - Проверь RBAC для remote execution:
+    - Симптом: `jobs.batch ... is forbidden: User "system:serviceaccount:okteto:okteto-cluster-admin" cannot ...`.
+    - Исправление (в `synestra-platform`): `ClusterRoleBinding` для `ServiceAccount okteto-cluster-admin` на `cluster-admin`.
+  - Проверь cookie secret Okteto (если в логах `okteto-api` есть `crypto/aes: invalid key size 64`):
+    - `OKTETO_COOKIE_SECRET` должен быть ключом на **32 bytes** (base64 от 32 bytes), иначе Okteto может ломать часть internal flows.
+
+- DB refresh:
+  - проверь, что dev app не держит активных соединений к БД (лучше временно scale down).
+  - посмотри логи job `refresh-synestra-io-dev-db-from-prod` в namespace `databases`.
+
+- Media refresh:
+  - проверь логи job `media-mirror-dev-from-prod` в namespace `web-synestra-io-dev`.
+  - bucket должен существовать (создаётся платформой); mirror job не создаёт bucket.
+
+Примечание про логи:
+- `.okteto/refresh-*.yml` удаляет Job в начале (чтобы можно было запускать повторно), но не удаляет в конце — чтобы логи можно было посмотреть руками.

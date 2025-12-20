@@ -1,4 +1,5 @@
 import type { PlopTypes } from '@turbo/gen'
+import fs from 'node:fs'
 
 function ensureStartsWithSynestra(scopeName: string): void {
   if (!scopeName.startsWith('@synestra/')) {
@@ -19,6 +20,15 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     const normalized = name.startsWith('@synestra/') ? name : `@synestra/${name}`
     ensureStartsWithSynestra(normalized)
     return normalized
+  })
+
+  plop.setActionType('ensureFile', (answers, config) => {
+    const filePath = String(config.path || '')
+    if (!filePath) throw new Error('ensureFile requires "path"')
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Required file not found: ${filePath}`)
+    }
+    return filePath
   })
 
   plop.setGenerator('package', {
@@ -97,6 +107,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     ],
     actions: [
       {
+        type: 'ensureFile',
+        path: 'packages/ui/src/index.ts',
+      },
+      {
         type: 'add',
         path: 'packages/ui/src/{{kebabCase name}}.tsx',
         templateFile: 'templates/ui/component.tsx.hbs',
@@ -128,6 +142,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       },
     ],
     actions: [
+      {
+        type: 'ensureFile',
+        path: 'packages/ui/src/client/index.ts',
+      },
       {
         type: 'add',
         path: 'packages/ui/src/client/{{kebabCase name}}.tsx',
@@ -161,6 +179,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     ],
     actions: [
       {
+        type: 'ensureFile',
+        path: 'packages/cms-core/src/access/index.ts',
+      },
+      {
         type: 'add',
         path: 'packages/cms-core/src/access/{{kebabCase name}}.ts',
         templateFile: 'templates/cms/access.ts.hbs',
@@ -188,6 +210,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     ],
     actions: [
       {
+        type: 'ensureFile',
+        path: 'packages/cms-core/src/collections/index.ts',
+      },
+      {
         type: 'add',
         path: 'packages/cms-core/src/collections/{{kebabCase name}}.ts',
         templateFile: 'templates/cms/collection.ts.hbs',
@@ -214,6 +240,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       },
     ],
     actions: [
+      {
+        type: 'ensureFile',
+        path: 'packages/cms-blocks/src/blocks/index.ts',
+      },
       {
         type: 'add',
         path: 'packages/cms-blocks/src/blocks/{{pascalCase name}}/config.ts',
