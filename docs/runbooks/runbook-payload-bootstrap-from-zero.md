@@ -10,7 +10,7 @@
 
 Связанные документы:
 - Канон по БД: `docs/runbooks/runbook-database-cnpg.md`
-- Канон migrations hook Job: `docs/architecture/canon-v0.md` (раздел про миграции)
+- Канон migrations hook Job: `docs/architecture/canon.md` (раздел про миграции)
 - Runbook добавления нового app: `docs/runbooks/runbook-add-app-from-payload-template.md`
 
 ---

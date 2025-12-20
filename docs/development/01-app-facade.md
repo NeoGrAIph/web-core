@@ -40,7 +40,7 @@
 
 ## 6) Связанные документы
 
-- Архитектурный канон: `docs/architecture/canon-v0.md`
+- Архитектурный канон: `docs/architecture/canon.md`
 - Компонентная система: `docs/architecture/component-system.md`
 - Исследование слоя overrides: `docs/research/ui-layer-3-file-overrides.md`
 

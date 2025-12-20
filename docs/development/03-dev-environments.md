@@ -10,7 +10,7 @@
 - для корневых доменов вида `synestra.io` dev может быть `dev.synestra.io`
 
 Источники канона:
-- `docs/architecture/canon-v0.md`
+- `docs/architecture/canon.md`
 - `docs/runbooks/runbook-platform-integration.md`
 
 ## Канон namespaces
