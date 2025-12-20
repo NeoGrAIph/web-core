@@ -189,4 +189,3 @@ Env‑слой хранит:
 - Runbook CI promotion: `docs/runbooks/runbook-ci-dev-to-prod.md`
 - Drift/hot‑dev: `docs/runbooks/runbook-okteto-dev.md`
 - Архитектура и границы ответственности: `docs/architecture/architecture.md`
-- CI/CD контракт (self-host): `docs/architecture/ci-cd-contract.md`

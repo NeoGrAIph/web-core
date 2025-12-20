@@ -257,7 +257,6 @@ Payload `templates/ecommerce` добавляет Stripe и помечен как
 - `synestra-platform` (GitLab CI) строит образы и пушит в registry.
 
 Канон вынесен в отдельные документы:
-- self-host контракт между репозиториями + правила “что триггерит деплой”: `docs/architecture/ci-cd-contract.md`
 - dev → prod promotion (release‑слои): `docs/architecture/release-promotion.md`
 Runbooks:
 - `docs/runbooks/runbook-dev-prod-flow.md`
