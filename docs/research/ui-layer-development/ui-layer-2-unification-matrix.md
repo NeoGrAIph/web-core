@@ -9,7 +9,7 @@
 - какие зависимости мешают выносу, и какой порядок выноса минимально рискованный.
 
 Связанные документы:
-- `docs/research/ui-layer-2-registry.md` (общий канон слоя 2)
+ - `docs/research/ui-layer-development/ui-layer-2-registry.md` (общий канон слоя 2)
 - `docs/research/payload/payload-blocks-best-practices.md` (официальные Blocks best practices + community нюансы)
 - `docs/research/payload/payload-lexical-blocksfeature-best-practices.md` (Lexical BlocksFeature и конвертеры)
 
@@ -126,7 +126,7 @@
 
 Рекомендация:
 - типизировать `blockType` union’ом из `payload-types`;
-- типизировать props блоков через `Extract<... { blockType: '...' }>` (см. `docs/research/ui-layer-2-registry.md`).
+- типизировать props блоков через `Extract<... { blockType: '...' }>` (см. `docs/research/ui-layer-development/ui-layer-2-registry.md`).
 
 ---
 

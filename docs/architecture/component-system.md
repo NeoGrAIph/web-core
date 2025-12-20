@@ -54,7 +54,7 @@
 - inline‑стили (захардкоженные цвета/паддинги) в `packages/ui` не считаются каноном;
 - `'use client'` применяется точечно: базовые компоненты должны оставаться server‑safe, интерактивность — через app‑слой или отдельные client entrypoints.
 
-Исследование и ссылки на первичные источники: `docs/research/ui-layer-1-parameterization.md`.
+Исследование и ссылки на первичные источники: `docs/research/ui-layer-development/ui-layer-1-parameterization.md`.
 
 ### `packages/cms-blocks` — “контентные блоки” Payload (схемы/типы)
 
@@ -90,7 +90,7 @@
 Нюансы (Payload Blocks):
 - `blockReferences` (оптимизация больших схем) **не включаем по умолчанию**, потому что referenced блоки “замораживают” конфиг: в docs прямо сказано, что referenced blocks **не могут быть изменены/расширены** на уровне поля и должны совпадать 1:1 с оригиналами. См. `https://payloadcms.com/docs/fields/blocks`.
 - `blockName` используем точечно (сложные страницы/лендинги, когда редакторам важно различать “однотипные” блоки). Payload описывает `blockName` как override для UI‑label строки блока. См. `https://payloadcms.com/docs/fields/blocks`.
-  Детали (проектные соглашения): `docs/research/payload/payload-blocks-best-practices.md` и `docs/research/ui-layer-2-registry.md`.
+  Детали (проектные соглашения): `docs/research/payload/payload-blocks-best-practices.md` и `docs/research/ui-layer-development/ui-layer-2-registry.md`.
 
 ### `apps/*` — интеграция, тема и “конечная сборка страниц”
 
@@ -153,7 +153,7 @@
 
 Источники:
 - Next.js Absolute Imports / Module Aliases: `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
-- Канон слоя 3: `docs/research/ui-layer-3-file-overrides.md`
+- Канон слоя 3: `docs/research/ui-layer-development/ui-layer-3-file-overrides.md`
 
 ##### Где проверяем shared UI (канон)
 

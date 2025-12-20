@@ -42,5 +42,4 @@
 
 - Архитектурный канон: `docs/architecture/canon.md`
 - Компонентная система: `docs/architecture/component-system.md`
-- Исследование слоя overrides: `docs/research/ui-layer-3-file-overrides.md`
-
+- Исследование слоя overrides: `docs/research/ui-layer-development/ui-layer-3-file-overrides.md`

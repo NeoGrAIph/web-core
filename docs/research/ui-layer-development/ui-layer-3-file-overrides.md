@@ -10,8 +10,8 @@
 - как в Docusaurus “swizzle”: есть дефолтные компоненты, и проект может “забрать” один компонент себе для изменения.
 
 Связанные документы:
-- `docs/research/ui-layer-1-parameterization.md` (tokens/variants/slots)
-- `docs/research/ui-layer-2-registry.md` (registry + shared schema/renderer)
+- `docs/research/ui-layer-development/ui-layer-1-parameterization.md` (tokens/variants/slots)
+- `docs/research/ui-layer-development/ui-layer-2-registry.md` (registry + shared schema/renderer)
 - Payload Custom Components (Import Map): `https://payloadcms.com/docs/custom-components/overview`
 - Next.js: Absolute Imports / Module Aliases (tsconfig/jsconfig paths): `https://nextjs.org/docs/app/building-your-application/configuring/absolute-imports-and-module-aliases`
 - Next.js: `transpilePackages`: `https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages`

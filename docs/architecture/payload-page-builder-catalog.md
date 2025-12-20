@@ -12,7 +12,7 @@
 - Seed/defaultValue + изменения schema: `docs/runbooks/runbook-payload-seeding.md`
 - Миграции (Postgres): `docs/runbooks/runbook-payload-migrations.md`
 - Конвергенция Layout ↔ Lexical embedded blocks: `docs/architecture/payload-lexical-layout-convergence.md`
-- Override boundaries (“swizzle без форков”): `docs/research/ui-layer-3-file-overrides.md`
+- Override boundaries (“swizzle без форков”): `docs/research/ui-layer-development/ui-layer-3-file-overrides.md`
 - Проект обработки upstream‑шаблона: `docs/runbooks/runbook-upstream-website-processing-project.md`
 
 ---
@@ -91,7 +91,7 @@ Layout builder — не единственное место, где живут �
 Правило `web-core`: по умолчанию **wrapper‑точки** в app, а не “магический shadowing”.
 
 Основание (почему wrapper‑подход предпочтительнее):
-- объяснение и риски alias/shadowing (webpack/turbopack): `docs/research/ui-layer-3-file-overrides.md`
+- объяснение и риски alias/shadowing (webpack/turbopack): `docs/research/ui-layer-development/ui-layer-3-file-overrides.md`
 
 ---
 

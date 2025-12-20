@@ -15,6 +15,19 @@ name: web-core
 # - Because the manifest lives in `.okteto/okteto.yml`, Okteto expects `.okteto/.stignore` (otherwise it prompts interactively).
 
 dev:
+  web-payload-dev:
+    # Target the ArgoCD-managed Deployment in namespace `web-payload-dev`.
+    selector:
+      app.kubernetes.io/name: web-app
+      app.kubernetes.io/instance: web-payload-dev
+    container: app
+    workdir: /app
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm --filter @synestra/payload-core exec next dev --hostname 0.0.0.0 --port 3000'
+    sync:
+      - ..:/app
+    forward:
+      - 3000:3000
+
   web-synestra-io-dev:
     # Target the ArgoCD-managed Deployment in namespace `web-synestra-io-dev`.
     # Chart `deploy/charts/web-app` labels:

@@ -8,7 +8,7 @@
 Слой 2 дополняет слой 1 (tokens/variants) и подготавливает слой 3 (точечные file overrides в app).
 
 Матрица принятия решений “унифицировать или разделять” (layout Blocks ↔ Lexical BlocksFeature):  
-`docs/research/ui-layer-2-unification-matrix.md`.
+`docs/research/ui-layer-development/ui-layer-2-unification-matrix.md`.
 
 ---
 
