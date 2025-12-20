@@ -6,12 +6,12 @@
 ## Метод достижения
 Пошагово обработать файлы официального шаблона Payload Website и привести их к канону `web-core` (shared‑пакеты + фасады + admin‑слой), без изменений в `upstream/`.
 
-## Инфраструктурный контур (фиксируем факт)
-- Chart источник: `deploy/charts/web-app` (в `web-core`).
-- Values и ArgoCD Applications: **только** в `synestra-platform` (`infra/web-core/<app>/values{,.dev,.prod}.yaml`, `argocd/apps/web-*.yaml`, AppProject `synestra-web`).
-- Dev‑режим: `payload.dev.synestra.tech` запускает Next.js 15 в `next dev --port 3000`, Payload CMS 3 в `NODE_ENV=development`, dev‑образ `registry.gitlab.com/synestra/synestra-platform/payload:<docker/payload/VERSION>` (CI job `build_payload_dev`).
-- Prod: образы `web-payload-core`, `web-synestra-io` из `synestra-platform/docker/web-*/`, теги в `values.prod.yaml`.
-- Перед синком — обязательные проверки: `helm template` + `kubeconform` для изменённых values.
+## Инфраструктурный базис (предусловие)
+- Chart источник остаётся `deploy/charts/web-app` (web-core).
+- Values/ArgoCD — только в `synestra-platform` (`infra/web-core/*`, `argocd/apps/web-*`), AppProject `synestra-web`.
+- Dev-режим для проверки решений: Next.js `next dev --port 3000`, Payload CMS 3 `NODE_ENV=development`, образ `payload:<VERSION>` из `synestra-platform/docker/payload/dev`.
+- Prod-образы: `web-payload-core`, `web-synestra-io`; теги в `values.prod.yaml`.
+- Проверка перед любым sync: `helm template` + `kubeconform` изменённых values.
 
 ## Инструменты (генераторы)
 В монорепе уже есть генераторы (`pnpm gen` / `turbo gen`). Используем их после стабилизации UI‑контрактов для создания пакетов и компонентов по стандарту, чтобы не плодить копипаст и расхождения структуры.
@@ -62,13 +62,15 @@
 - Зафиксировать обязательную проверку миграций Payload в dev‑образе (hook job) при любых изменениях schema.
 
 ## Порядок обработки (этапы)
-1) **Разбор upstream** — классифицировать файлы шаблона, занести решения/статусы в `processing-progress.md`.
-2) **Каркас shared/фасадов** — убедиться, что базовые пакеты и фасады созданы (генераторы ui/admin-ui/cms-blocks/cms-fields/utils при необходимости).
-3) **Экстракция** — перенос групп из upstream → shared/packages или app‑фасад с фиксацией решения.
-4) **Конвертация и registry** — собрать registry блоков (schema + renderer), настроить фасады `@/ui/*`, `@/admin-ui/*`, сформировать import map Payload.
-5) **Схемы и данные** — при изменении schema добавить миграции/seed (см. `docs/runbooks/runbook-payload-migrations.md`, `runbook-payload-seeding.md`); проверить hook job в dev‑образе.
-6) **Проверка в dev** — собрать dev‑образ (`build_payload_dev`), обновить `values.dev.yaml`, `helm template` + `kubeconform`, ArgoCD sync `web-payload-dev`, smoke‑тест `payload.dev.synestra.tech`.
-7) **Промо/перенос** — зафиксировать решение в `apps/payload-core` (эталон), при необходимости добавить overrides в `apps/synestra-io`; поднять тег в `values.prod.yaml`, повторить проверки и sync prod‑приложений.
+1) **Разбор upstream и классификация** — пройти `upstream-payload-website.tree.json`, разнести по группам (blocks, ui, cms-schema, fields, layout, providers, search, endpoints, routes, assets, tests, infra); завести каждую группу в `processing-progress.md` со статусом и ответственным.
+2) **Каркас shared и фасадов** — убедиться, что базовые пакеты/фасады есть или сгенерировать: `packages/ui`, `packages/cms-blocks`, `packages/cms-fields`, `packages/utils`; фасады `apps/*/src/ui/*`, `apps/*/src/admin-ui/*` (даёт точку для overrides).
+3) **Экстракция из upstream** — переносить группами: UI/blocks → shared или фасад; layout/app-компоненты → фасад; utilities → shared/utils. Каждое решение фиксировать в `processing-progress.md` (куда перенесли, почему).
+4) **Конвертация и сборка registry** — собрать registry блоков (schema + renderer), подвязать на Payload Blocks; настроить фасады `@/ui/*`, `@/admin-ui/*`; для admin обновить import map (`payload generate:importmap`).
+5) **Схемы, миграции, seed** — при изменении schema добавить миграцию (`runbook-payload-migrations.md`), при необходимости seed (`runbook-payload-seeding.md`); техдолг: убедиться, что hook job в dev-образе выполняется и миграции проходят.
+6) **Техдолги/санитария** — удалить лишние lockfile в `apps/payload-core` и `apps/synestra-io` (оставить корневой `pnpm-lock.yaml`); проверить/починить пакеты в `old_packages`; перенести `pnpm.onlyBuiltDependencies` в корень или убрать из приложений; записать найденное в чек-лист.
+7) **Проверка в dev** — собрать dev-образ (`build_payload_dev`), обновить тег в `values.dev.yaml`; `helm template` + `kubeconform` на изменённые values; ArgoCD sync `web-payload-dev`; smoke-тест `payload.dev.synestra.tech` (UI, админка, миграции); отметить в `processing-progress.md` `checked_in_payload-dev=yes/no`.
+8) **Промо и перенос в core/prod** — перенести стабильное решение в `apps/payload-core` (эталон); при необходимости добавить overrides в `apps/synestra-io`; поднять тег в `values.prod.yaml`, повторить проверки (render + kubeconform), ArgoCD sync prod; отметить `promoted_to_payload-core/prod=yes/no` в прогрессе.
+9) **Контроль прогресса** — для каждой записи: статус, дата, ответственный, конечный путь; отдельные колонки: проверено в dev, промо в core/prod. DoD по группе: shared + фасад, описан override boundary, миграции/seed учтены, `next dev`/`next build` не ломаются, GitOps-проверки пройдены.
 
 ## Журнал обработки (заполняется по мере работы)
 
