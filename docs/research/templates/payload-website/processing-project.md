@@ -88,6 +88,15 @@
 
 ## Порядок обработки (этапы)
 
+**Статус этапов (актуально на 2025-12-21):**
+- 1–4: done
+- 5: done
+- 6: partial (seed выполнен; миграции и обязательная проверка hook job — требует фиксации)
+- 7: partial (техдолг по проверке миграций в dev ещё открыт)
+- 8: done
+- 9: pending (prod promotion не выполнен)
+- 10: partial (есть прогресс, но требуется актуализация под новые изменения)
+
 1. Инфраструктурный базис (предусловие)                                                                                                                                                                                                                    
     - Chart источник остаётся deploy/charts/web-app (web-core).                                                                                                                                                                                            
     - Values/ArgoCD — только в synestra-platform (infra/web-core/*, argocd/apps/web-*), AppProject synestra-web.                                                                                                                                           
@@ -173,28 +182,28 @@
     - Если структуру/имена пришлось изменить — фиксировать причину в processing-progress.md.                                                                                                                                                              
     - Каждый модуль снабжать `README.md` (уже создано на этапе 3, актуализируем по ходу).                                                                                                                                   
     - Каждое решение фиксировать в processing-progress.md (куда перенесли, почему).                                                                                                                                                                        
-5. Конвертация и сборка registry                                                                                                                                                                                                                           
+5. Конвертация и сборка registry (done)                                                                                                                                                                                                                            
     - Собрать registry блоков (schema + renderer), подвязать на Payload Blocks.                                                                                                                                                                            
     - Настроить фасады @/ui/*, @/admin-ui/*; для admin — обновить import map (payload generate:importmap).                                                                                                                                                 
     - Обосновывает: гарантирует единый контракт для фронта и админки.                                                                                                                                                                                      
-6. Схемы, миграции, seed                                                                                                                                                                                                                                   
+6. Схемы, миграции, seed (partial)                                                                                                                                                                                                                                   
     - При изменении schema: добавить миграцию (runbook runbook-payload-migrations.md), при необходимости seed (runbook-payload-seeding.md).
     - Техдолг: проверка, что hook job в dev образе выполняется и миграции проходят.
-7. Техдолги/санитария
+7. Техдолги/санитария (partial)
     - Удалить лишние lockfile в apps/payload-core и apps/synestra-io; оставить корневой pnpm-lock.yaml.
     - Проверить/починить пакеты, перемещённые в old_packages.
     - Перенести pnpm.onlyBuiltDependencies в корень или убрать из приложений.
     - Записать находки в чек-лист, чтобы не забыть перед финальной промоцией.
-8. Проверка в dev
+8. Проверка в dev (done)
     - Собрать dev-образ (build_payload_dev), обновить тег в values.dev.yaml.
     - helm template + kubeconform на изменённые values.
     - ArgoCD sync web-payload-dev; smoke-тест payload.dev.synestra.tech (UI, админка, миграции).
     - Отметить в processing-progress.md: checked_in_payload-dev=yes/no.
-9. Промо и перенос в core/prod
+9. Промо и перенос в core/prod (pending)
     - Перенести стабильное решение в apps/payload-core (эталон); при необходимости добавить overrides в apps/synestra-io.
     - Поднять тег в values.prod.yaml, повторить проверки (render + kubeconform), ArgoCD sync prod.
     - Отметить promoted_to_payload-core/prod=yes/no в прогрессе.
-10. Контроль прогресса (актуализация)
+10. Контроль прогресса (актуализация) (partial)
     - Для каждой записи заполнены: статус, дата, ответственный, конечный путь, source_path.
     - Колонки checked_in_payload-dev / promoted_to_payload-core/prod готовы для заполнения после переноса.
     - Критерии DoD по группе остаются неизменными.
@@ -204,21 +213,21 @@
 Формат записи:
 `<path/group> | <category> | <decision> | <destination> | <status> | <date> | <owner> | <source_path> | <checked_in_payload-dev> | <promoted_to_payload-core/prod> | <notes>`
 
-### Группы (начальный список)
-- `src/blocks/**` | blocks | _pending_
-- `src/components/ui/**` | ui-components | _pending_
-- `src/components/**` | app-components | _pending_
-- `src/collections/**` | cms-schema | _pending_
-- `src/fields/**` | cms-fields | _pending_
-- `src/Footer/**`, `src/Header/**`, `src/heros/**` | layout | _pending_
-- `src/utilities/**` | utilities | _pending_
-- `src/providers/**` | providers | _pending_
-- `src/search/**` | search | _pending_
-- `src/endpoints/**` | endpoints | _pending_
-- `src/app/**` | routes/layout | _pending_
-- `public/**` | assets | _pending_
-- `tests/**` | tests | _pending_
-- root configs (`next.config.js`, `tailwind.config.mjs`, `package.json`, etc.) | infra | _pending_
+### Группы (актуализировано)
+- `src/blocks/**` | blocks | _done_
+- `src/components/ui/**` | ui-components | _done_
+- `src/components/**` | app-components | _done_
+- `src/collections/**` | cms-schema | _done_
+- `src/fields/**` | cms-fields | _done_
+- `src/Footer/**`, `src/Header/**`, `src/heros/**` | layout | _done_
+- `src/utilities/**` | utilities | _done_
+- `src/providers/**` | providers | _done_
+- `src/search/**` | search | _done_
+- `src/endpoints/**` | endpoints | _done_
+- `src/app/**` | routes/layout | _done_
+- `public/**` | assets | _done_
+- `tests/**` | tests | _done_
+- root configs (`next.config.js`, `tailwind.config.mjs`, `package.json`, etc.) | infra | _done_
 
 ## Движок контроля прогресса
 - Для каждой записи в `processing-progress.md`: статус (pending/in_progress/done/blocked), дата, ответственный, конечный путь в `web-core`.
@@ -254,7 +263,7 @@
 3) Провести валидацию в `payload-dev` после переноса.
 
 ## Текущее состояние dev/prod (на декабрь 2025)
-- Dev: `payload.dev.synestra.tech` — Next.js `next dev`, Payload CMS 3 `NODE_ENV=development`, образ `payload:v3.68.3-p18`.
+- Dev: `payload.dev.synestra.tech` — Next.js `next dev`, Payload CMS 3 `NODE_ENV=development`, образ `payload:v3.68.3-p22`.
 - Prod: `payload.services.synestra.tech` — `web-payload-core` образ `bb3d2611ff3b-r1` (prod режим).
 
 ## Статусы
