@@ -440,12 +440,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/Footer/RowLabel.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/Footer/RowLabel.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** RowLabel для admin UI (Footer nav items).
+- **Notes:** RowLabel для admin UI (Footer nav items). Перенесено в `apps/<app>/src/admin-ui/Footer/RowLabel.tsx`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/Footer/config.ts`
@@ -518,12 +518,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/Header/RowLabel.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/Header/RowLabel.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** RowLabel для admin UI (Header nav items).
+- **Notes:** RowLabel для admin UI (Header nav items). Перенесено в `apps/<app>/src/admin-ui/Header/RowLabel.tsx`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/Header/config.ts`
@@ -1467,12 +1467,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/AdminBar/index.scss
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/AdminBar/index.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Стили админки, завязаны на @payloadcms/ui.
+- **Notes:** Стили админки, завязаны на @payloadcms/ui. Перенесено в `apps/<app>/src/admin-ui/AdminBar/index.scss`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/components/AdminBar/index.tsx`
@@ -1480,12 +1480,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/AdminBar/index.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/AdminBar/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** AdminBar компонент для frontend preview; подключать через import map.
+- **Notes:** AdminBar компонент для frontend preview; перенесено в `apps/<app>/src/admin-ui/AdminBar/index.tsx`.
 - **Dependencies / Blockers:** admin import map, getClientSideURL
 
 ### `src/components/BeforeDashboard/SeedButton/index.scss`
@@ -1493,12 +1493,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.scss
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/BeforeDashboard/SeedButton/index.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Стили seed‑кнопки админки.
+- **Notes:** Стили seed‑кнопки админки. Перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.scss`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/components/BeforeDashboard/SeedButton/index.tsx`
@@ -1506,12 +1506,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/BeforeDashboard/SeedButton/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Админ‑кнопка seed; требуется соблюдение SEED_KEY (runbook).
+- **Notes:** Админ‑кнопка seed; перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.tsx`. Требуется соблюдение SEED_KEY (runbook).
 - **Dependencies / Blockers:** seed endpoint, runbook-payload-seeding.md
 
 ### `src/components/BeforeDashboard/index.scss`
@@ -1519,12 +1519,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/index.scss
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/BeforeDashboard/index.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Стили блока before-dashboard.
+- **Notes:** Стили блока before-dashboard. Перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/index.scss`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/components/BeforeDashboard/index.tsx`
@@ -1532,12 +1532,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/index.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/BeforeDashboard/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Админ‑компонент before-dashboard; подключать через import map.
+- **Notes:** Админ‑компонент before-dashboard; перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/index.tsx`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/components/BeforeLogin/index.tsx`
@@ -1545,12 +1545,12 @@
 - **Status:** done
 - **Decision:** admin
 - **Destination:** apps/<app>/src/admin-ui/BeforeLogin/index.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/BeforeLogin/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Админ‑вставка перед логином.
+- **Notes:** Админ‑вставка перед логином. Перенесено в `apps/<app>/src/admin-ui/BeforeLogin/index.tsx`.
 - **Dependencies / Blockers:** admin import map
 
 ### `src/components/Card/index.tsx`
