@@ -19,6 +19,7 @@ import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
 const isProd = process.env.NODE_ENV === 'production'
 
 export default buildConfig({
@@ -61,13 +62,13 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   i18n: {
-    fallbackLanguage: 'en',
-    supportedLanguages: { en, ru },
+    fallbackLanguage: 'ru',
+    supportedLanguages: { ru, en },
   },
   db: postgresAdapter({
     pool: {
       connectionString:
-        process.env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/web_synestra_io',
+        process.env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/web_payload_core',
     },
     migrationDir: path.resolve(dirname, 'migrations'),
     push: !isProd,
@@ -91,7 +92,11 @@ export default buildConfig({
         // for the Vercel Cron secret to be present as an
         // Authorization header:
         const authHeader = req.headers.get('authorization')
-        return authHeader === `Bearer ${process.env.CRON_SECRET}`
+        const cronSecret = process.env.CRON_SECRET
+
+        if (!cronSecret) return false
+
+        return authHeader === `Bearer ${cronSecret}`
       },
     },
     tasks: [],

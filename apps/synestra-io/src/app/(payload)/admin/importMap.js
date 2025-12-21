@@ -27,6 +27,7 @@ import { RowLabel as RowLabel_40ae173eb7fbca068fd5209d499d9edd } from '@/admin-u
 import { RowLabel as RowLabel_3bbc2c7b88b6852363ee679a84331a7d } from '@/admin-ui/Footer/RowLabel'
 import { default as default_82c7bc4084e89685f842b3cff57e221a } from '@/admin-ui/BeforeDashboard'
 import { default as default_bddefaf1223117bcae65d2788ce814ec } from '@/admin-ui/BeforeLogin'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 export const importMap = {
   "@/components/CopySharePreviewLink#default": default_af4a4703dbb2b8a4fbcdc91f3d0dcd9a,
@@ -57,5 +58,6 @@ export const importMap = {
   "@/admin-ui/Header/RowLabel#RowLabel": RowLabel_40ae173eb7fbca068fd5209d499d9edd,
   "@/admin-ui/Footer/RowLabel#RowLabel": RowLabel_3bbc2c7b88b6852363ee679a84331a7d,
   "@/admin-ui/BeforeDashboard#default": default_82c7bc4084e89685f842b3cff57e221a,
-  "@/admin-ui/BeforeLogin#default": default_bddefaf1223117bcae65d2788ce814ec
+  "@/admin-ui/BeforeLogin#default": default_bddefaf1223117bcae65d2788ce814ec,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }
