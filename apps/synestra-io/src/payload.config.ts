@@ -1,8 +1,10 @@
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import { en } from 'payload/i18n/en'
+import { ru } from 'payload/i18n/ru'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
@@ -17,6 +19,7 @@ import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const isProd = process.env.NODE_ENV === 'production'
 
 export default buildConfig({
   admin: {
@@ -57,14 +60,23 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: mongooseAdapter({
-    url: process.env.DATABASE_URI,
+  i18n: {
+    fallbackLanguage: 'en',
+    supportedLanguages: { en, ru },
+  },
+  db: postgresAdapter({
+    pool: {
+      connectionString:
+        process.env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/web_synestra_io',
+    },
+    migrationDir: path.resolve(dirname, 'migrations'),
+    push: !isProd,
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
-  secret: process.env.PAYLOAD_SECRET,
+  secret: process.env.PAYLOAD_SECRET || 'dev-secret',
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
