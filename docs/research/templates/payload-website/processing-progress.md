@@ -1459,7 +1459,7 @@
 - **Source Path:** for_cute/src/collections/Users/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовая Users коллекция для admin; перенесено в `packages/cms-core/src/collections/Users.ts`.
+- **Notes:** Базовая Users коллекция для admin; перенесено в `packages/cms-core/src/collections/Users.ts`. Структура изменена: `Users/index.ts` → `Users.ts` для плоского layout пакета.
 - **Dependencies / Blockers:** access helpers
 
 ### `src/components/AdminBar/index.scss`
