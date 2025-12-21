@@ -464,6 +464,16 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
 
+  packages/cms-ecommerce:
+    dependencies:
+      payload:
+        specifier: 3.68.3
+        version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
+    devDependencies:
+      '@synestra/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
   packages/cms-fields:
     dependencies:
       '@payloadcms/richtext-lexical':
@@ -507,6 +517,16 @@ importers:
       '@payloadcms/next':
         specifier: 3.68.3
         version: 3.68.3(@types/react@19.2.1)(graphql@16.12.0)(monaco-editor@0.55.1)(next@15.4.9(@babel/core@7.28.5)(@playwright/test@1.56.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(sass@1.77.4))(payload@3.68.3(graphql@16.12.0)(typescript@5.7.3))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.7.3)
+
+  packages/plugins/payload-plugin-multisite:
+    dependencies:
+      payload:
+        specifier: 3.68.3
+        version: 3.68.3(graphql@16.12.0)(typescript@5.7.3)
+    devDependencies:
+      '@synestra/typescript-config':
+        specifier: workspace:*
+        version: link:../../typescript-config
 
   packages/typescript-config: {}
 

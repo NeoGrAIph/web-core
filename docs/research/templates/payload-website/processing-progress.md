@@ -99,28 +99,28 @@
 
 ### `packages/plugins` (module)
 - **Group:** plugins
-- **Status:** pending
+- **Status:** done
 - **Decision:** shared
 - **Destination:** packages/plugins
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** old_packages/plugins/README.md
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
-- **Notes:** Общая зона для внутренних Payload plugins.
+- **Notes:** Зона для внутренних plugins; перенесён `payload-plugin-multisite` из old_packages.
 - **Dependencies / Blockers:** Payload plugins contracts
 
 ### `packages/cms-ecommerce` (module)
 - **Group:** cms/schema
-- **Status:** pending
+- **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-ecommerce
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** old_packages/cms-ecommerce/README.md
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
-- **Notes:** Опциональный модуль, переносить при старте ecommerce.
+- **Notes:** Опциональный модуль; перенесён из old_packages, использовать при старте ecommerce.
 - **Dependencies / Blockers:** ecommerce template decisions
 
 ### `.editorconfig`
