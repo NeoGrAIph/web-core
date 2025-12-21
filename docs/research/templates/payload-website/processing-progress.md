@@ -985,13 +985,13 @@
 - **Group:** blocks/schema
 - **Status:** done
 - **Decision:** shared
-- **Destination:** packages/cms-blocks/src/blocks/Banner/config.ts
-- **Date:** 2025-12-20
+- **Destination:** packages/cms-blocks/src/blocks/Banner.ts
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/blocks/Banner/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный блок banner; кандидат на shared.
+- **Notes:** Универсальный блок banner; перенесено в `packages/cms-blocks/src/blocks/Banner.ts`. Структура изменена: `blocks/Banner/config.ts` → `blocks/Banner.ts`.
 - **Dependencies / Blockers:** richtext-lexical
 
 ### `src/blocks/CallToAction/Component.tsx`
@@ -1011,13 +1011,13 @@
 - **Group:** blocks/schema
 - **Status:** done
 - **Decision:** shared
-- **Destination:** packages/cms-blocks/src/blocks/CallToAction/config.ts
-- **Date:** 2025-12-20
+- **Destination:** packages/cms-blocks/src/blocks/CallToAction.ts
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/blocks/CallToAction/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный CTA блок; зависит от cms-fields/linkGroup.
+- **Notes:** Универсальный CTA блок; перенесено в `packages/cms-blocks/src/blocks/CallToAction.ts`. Структура изменена: `blocks/CallToAction/config.ts` → `blocks/CallToAction.ts`.
 - **Dependencies / Blockers:** packages/cms-fields/linkGroup
 
 ### `src/blocks/Code/Component.client.tsx`
@@ -1063,13 +1063,13 @@
 - **Group:** blocks/schema
 - **Status:** done
 - **Decision:** shared
-- **Destination:** packages/cms-blocks/src/blocks/Code/config.ts
-- **Date:** 2025-12-20
+- **Destination:** packages/cms-blocks/src/blocks/Code.ts
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/blocks/Code/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный code блок; кандидат shared.
+- **Notes:** Универсальный code блок; перенесено в `packages/cms-blocks/src/blocks/Code.ts`. Структура изменена: `blocks/Code/config.ts` → `blocks/Code.ts`.
 - **Dependencies / Blockers:** -
 
 ### `src/blocks/Content/Component.tsx`
@@ -1089,13 +1089,13 @@
 - **Group:** blocks/schema
 - **Status:** done
 - **Decision:** shared
-- **Destination:** packages/cms-blocks/src/blocks/Content/config.ts
-- **Date:** 2025-12-20
+- **Destination:** packages/cms-blocks/src/blocks/Content.ts
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/blocks/Content/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный content блок; зависит от cms-fields/link.
+- **Notes:** Универсальный content блок; перенесено в `packages/cms-blocks/src/blocks/Content.ts`. Структура изменена: `blocks/Content/config.ts` → `blocks/Content.ts`.
 - **Dependencies / Blockers:** packages/cms-fields/link
 
 ### `src/blocks/Form/Checkbox/index.tsx`
@@ -1323,13 +1323,13 @@
 - **Group:** blocks/schema
 - **Status:** done
 - **Decision:** shared
-- **Destination:** packages/cms-blocks/src/blocks/MediaBlock/config.ts
-- **Date:** 2025-12-20
+- **Destination:** packages/cms-blocks/src/blocks/MediaBlock.ts
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/blocks/MediaBlock/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный mediaBlock.
+- **Notes:** Универсальный mediaBlock; перенесено в `packages/cms-blocks/src/blocks/MediaBlock.ts`. Структура изменена: `blocks/MediaBlock/config.ts` → `blocks/MediaBlock.ts`.
 - **Dependencies / Blockers:** media collection
 
 ### `src/blocks/RelatedPosts/Component.tsx`
