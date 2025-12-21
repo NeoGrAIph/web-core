@@ -1,0 +1,37 @@
+{
+  "name": "@synestra/cms-core",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./access": "./src/access/index.ts",
+    "./collections": "./src/collections/index.ts",
+    "./globals": "./src/globals/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./access/anyone": "./src/access/anyone.ts",
+    "./access/authenticated": "./src/access/authenticated.ts",
+    "./access/authenticatedOrPublished": "./src/access/authenticatedOrPublished.ts",
+    "./collections/Categories": "./src/collections/Categories.ts",
+    "./collections/Media": "./src/collections/Media.ts",
+    "./collections/Users": "./src/collections/Users.ts",
+    "./globals/Footer": "./src/globals/Footer.ts",
+    "./globals/Header": "./src/globals/Header.ts",
+    "./hooks/populatePublishedAt": "./src/hooks/populatePublishedAt.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@payloadcms/richtext-lexical": "3.68.3",
+    "@synestra/cms-fields": "workspace:*",
+    "payload": "3.68.3"
+  },
+  "devDependencies": {
+    "@synestra/typescript-config": "workspace:*",
+    "typescript": "5.7.3"
+  }
+}

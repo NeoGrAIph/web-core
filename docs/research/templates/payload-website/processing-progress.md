@@ -453,13 +453,13 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/globals/Footer.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/Footer/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Глобал Footer; зависит от cms-fields/link и revalidate hook.
-- **Dependencies / Blockers:** cms-fields/link, revalidateFooter
+- **Notes:** Глобал Footer; перенесён в `packages/cms-core/src/globals/Footer.ts`. Хук revalidate остаётся app‑локально; RowLabel путь переведён на `@/admin-ui/Footer/RowLabel#RowLabel`.
+- **Dependencies / Blockers:** cms-fields/link, revalidateFooter (app)
 
 ### `src/Footer/hooks/revalidateFooter.ts`
 - **Group:** cms/hooks
@@ -531,13 +531,13 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/globals/Header.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/Header/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Глобал Header; зависит от cms-fields/link и revalidate hook.
-- **Dependencies / Blockers:** cms-fields/link, revalidateHeader
+- **Notes:** Глобал Header; перенесён в `packages/cms-core/src/globals/Header.ts`. Хук revalidate остаётся app‑локально; RowLabel путь переведён на `@/admin-ui/Header/RowLabel#RowLabel`.
+- **Dependencies / Blockers:** cms-fields/link, revalidateHeader (app)
 
 ### `src/Header/hooks/revalidateHeader.ts`
 - **Group:** cms/hooks
@@ -557,12 +557,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/access/anyone.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/access/anyone.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный access helper, без зависимостей от app.
+- **Notes:** Универсальный access helper, без зависимостей от app. Перенесено в `packages/cms-core/src/access/anyone.ts`.
 - **Dependencies / Blockers:** -
 
 ### `src/access/authenticated.ts`
@@ -570,25 +570,25 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/access/authenticated.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/access/authenticated.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный access helper; убрать импорт app‑типа User (использовать payload AccessArgs без app‑types).
-- **Dependencies / Blockers:** payload types refactor
+- **Notes:** Универсальный access helper; убран импорт app‑типа User (используем payload `AccessArgs`). Перенесено в `packages/cms-core/src/access/authenticated.ts`.
+- **Dependencies / Blockers:** -
 
 ### `src/access/authenticatedOrPublished.ts`
 - **Group:** cms/access
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/access/authenticatedOrPublished.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/access/authenticatedOrPublished.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный access helper; оставить как есть.
+- **Notes:** Универсальный access helper; перенесено в `packages/cms-core/src/access/authenticatedOrPublished.ts`.
 - **Dependencies / Blockers:** -
 
 ### `src/app/(frontend)/(sitemaps)/pages-sitemap.xml/route.ts`
@@ -1363,12 +1363,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/collections/Categories.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/collections/Categories.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовая taxonomy коллекция, зависит от access helpers и slugField; подходит для shared.
+- **Notes:** Базовая taxonomy коллекция; перенесено в `packages/cms-core/src/collections/Categories.ts`.
 - **Dependencies / Blockers:** access helpers, slugField
 
 ### `src/collections/Media.ts`
@@ -1376,12 +1376,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/collections/Media.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/collections/Media.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Общая media‑коллекция; зависит от access helpers и локального пути uploads (public/media).
+- **Notes:** Общая media‑коллекция; перенесено в `packages/cms-core/src/collections/Media.ts`. `staticDir` теперь считается от `process.cwd()/public/media`.
 - **Dependencies / Blockers:** access helpers, media storage strategy
 
 ### `src/collections/Pages/hooks/revalidatePage.ts`
@@ -1454,12 +1454,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/collections/Users.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/collections/Users/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовая Users коллекция для admin; подходит для shared.
+- **Notes:** Базовая Users коллекция для admin; перенесено в `packages/cms-core/src/collections/Users.ts`.
 - **Dependencies / Blockers:** access helpers
 
 ### `src/components/AdminBar/index.scss`
@@ -2182,12 +2182,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-core/src/hooks/populatePublishedAt.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/hooks/populatePublishedAt.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный hook для publishedAt.
+- **Notes:** Универсальный hook для publishedAt. Перенесено в `packages/cms-core/src/hooks/populatePublishedAt.ts`.
 - **Dependencies / Blockers:** -
 
 ### `src/hooks/revalidateRedirects.ts`
