@@ -84,6 +84,19 @@
 - **Notes:** Shared helper для рендера блоков (registry → component); вынесен из old_packages.
 - **Dependencies / Blockers:** React, payload-types (для типизации registry)
 
+### `packages/env` (module)
+- **Group:** infra/env
+- **Status:** done
+- **Decision:** shared
+- **Destination:** packages/env
+- **Date:** 2025-12-21
+- **Owner:** codex
+- **Source Path:** old_packages/env/**
+- **Checked in payload-dev:** n/a
+- **Promoted to payload-core/prod:** n/a
+- **Notes:** Валидатор env vars + `SYNESTRA_ENV` helper на Zod; вынесен из old_packages.
+- **Dependencies / Blockers:** zod
+
 ### `packages/plugins` (module)
 - **Group:** plugins
 - **Status:** pending
