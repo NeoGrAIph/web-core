@@ -82,10 +82,10 @@
 - **Seed & migrations (app):** `src/endpoints/seed/**`, `src/migrations/**`.
 
 ## Техдолги (держать в чек-листе)
-- Убрать лишние lockfile в `apps/payload-core` и `apps/synestra-io` (оставить корневой `pnpm-lock.yaml`).
-- Проверить shared‑пакеты, перенесённые в `old_packages`, и закрыть выявленные ошибки/расхождения.
-- Перенести `pnpm.onlyBuiltDependencies` в корень или убрать из приложений.
-- Зафиксировать обязательную проверку миграций Payload в dev‑образе (hook job) при любых изменениях schema.
+- [x] Убрать лишние lockfile в `apps/payload-core` и `apps/synestra-io` (оставить корневой `pnpm-lock.yaml`).
+- [x] Проверить shared‑пакеты из `old_packages` и закрыть расхождения (migrate plugins + cms-ecommerce).
+- [x] Перенести `pnpm.onlyBuiltDependencies` в корень или убрать из приложений.
+- [ ] Зафиксировать обязательную проверку миграций Payload в dev‑образе (hook job) при любых изменениях schema.
 
 ## Порядок обработки (этапы)
 
