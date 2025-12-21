@@ -458,7 +458,7 @@
 - **Source Path:** for_cute/src/Footer/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Глобал Footer; перенесён в `packages/cms-core/src/globals/Footer.ts`. Хук revalidate остаётся app‑локально; RowLabel путь переведён на `@/admin-ui/Footer/RowLabel#RowLabel`.
+- **Notes:** Глобал Footer; перенесён в `packages/cms-core/src/globals/Footer.ts`. В app‑обёртке `apps/<app>/src/Footer/config.ts` добавлен `afterChange` (revalidateFooter). RowLabel путь переведён на `@/admin-ui/Footer/RowLabel#RowLabel`.
 - **Dependencies / Blockers:** cms-fields/link, revalidateFooter (app)
 
 ### `src/Footer/hooks/revalidateFooter.ts`
@@ -536,7 +536,7 @@
 - **Source Path:** for_cute/src/Header/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Глобал Header; перенесён в `packages/cms-core/src/globals/Header.ts`. Хук revalidate остаётся app‑локально; RowLabel путь переведён на `@/admin-ui/Header/RowLabel#RowLabel`.
+- **Notes:** Глобал Header; перенесён в `packages/cms-core/src/globals/Header.ts`. В app‑обёртке `apps/<app>/src/Header/config.ts` добавлен `afterChange` (revalidateHeader). RowLabel путь переведён на `@/admin-ui/Header/RowLabel#RowLabel`.
 - **Dependencies / Blockers:** cms-fields/link, revalidateHeader (app)
 
 ### `src/Header/hooks/revalidateHeader.ts`
@@ -2169,12 +2169,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/cms-fields/src/hero.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/heros/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Schema‑поле hero; логично жить в cms-fields. Перенесено в `packages/cms-fields/src/hero.ts` (этап 4.2).
+- **Notes:** Schema‑поле hero; логично жить в cms-fields. Перенесено в `packages/cms-fields/src/hero.ts` (этап 4.2). В app `apps/<app>/src/heros/config.ts` — wrapper re-export.
 - **Dependencies / Blockers:** packages/cms-fields/linkGroup, media collection
 
 ### `src/hooks/populatePublishedAt.ts`
