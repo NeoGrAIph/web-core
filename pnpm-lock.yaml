@@ -273,6 +273,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.2.4(@types/react@19.2.1)(react@19.2.1)
+      '@synestra/blocks-renderer':
+        specifier: workspace:*
+        version: link:../../packages/blocks-renderer
       '@synestra/cms-blocks':
         specifier: workspace:*
         version: link:../../packages/cms-blocks

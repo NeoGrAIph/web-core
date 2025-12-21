@@ -33,6 +33,7 @@
     "@payloadcms/plugin-seo": "3.68.3",
     "@payloadcms/richtext-lexical": "3.68.3",
     "@payloadcms/ui": "3.68.3",
+    "@synestra/blocks-renderer": "workspace:*",
     "@synestra/cms-blocks": "workspace:*",
     "@synestra/cms-core": "workspace:*",
     "@synestra/cms-fields": "workspace:*",

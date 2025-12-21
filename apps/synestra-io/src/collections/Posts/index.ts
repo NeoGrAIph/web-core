@@ -48,22 +48,36 @@ export const Posts: CollectionConfig<'posts'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data, req }) =>
+      url: ({ data }) =>
         generatePreviewPath({
           slug: data?.slug,
           collection: 'posts',
-          req,
+          kind: 'internal',
         }),
     },
-    preview: (data, { req }) =>
+    preview: (data) =>
       generatePreviewPath({
         slug: data?.slug as string,
         collection: 'posts',
-        req,
+        kind: 'internal',
       }),
     useAsTitle: 'title',
   },
   fields: [
+    {
+      name: 'sharePreview',
+      type: 'ui',
+      label: {
+        en: 'Share preview',
+        ru: 'Share preview',
+      },
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/CopySharePreviewLink',
+        },
+      },
+    },
     {
       name: 'title',
       type: 'text',
