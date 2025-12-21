@@ -1,29 +1,34 @@
 # packages/ui
 
 ## Назначение
-Shared UI primitives и базовые стили (tokens/variants/slots).
+Shared UI primitives, пригодные для переиспользования в нескольких apps.
 
-## Границы модуля (не окончательные)
-- Только UI‑примитивы и композиции без CMS/доменной логики.
-- Должен быть Tailwind‑agnostic (на tokens/attributes).
-
-Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
-по мере обработки соответствующего модуля из шаблона website.
+## Содержимое (актуально)
+- button, card, checkbox, input, label, pagination, select, textarea
+- `styles.css` — базовые стили (пока из старого пакета)
 
 ## Источники (for_cute)
-- for_cute/src/components/ui/*
+- `for_cute/src/components/ui/button.tsx`
+- `for_cute/src/components/ui/card.tsx`
+- `for_cute/src/components/ui/checkbox.tsx`
+- `for_cute/src/components/ui/input.tsx`
+- `for_cute/src/components/ui/label.tsx`
+- `for_cute/src/components/ui/pagination.tsx`
+- `for_cute/src/components/ui/select.tsx`
+- `for_cute/src/components/ui/textarea.tsx`
+
+Дополнительно:
+- `styles.css` — из `old_packages/ui/src/styles.css` (в for_cute отсутствует).
 
 ## Зависимости
-- packages/utils (cn)
+- `@synestra/utils`
+- `@radix-ui/*`
+- `class-variance-authority`
+- `lucide-react`
 
-## Требования и ограничения
-- Toolchain и конфиги централизуем через packages/next-config, packages/eslint-config, packages/typescript-config.
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
-- Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
-- В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
-- Admin UI строго отдельно: @/admin-ui/* + import map Payload.
-- Seed не должен зависеть от сетевых fetch (только локальные ассеты).
-- Миграции обязательны при изменении schema (см. runbooks).
+## Примечания
+- Некоторые компоненты помечены `'use client'` (checkbox, label, select).
+- В `pagination` исправлены импорты на локальные `button` и `@synestra/utils/ui`.
 
 ## Статус
-Планируется перенос и адаптация компонентов; реализация ещё не перенесена.
+Перенос выполнен (этап 4.5).

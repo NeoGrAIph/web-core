@@ -1727,12 +1727,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/button.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/button.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовая кнопка; адаптировать под token/variant канон и убрать прямую Tailwind‑зависимость.
+- **Notes:** Базовая кнопка; перенесено в `packages/ui/src/button.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer tokens strategy
 
 ### `src/components/ui/card.tsx`
@@ -1740,12 +1740,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/card.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/card.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовые Card компоненты; адаптировать под token‑стили.
+- **Notes:** Базовые Card компоненты; перенесено в `packages/ui/src/card.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer tokens strategy
 
 ### `src/components/ui/checkbox.tsx`
@@ -1753,12 +1753,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/checkbox.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/checkbox.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовый checkbox; требует client boundary.
+- **Notes:** Базовый checkbox; перенесено в `packages/ui/src/checkbox.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer client boundary
 
 ### `src/components/ui/input.tsx`
@@ -1766,12 +1766,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/input.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/input.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовый input; адаптировать под token‑стили.
+- **Notes:** Базовый input; перенесено в `packages/ui/src/input.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer tokens strategy
 
 ### `src/components/ui/label.tsx`
@@ -1779,12 +1779,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/label.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/label.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Label базовый; client boundary.
+- **Notes:** Label базовый; перенесено в `packages/ui/src/label.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer client boundary
 
 ### `src/components/ui/pagination.tsx`
@@ -1792,12 +1792,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/pagination.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/pagination.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** UI‑компоненты пагинации; адаптировать под token‑стили.
+- **Notes:** UI‑компоненты пагинации; перенесено в `packages/ui/src/pagination.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer tokens strategy
 
 ### `src/components/ui/select.tsx`
@@ -1805,12 +1805,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/select.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/select.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Select компонент; client boundary + token‑стили.
+- **Notes:** Select компонент; перенесено в `packages/ui/src/select.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer client boundary, tokens
 
 ### `src/components/ui/textarea.tsx`
@@ -1818,12 +1818,12 @@
 - **Status:** done
 - **Decision:** shared
 - **Destination:** packages/ui/src/textarea.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/ui/textarea.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Textarea базовый; адаптировать под token‑стили.
+- **Notes:** Textarea базовый; перенесено в `packages/ui/src/textarea.tsx` (этап 4.5).
 - **Dependencies / Blockers:** ui-layer tokens strategy
 
 ### `src/cssVariables.js`
