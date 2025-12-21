@@ -68,25 +68,3 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     title: `Payload Website Template Posts Page ${pageNumber || ''}`,
   }
 }
-
-export async function generateStaticParams() {
-  if (process.env.NEXT_BUILD_SKIP_DB === '1') {
-    return []
-  }
-
-  const payload = await getPayload({ config: configPromise })
-  const { totalDocs } = await payload.count({
-    collection: 'posts',
-    overrideAccess: false,
-  })
-
-  const totalPages = Math.ceil(totalDocs / 10)
-
-  const pages: { pageNumber: string }[] = []
-
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push({ pageNumber: String(i) })
-  }
-
-  return pages
-}
