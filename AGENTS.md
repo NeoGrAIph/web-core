@@ -35,7 +35,7 @@
 - `docs/runbooks/runbook-payload-seeding.md` — seed/defaultValue и правила изменения schema (операционный канон).
 - `docs/runbooks/runbook-payload-migrations.md` — канон миграций Payload (Postgres, GitOps job).
 - `docs/runbooks/runbook-platform-integration.md` — интеграция web‑core с платформой (ArgoCD, secrets, namespaces).
-- `docs/runbooks/runbook-upstream-templates.md` — обработка файлов официальных шаблонов Payload (извлечение, анализ, extraction).
+- `docs/runbooks/runbook-upstream-templates.md` — обработка файлов официальных шаблонов Payload (чтение, анализ, extraction).
 - `docs/runbooks/runbook-upstream-website-processing-project.md` — проектная обработка Payload Website template (пошаговый план + трекер).
 - `docs/runbooks/ui-layer-development.md` — поэтапная разработка UI‑слоёв 1–3 (tokens, blocks registry, overrides).
 
