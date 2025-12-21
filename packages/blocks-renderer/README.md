@@ -1,28 +1,70 @@
-# packages/blocks-renderer
+# `@synestra/blocks-renderer`
 
-## Назначение
-Shared helper для рендера Blocks через registry.
+Небольшой shared‑хелпер для рендеринга “page builder” блоков по registry `blockType → React component`.
 
-## Границы модуля (не окончательные)
-- Только механика registry/рендера.
-- Без темы/стилей и app‑обёрток.
+Назначение:
+- убрать копипаст `RenderBlocks` между приложениями;
+- оставить тему/обёртки (spacing/containers) в app‑слое.
 
-Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
-по мере обработки соответствующего модуля из шаблона website.
+## Почему `blockType`
 
-## Источники (for_cute)
-- for_cute/src/blocks/RenderBlocks.tsx (reference)
+Payload Blocks Field сохраняет `slug` блока в данных как `blockType` — это и есть “ключ”, по которому фронтенд выбирает React‑компонент из registry.
 
-## Зависимости
-- packages/cms-blocks
+Официальные ссылки:
+- Payload → Blocks Field: `https://payloadcms.com/docs/fields/blocks`
+- Next.js → Server/Client Components (для понимания где живёт registry и где нужна интерактивность): `https://nextjs.org/docs/app/getting-started/server-and-client-components`
+- Next.js → директива `'use client'` (client boundary): `https://nextjs.org/docs/app/api-reference/directives/use-client`
 
-## Требования и ограничения
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
-- Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
-- В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
-- Admin UI строго отдельно: @/admin-ui/* + import map Payload.
-- Seed не должен зависеть от сетевых fetch (только локальные ассеты).
-- Миграции обязательны при изменении schema (см. runbooks).
+## Использование
 
-## Статус
-Планируется; реализация не создана.
+```tsx
+import { renderBlocks } from '@synestra/blocks-renderer'
+```
+
+См. пример в `apps/*/src/blocks/RenderBlocks.tsx`.
+
+## API
+
+`renderBlocks(blocks, components, options?)`:
+
+- `blocks`: массив объектов, где есть `blockType` и (желательно) `id`.
+- `components`: registry `Record<blockType, React.ComponentType>`.
+- `options`:
+  - `componentProps`: дополнительные props, которые будут добавлены **ко всем** блокам (и перекроют одноимённые поля блока при конфликте).
+  - `getKey`: генератор `key` для списка (по умолчанию берёт `block.id`, иначе `index`).
+  - `wrap`: обёртка вокруг каждого блока (удобно для spacing/containers, которые должны оставаться в app‑слое).
+  - `renderUnknown`: fallback для неизвестных/битых блоков (по умолчанию `null`).
+
+`computeBlockAnchorIDs(blocks, options?)`:
+
+- помогает стабильно генерировать HTML `id` для секций блоков (якоря/навигация);
+- использует `blockName`, если он задан; иначе fallback `\`${blockType}-${index + 1}\``;
+- при дубликатах добавляет суффиксы `-2`, `-3`, ...
+
+## Типизация registry (рекомендуется)
+
+Идея: типизировать ключи registry через сгенерированные Payload types, чтобы переименования `slug`/полей ловились на `typecheck`.
+
+```ts
+import type React from 'react'
+import type { Page } from '@/payload-types'
+
+type PageBlock = Page['layout'][number]
+type PageBlockType = PageBlock['blockType']
+
+const blockComponents = {
+  cta: CtaBlock,
+  content: ContentBlock,
+  mediaBlock: MediaBlock,
+  archive: ArchiveBlock,
+  formBlock: FormBlock,
+} satisfies Record<PageBlockType, React.ComponentType<any>>
+```
+
+Официально про генерацию типов:
+- Payload → TypeScript: `https://payloadcms.com/docs/typescript/overview`
+
+## Практические замечания
+
+- Этот пакет специально остаётся “без темы”: стили/контейнеры/отступы задаются через `wrap` в конкретном app.
+- Если конкретный block‑component должен быть интерактивным, он становится Client Component через `'use client'`. Сам `renderBlocks` может оставаться в server‑части дерева.

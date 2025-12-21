@@ -71,6 +71,19 @@
 - **Notes:** Пакет перенесён: `base.json`, `nextjs.json`, `package.json`, README (инфраструктура закрыта).
 - **Dependencies / Blockers:** TypeScript
 
+### `packages/blocks-renderer` (module)
+- **Group:** blocks/renderer
+- **Status:** done
+- **Decision:** shared
+- **Destination:** packages/blocks-renderer
+- **Date:** 2025-12-21
+- **Owner:** codex
+- **Source Path:** old_packages/blocks-renderer/** (реализация), for_cute/src/blocks/RenderBlocks.tsx (reference)
+- **Checked in payload-dev:** n/a
+- **Promoted to payload-core/prod:** n/a
+- **Notes:** Shared helper для рендера блоков (registry → component); вынесен из old_packages.
+- **Dependencies / Blockers:** React, payload-types (для типизации registry)
+
 ### `packages/plugins` (module)
 - **Group:** plugins
 - **Status:** pending
