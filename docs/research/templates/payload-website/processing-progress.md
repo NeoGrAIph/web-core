@@ -635,7 +635,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/[slug]/page.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/[slug]/page.tsx
 - **Checked in payload-dev:** no
@@ -661,12 +661,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/layout.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/layout.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Root layout, подключает AdminBar/Header/Footer/Providers.
+- **Notes:** Root layout, подключает AdminBar/Header/Footer/Providers; AdminBar импортируется через `@/admin-ui/*`.
 - **Dependencies / Blockers:** providers, admin bar, header/footer
 
 ### `src/app/(frontend)/next/exit-preview/route.ts`
@@ -713,12 +713,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/not-found.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/not-found.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** 404 страница; зависит от UI Button.
+- **Notes:** 404 страница; UI Button подключён через `@/ui/button` (facade).
 - **Dependencies / Blockers:** UI button
 
 ### `src/app/(frontend)/page.tsx`
@@ -726,7 +726,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/page.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/page.tsx
 - **Checked in payload-dev:** no
@@ -752,7 +752,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/posts/[slug]/page.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/posts/[slug]/page.tsx
 - **Checked in payload-dev:** no
@@ -778,7 +778,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/posts/page.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/posts/page.tsx
 - **Checked in payload-dev:** no
@@ -804,7 +804,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/posts/page/[pageNumber]/page.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/posts/page/[pageNumber]/page.tsx
 - **Checked in payload-dev:** no
@@ -830,7 +830,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/search/page.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/search/page.tsx
 - **Checked in payload-dev:** no
@@ -869,12 +869,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(payload)/admin/importMap.js
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(payload)/admin/importMap.js
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Генерируется командой payload generate:importmap; не редактировать вручную.
+- **Notes:** Генерируется `payload generate:importmap`; после генерации заменяем импорты на `@/admin-ui/*`.
 - **Dependencies / Blockers:** payload generate:importmap
 
 ### `src/app/(payload)/api/[...slug]/route.ts`
