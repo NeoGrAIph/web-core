@@ -248,7 +248,7 @@ Runbook: `docs/runbooks/runbook-add-app-from-payload-template.md`.
 - **dev‑контур разработки**: `apps/payload-core` → `web-payload-dev` → `https://payload.dev.synestra.tech`
   - назначение: здесь ведём разработку shared‑кода/компонентов и правил фасадов, прежде чем переносить изменения в доменные сайты.
 
-Важно: **сейчас `apps/payload-core` — это копия upstream‑шаблона**. Эталоном он станет после внедрения фасадов и shared‑слоя.
+Важно: **сейчас `apps/payload-core` — реализация на базе обработанного upstream‑шаблона `website`**. Эталоном он станет после внедрения фасадов и shared‑слоя.
 
 Практическое следствие:
 - любые изменения `packages/ui` и канона `@/ui/*` сначала проверяем в `payload-dev`;

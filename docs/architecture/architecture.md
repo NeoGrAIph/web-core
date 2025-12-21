@@ -57,8 +57,8 @@
 
 Сейчас в репозитории есть:
 
-- `apps/payload-core/` — копия официального Payload Website template (пока без фасадов и shared‑слоя).
-- `apps/synestra-io/` — копия официального Payload Website template (кастомизации ещё не начинались).
+- `apps/payload-core/` — реализация на базе обработанного upstream‑шаблона `website` (пока без фасадов и shared‑слоя).
+- `apps/synestra-io/` — реализация на базе обработанного upstream‑шаблона `website` (кастомизации ещё не начинались).
 - `packages/*` — заготовки shared‑пакетов (`ui`, `cms-*`, `utils`, конфиги).
 - `upstream/payload/templates/{website,ecommerce}` — снапшоты официальных шаблонов для исследования (reference only).
 

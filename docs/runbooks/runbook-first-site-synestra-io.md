@@ -18,7 +18,7 @@ Namespaces:
 
 ### В `web-core` (`/home/neograiph/repo/web-core`)
 
-1) Добавлено deployable приложение **`apps/synestra-io`** на базе официального Payload template `website` (копия хранится в `upstream/`).
+1) Добавлено deployable приложение **`apps/synestra-io`** на базе обработки официального Payload template `website` (источники — `upstream/payload/templates/website`, read-only).
 2) Подготовлен универсальный Helm chart **`deploy/charts/web-app`** для деплоя одного Next.js+Payload app (Deployment/Service/Ingress/PVC/CNPG Cluster + migrations hook Job).
 3) Подготовлены values и ArgoCD Application‑манифесты для **двух окружений**:
    - `deploy/env/dev/synestra-io.yaml` + `deploy/argocd/apps/dev/synestra-io.yaml`
@@ -84,7 +84,7 @@ Namespaces:
 - это референс‑реализация для дальнейшего тиражирования на сайты группы.
 
 **Согласно чему:**
-- исходник взят из официального шаблона Payload (копия хранится в `web-core/upstream/payload/templates/website`),
+- исходник взят из официального шаблона Payload (upstream `website`, read-only),
 - версии зафиксированы в `web-core/AGENTS.md` (Payload `3.68.3`, Next.js `15.4.9`).
 
 **Важные особенности реализации:**

@@ -163,7 +163,7 @@
 - dev deployment: `web-payload-dev` (`https://payload.dev.synestra.tech`)
 - prod эталон (стабильный): `web-payload-core` (`https://payload.services.synestra.tech`)
 
-Важно: **сейчас `apps/payload-core` — копия upstream‑шаблона**. Эталоном он станет после внедрения фасадов и shared‑слоя.
+Важно: **сейчас `apps/payload-core` — реализация на базе обработанного upstream‑шаблона `website`**. Эталоном он станет после внедрения фасадов и shared‑слоя.
 
 Почему это важно:
 - шаблон Payload “чистый” и не содержит доменных оверрайдов вроде `synestra.io`, поэтому регрессии shared‑слоя видны быстрее;
