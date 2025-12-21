@@ -1376,13 +1376,52 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/blocks/RenderBlocks.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/blocks/RenderBlocks.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** App‑локальный registry; позже заменить на общий renderer + registry mapping.
+- **Notes:** Переведено на общий renderer `@synestra/blocks-renderer` + app‑registry (`blocks/registry.ts`).
 - **Dependencies / Blockers:** blocks renderer strategy
+
+### `src/blocks/pageBuilder.ts`
+- **Group:** blocks/catalog
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/<app>/src/blocks/pageBuilder.ts
+- **Date:** 2025-12-21
+- **Owner:** codex
+- **Source Path:** n/a (web-core canon)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Каталог `PAGE_LAYOUT_BLOCKS` для `pages.layout` (defineBlockList).
+- **Dependencies / Blockers:** blocks configs
+
+### `src/blocks/registry.ts`
+- **Group:** blocks/registry
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/<app>/src/blocks/registry.ts
+- **Date:** 2025-12-21
+- **Owner:** codex
+- **Source Path:** n/a (web-core canon)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Registry `blockType → component` + defineBlockCatalog.
+- **Dependencies / Blockers:** blocks renderers, payload-types
+
+### `src/blocks/richText.ts`
+- **Group:** blocks/catalog
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/<app>/src/blocks/richText.ts
+- **Date:** 2025-12-21
+- **Owner:** codex
+- **Source Path:** n/a (web-core canon)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Каталог `RICH_TEXT_BLOCKS` для Lexical BlocksFeature.
+- **Dependencies / Blockers:** blocks configs
 
 ### `src/collections/Categories.ts`
 - **Group:** cms/collections
@@ -1428,13 +1467,13 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/collections/Pages/index.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/collections/Pages/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Зависит от блоков, hero, SEO и app‑утилит; оставить в app, часть схем можно вынести в cms-blocks/cms-fields.
-- **Dependencies / Blockers:** blocks registry, hero config, seo plugin fields
+- **Notes:** Зависит от блоков, hero, SEO и app‑утилит; подключён каталог `PAGE_LAYOUT_BLOCKS`.
+- **Dependencies / Blockers:** blocks catalog/registry, hero config, seo plugin fields
 
 ### `src/collections/Posts/hooks/populateAuthors.ts`
 - **Group:** cms/hooks
@@ -1467,13 +1506,13 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/collections/Posts/index.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/collections/Posts/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Зависит от blocks/SEO/utility и richtext blocks; оставить в app.
-- **Dependencies / Blockers:** blocks registry, seo plugin fields, richtext config
+- **Notes:** Зависит от blocks/SEO/utility и richtext blocks; подключён каталог `RICH_TEXT_BLOCKS`.
+- **Dependencies / Blockers:** blocks catalog/registry, seo plugin fields, richtext config
 
 ### `src/collections/Users/index.ts`
 - **Group:** cms/collections
@@ -1740,13 +1779,26 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/components/RichText/index.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/components/RichText/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** RichText renderer с embedded blocks; app‑локально (тема/registry).
+- **Notes:** RichText renderer с embedded blocks; converters вынесены в `components/RichText/converters.tsx`.
 - **Dependencies / Blockers:** blocks renderers, payload-types, converters
+
+### `src/components/RichText/converters.tsx`
+- **Group:** ui/app-components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/<app>/src/components/RichText/converters.tsx
+- **Date:** 2025-12-21
+- **Owner:** codex
+- **Source Path:** n/a (web-core canon)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Выделены converters для embedded blocks (`RICH_TEXT_JSX_CONVERTERS`).
+- **Dependencies / Blockers:** blocks renderers, payload-types
 
 ### `src/components/ui/button.tsx`
 - **Group:** ui/primitives
