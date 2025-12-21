@@ -2,18 +2,29 @@ import { createLocalReq, getPayload } from 'payload'
 import { seed } from '@/endpoints/seed'
 import config from '@payload-config'
 import { headers } from 'next/headers'
+import { getSynestraEnv } from '@synestra/env'
 
 export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 
 export async function POST(): Promise<Response> {
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
+  const synEnv = getSynestraEnv(process.env)
 
   // Authenticate by passing request headers
   const { user } = await payload.auth({ headers: requestHeaders })
 
   if (!user) {
     return new Response('Action forbidden.', { status: 403 })
+  }
+
+  if (synEnv === 'stage' || synEnv === 'prod') {
+    const requiredKey = process.env.SEED_KEY
+    const providedKey = requestHeaders.get('x-seed-key')
+
+    if (!requiredKey || providedKey !== requiredKey) {
+      return new Response('Action forbidden.', { status: 403 })
+    }
   }
 
   try {

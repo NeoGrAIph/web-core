@@ -726,12 +726,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/app/(frontend)/next/seed/route.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/app/(frontend)/next/seed/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Seed endpoint; должен требовать SEED_KEY в stage/prod.
+- **Notes:** Seed endpoint; SEED_KEY обязателен в stage/prod (x-seed-key).
 - **Dependencies / Blockers:** runbook-payload-seeding.md, SEED_KEY
 
 ### `src/app/(frontend)/not-found.tsx`
