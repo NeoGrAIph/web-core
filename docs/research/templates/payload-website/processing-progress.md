@@ -2208,7 +2208,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/payload-types.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/payload-types.ts
 - **Checked in payload-dev:** no
@@ -2221,12 +2221,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/payload.config.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/payload.config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Должно быть адаптировано под Postgres adapter + migrations dir + admin import map.
+- **Notes:** `payload-core`: Postgres adapter + migrations dir + i18n; admin UI через `@/admin-ui/*`. `synestra-io`: mongoose adapter.
 - **Dependencies / Blockers:** runbook-payload-migrations.md, packages/env, cms-* packages
 
 ### `src/plugins/index.ts`
@@ -2234,12 +2234,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/plugins/index.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/plugins/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Конфигурация Payload plugins; зависит от search/redirects/seo hooks.
+- **Notes:** Базовая конфигурация из upstream; в payload-core добавлен S3 storage plugin (env‑guard).
 - **Dependencies / Blockers:** plugin-* packages, search hooks, redirects hook
 
 ### `src/providers/HeaderTheme/index.tsx`
