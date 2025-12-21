@@ -58,6 +58,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@playwright/test": "1.56.1",
+    "@synestra/eslint-config": "workspace:*",
+    "@synestra/next-config": "workspace:*",
+    "@synestra/typescript-config": "workspace:*",
     "@tailwindcss/typography": "^0.5.13",
     "@testing-library/react": "16.3.0",
     "@types/escape-html": "^1.0.2",

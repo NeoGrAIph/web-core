@@ -1,28 +1,23 @@
 # packages/next-config
 
 ## Назначение
-Единая Next.js конфигурация для apps (withPayload, extensionAlias, transpilePackages).
+Общий helper для `next.config.mjs`: подмешивает `withPayload`, единый `extensionAlias`, собирает `transpilePackages` из workspace deps.
 
-## Границы модуля (не окончательные)
-- Только shared конфиг и helper для next.config.
-- Без app‑логики и без секретов.
+## Использование
+```js
+// next.config.mjs
+import { createSynestraNextConfig } from '@synestra/next-config'
 
-Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
-по мере обработки соответствующего модуля из шаблона website.
+export default createSynestraNextConfig()
+```
 
-## Источники (for_cute)
-- old_packages/next-config/README.md
+## Экспортируемые функции
+- `createSynestraNextConfig(options)`
+- `getWorkspaceTranspilePackages(options)`
 
-## Зависимости
-- Next.js, @payloadcms/next
-
-## Требования и ограничения
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
-- Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
-- В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
-- Admin UI строго отдельно: @/admin-ui/* + import map Payload.
-- Seed не должен зависеть от сетевых fetch (только локальные ассеты).
-- Миграции обязательны при изменении schema (см. runbooks).
+## Источники
+- `old_packages/next-config/index.js`
+- `old_packages/next-config/package.json`
 
 ## Статус
-Рекомендуется выделить; перенос ещё не выполнен.
+Перенос выполнен (инфраструктура закрыта).

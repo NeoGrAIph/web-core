@@ -1,28 +1,19 @@
 # packages/typescript-config
 
 ## Назначение
-Общие tsconfig профили (base/nextjs).
+Общие профили TypeScript (`base.json`, `nextjs.json`) для apps и packages.
 
-## Границы модуля (не окончательные)
-- Используется apps/packages через extends.
-- Без runtime‑кода.
+## Использование
+- В пакетах: `"extends": "@synestra/typescript-config/base.json"`
+- В приложениях: `"extends": "@synestra/typescript-config/nextjs.json"`
 
-Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
-по мере обработки соответствующего модуля из шаблона website.
+## Источники
+- `old_packages/typescript-config/base.json`
+- `old_packages/typescript-config/nextjs.json`
 
-## Источники (for_cute)
-- old_packages/typescript-config/README.md
-
-## Зависимости
-- TypeScript
-
-## Требования и ограничения
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
-- Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
-- В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
-- Admin UI строго отдельно: @/admin-ui/* + import map Payload.
-- Seed не должен зависеть от сетевых fetch (только локальные ассеты).
-- Миграции обязательны при изменении schema (см. runbooks).
+## Примечания
+- Пакет не содержит runtime‑кода.
+- Используется через `extends`, поэтому должен быть в `devDependencies` потребителей.
 
 ## Статус
-Рекомендуется выделить; перенос ещё не выполнен.
+Перенос выполнен (инфраструктура закрыта).

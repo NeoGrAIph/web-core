@@ -1,30 +1,27 @@
 # packages/cms-fields
 
 ## Назначение
-Shared field builders (link, linkGroup, defaultLexical, hero).
+Shared field builders и связанные типы для Payload schema (без React‑рендера).
 
-## Границы модуля (не окончательные)
-- Только field builders и типы.
-- Без app‑специфичных зависимостей.
-
-Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
-по мере обработки соответствующего модуля из шаблона website.
+## Содержимое (актуально)
+- `defaultLexical` — базовый Lexical editor config.
+- `link` / `linkGroup` — builders для ссылок.
+- `hero` — поле hero (schema) для reuse в коллекциях/глобалах.
 
 ## Источники (for_cute)
-- for_cute/src/fields/*
-- for_cute/src/heros/config.ts
+- `for_cute/src/fields/defaultLexical.ts`
+- `for_cute/src/fields/link.ts`
+- `for_cute/src/fields/linkGroup.ts`
+- `for_cute/src/heros/config.ts`
 
 ## Зависимости
-- packages/utils
+- `@payloadcms/richtext-lexical`
+- `payload`
+- `@synestra/utils` (deepMerge)
 
-## Требования и ограничения
-- Toolchain и конфиги централизуем через packages/next-config, packages/eslint-config, packages/typescript-config.
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
-- Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
-- В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
-- Admin UI строго отдельно: @/admin-ui/* + import map Payload.
-- Seed не должен зависеть от сетевых fetch (только локальные ассеты).
-- Миграции обязательны при изменении schema (см. runbooks).
+## Примечания
+- В `link` используется `relationTo: ['pages', 'posts']` — это контракт на slugs коллекций.
+- `hero` ссылается на `media` collection и должен жить рядом с CMS‑слоем.
 
 ## Статус
-Определены кандидаты на shared; перенос ещё не выполнен.
+Перенос выполнен (этап 4.2).

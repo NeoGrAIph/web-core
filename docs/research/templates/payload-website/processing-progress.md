@@ -34,41 +34,41 @@
 
 ### `packages/next-config` (module)
 - **Group:** infra/config
-- **Status:** pending
+- **Status:** done
 - **Decision:** shared
 - **Destination:** packages/next-config
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** old_packages/next-config/README.md
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
-- **Notes:** Модуль планируется к переносу/оформлению как shared package.
+- **Notes:** Пакет перенесён: `index.js`, `package.json`, README (инфраструктура закрыта).
 - **Dependencies / Blockers:** Next.js, @payloadcms/next
 
 ### `packages/eslint-config` (module)
 - **Group:** infra/config
-- **Status:** pending
+- **Status:** done
 - **Decision:** shared
 - **Destination:** packages/eslint-config
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** old_packages/eslint-config/README.md
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
-- **Notes:** Модуль планируется к переносу/оформлению как shared package.
+- **Notes:** Пакет перенесён: `index.js`, `package.json`, README (инфраструктура закрыта).
 - **Dependencies / Blockers:** eslint, eslint-config-next
 
 ### `packages/typescript-config` (module)
 - **Group:** infra/config
-- **Status:** pending
+- **Status:** done
 - **Decision:** shared
 - **Destination:** packages/typescript-config
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** old_packages/typescript-config/README.md
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
-- **Notes:** Модуль планируется к переносу/оформлению как shared package.
+- **Notes:** Пакет перенесён: `base.json`, `nextjs.json`, `package.json`, README (инфраструктура закрыта).
 - **Dependencies / Blockers:** TypeScript
 
 ### `packages/plugins` (module)
@@ -2070,7 +2070,7 @@
 - **Source Path:** for_cute/src/fields/defaultLexical.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Базовый конфиг Lexical editor с LinkFeature и валидацией URL; подходит для shared.
+- **Notes:** Базовый конфиг Lexical editor с LinkFeature и валидацией URL; подходит для shared. Перенесено в `packages/cms-fields/src/defaultLexical.ts` (этап 4.2).
 - **Dependencies / Blockers:** payload richtext-lexical
 
 ### `src/fields/link.ts`
@@ -2083,7 +2083,7 @@
 - **Source Path:** for_cute/src/fields/link.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Field builder для ссылок; требует deepMerge и relationTo (pages/posts).
+- **Notes:** Field builder для ссылок; требует deepMerge и relationTo (pages/posts). Перенесено в `packages/cms-fields/src/link.ts` (этап 4.2).
 - **Dependencies / Blockers:** packages/utils (deepMerge), collections slugs
 
 ### `src/fields/linkGroup.ts`
@@ -2096,7 +2096,7 @@
 - **Source Path:** for_cute/src/fields/linkGroup.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Группировка ссылок на базе link(); shared.
+- **Notes:** Группировка ссылок на базе link(); shared. Перенесено в `packages/cms-fields/src/linkGroup.ts` (этап 4.2).
 - **Dependencies / Blockers:** packages/cms-fields/link, packages/utils/deepMerge
 
 ### `src/heros/HighImpact/index.tsx`
@@ -2174,7 +2174,7 @@
 - **Source Path:** for_cute/src/heros/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Schema‑поле hero; логично жить в cms-fields.
+- **Notes:** Schema‑поле hero; логично жить в cms-fields. Перенесено в `packages/cms-fields/src/hero.ts` (этап 4.2).
 - **Dependencies / Blockers:** packages/cms-fields/linkGroup, media collection
 
 ### `src/hooks/populatePublishedAt.ts`
@@ -2395,7 +2395,7 @@
 - **Source Path:** for_cute/src/utilities/canUseDOM.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный helper для проверки DOM.
+- **Notes:** Универсальный helper для проверки DOM. Перенесено в `packages/utils/src/canUseDOM.ts` (этап 4.1).
 - **Dependencies / Blockers:** -
 
 ### `src/utilities/deepMerge.ts`
@@ -2408,7 +2408,7 @@
 - **Source Path:** for_cute/src/utilities/deepMerge.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Общий deepMerge; убрать @ts-nocheck и привести типы при переносе.
+- **Notes:** Общий deepMerge; убрать @ts-nocheck и привести типы при переносе. Перенесено в `packages/utils/src/deepMerge.ts` (этап 4.1).
 - **Dependencies / Blockers:** types cleanup
 
 ### `src/utilities/formatAuthors.ts`
@@ -2434,7 +2434,7 @@
 - **Source Path:** for_cute/src/utilities/formatDateTime.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный форматтер даты.
+- **Notes:** Универсальный форматтер даты. Перенесено в `packages/utils/src/formatDateTime.ts` (этап 4.1).
 - **Dependencies / Blockers:** -
 
 ### `src/utilities/generateMeta.ts`
@@ -2512,7 +2512,7 @@
 - **Source Path:** for_cute/src/utilities/getMediaUrl.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальная нормализация media URL; зависит от getClientSideURL.
+- **Notes:** Универсальная нормализация media URL; зависит от getClientSideURL. Перенесено в `packages/utils/src/getMediaUrl.ts` (этап 4.1).
 - **Dependencies / Blockers:** getURL
 
 ### `src/utilities/getRedirects.ts`
@@ -2538,7 +2538,7 @@
 - **Source Path:** for_cute/src/utilities/getURL.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальные getServerSideURL/getClientSideURL; привязка к env.
+- **Notes:** Универсальные getServerSideURL/getClientSideURL; привязка к env. Перенесено в `packages/utils/src/getURL.ts` (этап 4.1).
 - **Dependencies / Blockers:** env contract
 
 ### `src/utilities/mergeOpenGraph.ts`
@@ -2564,7 +2564,7 @@
 - **Source Path:** for_cute/src/utilities/toKebabCase.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальная утилита.
+- **Notes:** Универсальная утилита. Перенесено в `packages/utils/src/toKebabCase.ts` (этап 4.1).
 - **Dependencies / Blockers:** -
 
 ### `src/utilities/ui.ts`
@@ -2577,7 +2577,7 @@
 - **Source Path:** for_cute/src/utilities/ui.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** cn helper; заменить tailwind-merge на token‑friendly стратегию при необходимости.
+- **Notes:** cn helper; заменить tailwind-merge на token‑friendly стратегию при необходимости. Перенесено в `packages/utils/src/ui.ts` (этап 4.1).
 - **Dependencies / Blockers:** ui-layer strategy
 
 ### `src/utilities/useClickableCard.ts`
@@ -2603,7 +2603,7 @@
 - **Source Path:** for_cute/src/utilities/useDebounce.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный React‑hook; использовать в UI/форме.
+- **Notes:** Универсальный React‑hook; использовать в UI/форме. Перенесено в `packages/utils/src/useDebounce.ts` (этап 4.1).
 - **Dependencies / Blockers:** react
 
 ### `tailwind.config.mjs`

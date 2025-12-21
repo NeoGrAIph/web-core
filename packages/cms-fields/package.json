@@ -1,0 +1,28 @@
+{
+  "name": "@synestra/cms-fields",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./defaultLexical": "./src/defaultLexical.ts",
+    "./hero": "./src/hero.ts",
+    "./link": "./src/link.ts",
+    "./linkGroup": "./src/linkGroup.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@payloadcms/richtext-lexical": "3.68.3",
+    "@synestra/utils": "workspace:*",
+    "payload": "3.68.3"
+  },
+  "devDependencies": {
+    "@synestra/typescript-config": "workspace:*",
+    "typescript": "5.7.3"
+  }
+}

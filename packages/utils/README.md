@@ -1,29 +1,36 @@
 # packages/utils
 
 ## Назначение
-Shared утилиты (не UI, не CMS).
+Shared утилиты (не UI, не CMS), пригодные для повторного использования в нескольких apps и пакетах.
 
-## Границы модуля (не окончательные)
-- Универсальные функции/хуки без доменных привязок.
-- Избегать зависимостей на app‑маршруты.
-
-Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
-по мере обработки соответствующего модуля из шаблона website.
+## Содержимое (актуально)
+- `canUseDOM` — проверка наличия DOM.
+- `deepMerge` / `isObject` — простой deep merge.
+- `formatDateTime` — форматтер даты.
+- `getMediaUrl` — нормализация media URL.
+- `getURL` — `getServerSideURL` / `getClientSideURL`.
+- `toKebabCase` — преобразование в kebab-case.
+- `cn` — helper для объединения классов (clsx + tailwind-merge).
+- `useDebounce` — React hook.
 
 ## Источники (for_cute)
-- for_cute/src/utilities/{canUseDOM,deepMerge,formatDateTime,getMediaUrl,getURL,toKebabCase,ui,useDebounce}.ts
+- `for_cute/src/utilities/canUseDOM.ts`
+- `for_cute/src/utilities/deepMerge.ts`
+- `for_cute/src/utilities/formatDateTime.ts`
+- `for_cute/src/utilities/getMediaUrl.ts`
+- `for_cute/src/utilities/getURL.ts`
+- `for_cute/src/utilities/toKebabCase.ts`
+- `for_cute/src/utilities/ui.ts`
+- `for_cute/src/utilities/useDebounce.ts`
 
 ## Зависимости
-- (при необходимости) react
+- `clsx`
+- `tailwind-merge`
+- peer: `react` (нужен для `useDebounce`)
 
-## Требования и ограничения
-- Toolchain и конфиги централизуем через packages/next-config, packages/eslint-config, packages/typescript-config.
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
-- Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
-- В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
-- Admin UI строго отдельно: @/admin-ui/* + import map Payload.
-- Seed не должен зависеть от сетевых fetch (только локальные ассеты).
-- Миграции обязательны при изменении schema (см. runbooks).
+## Примечания
+- `deepMerge` пока сохранён как есть (в исходнике есть `@ts-nocheck`). План: типизировать и убрать suppression.
+- App‑специфичные утилиты остаются в `apps/<app>/src/utilities/*` (см. `processing-progress.md`).
 
 ## Статус
-Определены кандидаты на shared; перенос ещё не выполнен.
+Перенос выполнен (этап 4.1).
