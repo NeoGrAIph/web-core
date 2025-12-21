@@ -1,8 +1,7 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
 
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { readFile } from 'node:fs/promises'
+import { access, readFile } from 'node:fs/promises'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -28,8 +27,10 @@ const globals: GlobalSlug[] = ['header', 'footer']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+const seedDirCandidates = [
+  path.resolve(process.cwd(), 'apps/payload-core/src/endpoints/seed'),
+  path.resolve(process.cwd(), 'src/endpoints/seed'),
+]
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -276,8 +277,23 @@ export const seed = async ({
   payload.logger.info('Seeded database successfully!')
 }
 
+async function resolveSeedFile(relativePath: string): Promise<string> {
+  const candidates = seedDirCandidates.map((base) => path.resolve(base, relativePath))
+
+  for (const candidate of candidates) {
+    try {
+      await access(candidate)
+      return candidate
+    } catch {
+      // continue
+    }
+  }
+
+  throw new Error(`Seed file not found: ${relativePath}`)
+}
+
 async function fetchLocalFile(relativePath: string): Promise<File> {
-  const filePath = path.resolve(dirname, relativePath)
+  const filePath = await resolveSeedFile(relativePath)
   const data = await readFile(filePath)
   const ext = path.extname(filePath).replace('.', '')
 
