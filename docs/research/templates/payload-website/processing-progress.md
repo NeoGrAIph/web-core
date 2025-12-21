@@ -991,7 +991,7 @@
 - **Source Path:** for_cute/src/blocks/Banner/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный блок banner; перенесено в `packages/cms-blocks/src/blocks/Banner.ts`. Структура изменена: `blocks/Banner/config.ts` → `blocks/Banner.ts`.
+- **Notes:** Универсальный блок banner; перенесено в `packages/cms-blocks/src/blocks/Banner.ts`. Структура изменена: `blocks/Banner/config.ts` → `blocks/Banner.ts`. В app `apps/<app>/src/blocks/Banner/config.ts` — wrapper re-export.
 - **Dependencies / Blockers:** richtext-lexical
 
 ### `src/blocks/CallToAction/Component.tsx`
@@ -1017,7 +1017,7 @@
 - **Source Path:** for_cute/src/blocks/CallToAction/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный CTA блок; перенесено в `packages/cms-blocks/src/blocks/CallToAction.ts`. Структура изменена: `blocks/CallToAction/config.ts` → `blocks/CallToAction.ts`.
+- **Notes:** Универсальный CTA блок; перенесено в `packages/cms-blocks/src/blocks/CallToAction.ts`. Структура изменена: `blocks/CallToAction/config.ts` → `blocks/CallToAction.ts`. В app `apps/<app>/src/blocks/CallToAction/config.ts` — wrapper re-export.
 - **Dependencies / Blockers:** packages/cms-fields/linkGroup
 
 ### `src/blocks/Code/Component.client.tsx`
@@ -1069,7 +1069,7 @@
 - **Source Path:** for_cute/src/blocks/Code/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный code блок; перенесено в `packages/cms-blocks/src/blocks/Code.ts`. Структура изменена: `blocks/Code/config.ts` → `blocks/Code.ts`.
+- **Notes:** Универсальный code блок; перенесено в `packages/cms-blocks/src/blocks/Code.ts`. Структура изменена: `blocks/Code/config.ts` → `blocks/Code.ts`. В app `apps/<app>/src/blocks/Code/config.ts` — wrapper re-export.
 - **Dependencies / Blockers:** -
 
 ### `src/blocks/Content/Component.tsx`
@@ -1095,7 +1095,7 @@
 - **Source Path:** for_cute/src/blocks/Content/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный content блок; перенесено в `packages/cms-blocks/src/blocks/Content.ts`. Структура изменена: `blocks/Content/config.ts` → `blocks/Content.ts`.
+- **Notes:** Универсальный content блок; перенесено в `packages/cms-blocks/src/blocks/Content.ts`. Структура изменена: `blocks/Content/config.ts` → `blocks/Content.ts`. В app `apps/<app>/src/blocks/Content/config.ts` — wrapper re-export.
 - **Dependencies / Blockers:** packages/cms-fields/link
 
 ### `src/blocks/Form/Checkbox/index.tsx`
@@ -1329,7 +1329,7 @@
 - **Source Path:** for_cute/src/blocks/MediaBlock/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Универсальный mediaBlock; перенесено в `packages/cms-blocks/src/blocks/MediaBlock.ts`. Структура изменена: `blocks/MediaBlock/config.ts` → `blocks/MediaBlock.ts`.
+- **Notes:** Универсальный mediaBlock; перенесено в `packages/cms-blocks/src/blocks/MediaBlock.ts`. Структура изменена: `blocks/MediaBlock/config.ts` → `blocks/MediaBlock.ts`. В app `apps/<app>/src/blocks/MediaBlock/config.ts` — wrapper re-export.
 - **Dependencies / Blockers:** media collection
 
 ### `src/blocks/RelatedPosts/Component.tsx`
