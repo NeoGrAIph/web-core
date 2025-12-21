@@ -18,7 +18,7 @@
 
 Канон на **2025-12-18** для `synestra-io`: медиа хранится в object storage (MinIO / S3), поэтому **синхронизировать media‑PVC не нужно**. См.:
 - `docs/runbooks/runbook-media-migrate-to-object-storage.md`
-- `docs/backlog/next-media-route.md` (важно: не перехватывать `/api/media/file/*` кастомным Next route)
+- `docs/runbooks/runbook-media-refresh-dev-from-prod.md` (важно: не перехватывать `/api/media/file/*` кастомным Next route)
 
 ---
 

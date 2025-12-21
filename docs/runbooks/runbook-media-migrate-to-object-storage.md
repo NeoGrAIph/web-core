@@ -10,7 +10,7 @@
 Связанные документы:
 - `docs/runbooks/runbook-db-refresh-dev-from-prod.md`
 - `docs/runbooks/runbook-dev-prod-flow.md`
-- `docs/backlog/next-media-route.md`
+- `docs/runbooks/runbook-media-refresh-dev-from-prod.md`
 
 ## 0) Предпосылки
 

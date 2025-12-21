@@ -7,7 +7,7 @@
 Канон:
 - **разные bucket’ы** для prod и dev (или минимум разные `prefix`), чтобы dev не мог повредить prod‑медиа;
 - refresh делаем **внутри кластера** одноразовым Job (повторяемо, без установки утилит локально);
-- не занимаем путь `/api/media/file/*` кастомным Next route (см. `docs/backlog/next-media-route.md`).
+- не занимаем путь `/api/media/file/*` кастомным Next route (см. `docs/runbooks/runbook-media-migrate-to-object-storage.md` и `docs/runbooks/runbook-db-refresh-dev-from-prod.md`).
 
 ## 0) Предпосылки
 
