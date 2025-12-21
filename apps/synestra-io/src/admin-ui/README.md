@@ -10,18 +10,18 @@ Facade для Payload Admin компонентов (import map).
 Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
 по мере обработки соответствующего модуля из шаблона website.
 
-## Источники (for_cute)
-- for_cute/src/components/BeforeLogin
-- for_cute/src/components/BeforeDashboard
-- for_cute/src/components/AdminBar
-- for_cute/src/Header/RowLabel
-- for_cute/src/Footer/RowLabel
+## Источники (upstream/payload/templates/website)
+- upstream/payload/templates/website/src/components/BeforeLogin
+- upstream/payload/templates/website/src/components/BeforeDashboard
+- upstream/payload/templates/website/src/components/AdminBar
+- upstream/payload/templates/website/src/Header/RowLabel
+- upstream/payload/templates/website/src/Footer/RowLabel
 
 ## Зависимости
 - payload import map
 
 ## Требования и ограничения
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
+- Используем upstream/payload/templates/website/** как рабочую копию; upstream/** — только для сверки.
 - Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
 - В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
 - Admin UI строго отдельно: @/admin-ui/* + import map Payload.

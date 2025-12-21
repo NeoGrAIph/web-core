@@ -9,14 +9,14 @@ Hero renderers и router.
 Важно: границы модуля в этом README.md не окончательные и могут быть сужены или расширены
 по мере обработки соответствующего модуля из шаблона website.
 
-## Источники (for_cute)
-- for_cute/src/heros/**
+## Источники (upstream/payload/templates/website)
+- upstream/payload/templates/website/src/heros/**
 
 ## Зависимости
 - app components, providers
 
 ## Требования и ограничения
-- Используем for_cute/** как рабочую копию; upstream/** — только для сверки.
+- Используем upstream/payload/templates/website/** как рабочую копию; upstream/** — только для сверки.
 - Сохраняем имена файлов и относительную структуру, если это не нарушает канон web-core.
 - В app‑коде UI импортируется только через фасад @/ui/* (без прямых @synestra/ui/*).
 - Admin UI строго отдельно: @/admin-ui/* + import map Payload.

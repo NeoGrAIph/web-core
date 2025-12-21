@@ -78,7 +78,7 @@
 - **Destination:** packages/blocks-renderer
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** old_packages/blocks-renderer/** (реализация), for_cute/src/blocks/RenderBlocks.tsx (reference)
+- **Source Path:** old_packages/blocks-renderer/** (реализация), upstream/payload/templates/website/src/blocks/RenderBlocks.tsx (reference)
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Shared helper для рендера блоков (registry → component); вынесен из old_packages.
@@ -130,7 +130,7 @@
 - **Destination:** n/a (используем корневые конфиги монорепы)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.editorconfig
+- **Source Path:** upstream/payload/templates/website/.editorconfig
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Общий .editorconfig берём из корня monorepo; шаблонный файл не переносим.
@@ -143,7 +143,7 @@
 - **Destination:** apps/<app>/.env.example (адаптировать под env‑контракт)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.env.example
+- **Source Path:** upstream/payload/templates/website/.env.example
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Содержит Mongo/PG пример; в web-core используем Postgres и правила из runbook-env-contract.
@@ -156,7 +156,7 @@
 - **Destination:** n/a (корневой .gitignore)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.gitignore
+- **Source Path:** upstream/payload/templates/website/.gitignore
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Используем корневой .gitignore monorepo.
@@ -169,7 +169,7 @@
 - **Destination:** n/a (настройки pnpm в корне)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.npmrc
+- **Source Path:** upstream/payload/templates/website/.npmrc
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Настройки для standalone template; в monorepo действует корневой .npmrc.
@@ -182,7 +182,7 @@
 - **Destination:** n/a (корневой prettier config)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.prettierignore
+- **Source Path:** upstream/payload/templates/website/.prettierignore
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Используем корневые настройки форматирования monorepo.
@@ -195,7 +195,7 @@
 - **Destination:** n/a (корневой prettier config)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.prettierrc.json
+- **Source Path:** upstream/payload/templates/website/.prettierrc.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Используем корневые настройки форматирования monorepo.
@@ -208,7 +208,7 @@
 - **Destination:** n/a
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.vscode/extensions.json
+- **Source Path:** upstream/payload/templates/website/.vscode/extensions.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** VSCode рекомендации не переносим в monorepo.
@@ -221,7 +221,7 @@
 - **Destination:** n/a
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.vscode/launch.json
+- **Source Path:** upstream/payload/templates/website/.vscode/launch.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** VSCode launch config не переносим в monorepo.
@@ -234,7 +234,7 @@
 - **Destination:** n/a
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/.vscode/settings.json
+- **Source Path:** upstream/payload/templates/website/.vscode/settings.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** VSCode settings не переносим в monorepo.
@@ -247,7 +247,7 @@
 - **Destination:** n/a (используем web-core Docker/CI/GitOps)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/Dockerfile
+- **Source Path:** upstream/payload/templates/website/Dockerfile
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Шаблонный Dockerfile для standalone; в web-core используются другие образы/пайплайн.
@@ -260,7 +260,7 @@
 - **Destination:** n/a (документация web-core отдельно)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/README.md
+- **Source Path:** upstream/payload/templates/website/README.md
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Используем как справку по функциональности шаблона, в код не переносим.
@@ -273,7 +273,7 @@
 - **Destination:** n/a
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/components.json
+- **Source Path:** upstream/payload/templates/website/components.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Shadcn config для standalone; в web-core UI‑слой выстраиваем через packages/ui.
@@ -286,7 +286,7 @@
 - **Destination:** n/a
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/docker-compose.yml
+- **Source Path:** upstream/payload/templates/website/docker-compose.yml
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Локальный docker-compose для шаблона; не используем в web-core.
@@ -299,7 +299,7 @@
 - **Destination:** apps/<app>/eslint.config.mjs (через shared eslint-config)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/eslint.config.mjs
+- **Source Path:** upstream/payload/templates/website/eslint.config.mjs
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Правила базовые; в web-core используем packages/eslint-config и общую конфигурацию.
@@ -312,7 +312,7 @@
 - **Destination:** apps/<app>/next-env.d.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/next-env.d.ts
+- **Source Path:** upstream/payload/templates/website/next-env.d.ts
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Типовой файл Next.js, переносим как есть.
@@ -325,7 +325,7 @@
 - **Destination:** apps/<app>/next-sitemap.config.cjs
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/next-sitemap.config.cjs
+- **Source Path:** upstream/payload/templates/website/next-sitemap.config.cjs
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Нужна адаптация под домены и правила web-core; использовать NEXT_PUBLIC_SERVER_URL из env‑контракта.
@@ -338,7 +338,7 @@
 - **Destination:** apps/<app>/next.config.mjs (через @synestra/next-config)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/next.config.js
+- **Source Path:** upstream/payload/templates/website/next.config.js
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Содержит withPayload, extensionAlias и redirects; переносить через shared next-config.
@@ -351,7 +351,7 @@
 - **Destination:** apps/<app>/package.json (workspace)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/package.json
+- **Source Path:** upstream/payload/templates/website/package.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Использовать как референс зависимостей; в web-core зависимости оформлены как workspace-пакеты и требуют обновления engines (node>=22, pnpm@10).
@@ -364,7 +364,7 @@
 - **Destination:** apps/<app>/playwright.config.ts (если сохраняем e2e)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/playwright.config.ts
+- **Source Path:** upstream/payload/templates/website/playwright.config.ts
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Шаблонный e2e конфиг; согласовать с web-core test-пайплайном.
@@ -377,7 +377,7 @@
 - **Destination:** n/a (используем корневой pnpm-lock.yaml)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/pnpm-lock.yaml
+- **Source Path:** upstream/payload/templates/website/pnpm-lock.yaml
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Локальный lockfile шаблона не переносим.
@@ -390,7 +390,7 @@
 - **Destination:** apps/<app>/postcss.config.js
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/postcss.config.js
+- **Source Path:** upstream/payload/templates/website/postcss.config.js
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Tailwind + autoprefixer; сохранить для app, если Tailwind используется.
@@ -403,7 +403,7 @@
 - **Destination:** apps/<app>/public/favicon.ico
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/public/favicon.ico
+- **Source Path:** upstream/payload/templates/website/public/favicon.ico
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Базовый favicon шаблона; можно заменить на брендовый.
@@ -416,7 +416,7 @@
 - **Destination:** apps/<app>/public/favicon.svg
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/public/favicon.svg
+- **Source Path:** upstream/payload/templates/website/public/favicon.svg
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Векторный favicon; можно заменить на брендовый.
@@ -429,7 +429,7 @@
 - **Destination:** apps/<app>/public/website-template-OG.webp
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/public/website-template-OG.webp
+- **Source Path:** upstream/payload/templates/website/public/website-template-OG.webp
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** OG‑картинка шаблона; заменить на брендовый ассет.
@@ -442,7 +442,7 @@
 - **Destination:** apps/<app>/redirects.js
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/redirects.js
+- **Source Path:** upstream/payload/templates/website/redirects.js
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Содержит IE redirect; решить необходимость и перенести в app при необходимости.
@@ -455,7 +455,7 @@
 - **Destination:** apps/<app>/src/Footer/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/Footer/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/Footer/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Footer renderer; зависит от ThemeSelector и CMSLink.
@@ -468,7 +468,7 @@
 - **Destination:** apps/<app>/src/admin-ui/Footer/RowLabel.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/Footer/RowLabel.tsx
+- **Source Path:** upstream/payload/templates/website/src/Footer/RowLabel.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** RowLabel для admin UI (Footer nav items). Перенесено в `apps/<app>/src/admin-ui/Footer/RowLabel.tsx`.
@@ -481,7 +481,7 @@
 - **Destination:** packages/cms-core/src/globals/Footer.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/Footer/config.ts
+- **Source Path:** upstream/payload/templates/website/src/Footer/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Глобал Footer; перенесён в `packages/cms-core/src/globals/Footer.ts`. В app‑обёртке `apps/<app>/src/Footer/config.ts` добавлен `afterChange` (revalidateFooter). RowLabel путь переведён на `@/admin-ui/Footer/RowLabel#RowLabel`.
@@ -494,7 +494,7 @@
 - **Destination:** apps/<app>/src/Footer/hooks/revalidateFooter.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/Footer/hooks/revalidateFooter.ts
+- **Source Path:** upstream/payload/templates/website/src/Footer/hooks/revalidateFooter.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Next revalidateTag('global_footer'); app‑локально.
@@ -507,7 +507,7 @@
 - **Destination:** apps/<app>/src/Header/Component.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/Header/Component.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/Header/Component.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Client header с theme и nav.
@@ -520,7 +520,7 @@
 - **Destination:** apps/<app>/src/Header/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/Header/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/Header/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Серверный Header, берёт global header.
@@ -533,7 +533,7 @@
 - **Destination:** apps/<app>/src/Header/Nav/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/Header/Nav/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/Header/Nav/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Навигация header; app‑локально.
@@ -546,7 +546,7 @@
 - **Destination:** apps/<app>/src/admin-ui/Header/RowLabel.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/Header/RowLabel.tsx
+- **Source Path:** upstream/payload/templates/website/src/Header/RowLabel.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** RowLabel для admin UI (Header nav items). Перенесено в `apps/<app>/src/admin-ui/Header/RowLabel.tsx`.
@@ -559,7 +559,7 @@
 - **Destination:** packages/cms-core/src/globals/Header.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/Header/config.ts
+- **Source Path:** upstream/payload/templates/website/src/Header/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Глобал Header; перенесён в `packages/cms-core/src/globals/Header.ts`. В app‑обёртке `apps/<app>/src/Header/config.ts` добавлен `afterChange` (revalidateHeader). RowLabel путь переведён на `@/admin-ui/Header/RowLabel#RowLabel`.
@@ -572,7 +572,7 @@
 - **Destination:** apps/<app>/src/Header/hooks/revalidateHeader.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/Header/hooks/revalidateHeader.ts
+- **Source Path:** upstream/payload/templates/website/src/Header/hooks/revalidateHeader.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Next revalidateTag('global_header'); app‑локально.
@@ -585,7 +585,7 @@
 - **Destination:** packages/cms-core/src/access/anyone.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/access/anyone.ts
+- **Source Path:** upstream/payload/templates/website/src/access/anyone.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный access helper, без зависимостей от app. Перенесено в `packages/cms-core/src/access/anyone.ts`.
@@ -598,7 +598,7 @@
 - **Destination:** packages/cms-core/src/access/authenticated.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/access/authenticated.ts
+- **Source Path:** upstream/payload/templates/website/src/access/authenticated.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный access helper; убран импорт app‑типа User (используем payload `AccessArgs`). Перенесено в `packages/cms-core/src/access/authenticated.ts`.
@@ -611,7 +611,7 @@
 - **Destination:** packages/cms-core/src/access/authenticatedOrPublished.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/access/authenticatedOrPublished.ts
+- **Source Path:** upstream/payload/templates/website/src/access/authenticatedOrPublished.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный access helper; перенесено в `packages/cms-core/src/access/authenticatedOrPublished.ts`.
@@ -624,7 +624,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/(sitemaps)/pages-sitemap.xml/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/(sitemaps)/pages-sitemap.xml/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/(sitemaps)/pages-sitemap.xml/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Sitemap для pages; зависит от env NEXT_PUBLIC_SERVER_URL.
@@ -637,7 +637,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/(sitemaps)/posts-sitemap.xml/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/(sitemaps)/posts-sitemap.xml/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/(sitemaps)/posts-sitemap.xml/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Sitemap для posts; зависит от env NEXT_PUBLIC_SERVER_URL.
@@ -650,7 +650,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/[slug]/page.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/[slug]/page.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/[slug]/page.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентская логика header theme.
@@ -663,7 +663,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/[slug]/page.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/[slug]/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/[slug]/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Основной page renderer; зависит от blocks/hero/seed/redirects.
@@ -676,7 +676,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/globals.css
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/globals.css
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/globals.css
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Tailwind globals + CSS vars; адаптировать к tokens `--syn-ui-*`.
@@ -689,7 +689,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/layout.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/layout.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/layout.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Root layout, подключает AdminBar/Header/Footer/Providers; AdminBar импортируется через `@/admin-ui/*`.
@@ -702,7 +702,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/next/exit-preview/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/next/exit-preview/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/next/exit-preview/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Выключение draft mode.
@@ -715,7 +715,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/next/preview/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/next/preview/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/next/preview/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Preview‑endpoint; требует auth + PREVIEW_SECRET.
@@ -728,7 +728,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/next/seed/route.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/next/seed/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/next/seed/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed endpoint; SEED_KEY обязателен в stage/prod (x-seed-key).
@@ -741,7 +741,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/not-found.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/not-found.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/not-found.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** 404 страница; UI Button подключён через `@/ui/button` (facade).
@@ -754,7 +754,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/page.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Прокси на [slug]; оставить.
@@ -767,7 +767,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/posts/[slug]/page.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/posts/[slug]/page.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/posts/[slug]/page.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентская логика header theme.
@@ -780,7 +780,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/posts/[slug]/page.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/posts/[slug]/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/posts/[slug]/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендер поста; зависит от PostHero, RichText, RelatedPosts.
@@ -793,7 +793,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/posts/page.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/posts/page.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/posts/page.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентская логика header theme.
@@ -806,7 +806,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/posts/page.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/posts/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/posts/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Листинг постов; зависит от Pagination, PageRange.
@@ -819,7 +819,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/posts/page/[pageNumber]/page.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/posts/page/[pageNumber]/page.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/posts/page/[pageNumber]/page.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентская логика header theme.
@@ -832,7 +832,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/posts/page/[pageNumber]/page.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/posts/page/[pageNumber]/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/posts/page/[pageNumber]/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Пагинация постов; зависит от posts collection.
@@ -845,7 +845,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/search/page.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/search/page.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/search/page.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентская логика header theme.
@@ -858,7 +858,7 @@
 - **Destination:** apps/<app>/src/app/(frontend)/search/page.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(frontend)/search/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/search/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Поиск по коллекции search; зависит от plugin-search.
@@ -871,7 +871,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/admin/[[...segments]]/not-found.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/admin/[[...segments]]/not-found.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/admin/[[...segments]]/not-found.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Сгенерированный Payload файл; обновляется через payload generate.
@@ -884,7 +884,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/admin/[[...segments]]/page.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/admin/[[...segments]]/page.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/admin/[[...segments]]/page.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Сгенерированный Payload файл; обновляется через payload generate.
@@ -897,7 +897,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/admin/importMap.js
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/admin/importMap.js
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/admin/importMap.js
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Генерируется `payload generate:importmap`; после генерации заменяем импорты на `@/admin-ui/*`.
@@ -910,7 +910,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/api/[...slug]/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/api/[...slug]/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/api/[...slug]/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Сгенерированный REST handler; обновляется через payload generate.
@@ -923,7 +923,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/api/graphql-playground/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/api/graphql-playground/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/api/graphql-playground/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Сгенерированный GraphQL playground handler; обновляется через payload generate.
@@ -936,7 +936,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/api/graphql/route.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/api/graphql/route.ts
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/api/graphql/route.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Сгенерированный GraphQL handler; обновляется через payload generate.
@@ -949,7 +949,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/custom.scss
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/custom.scss
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/custom.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Доп. стили Payload Admin; пока пусто.
@@ -962,7 +962,7 @@
 - **Destination:** apps/<app>/src/app/(payload)/layout.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/app/(payload)/layout.tsx
+- **Source Path:** upstream/payload/templates/website/src/app/(payload)/layout.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Root layout Payload Admin; сгенерированный файл.
@@ -975,7 +975,7 @@
 - **Destination:** apps/<app>/src/blocks/ArchiveBlock/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/ArchiveBlock/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/ArchiveBlock/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер зависит от маршрутов/коллекции posts и app‑компонентов.
@@ -988,7 +988,7 @@
 - **Destination:** apps/<app>/src/blocks/ArchiveBlock/config.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/ArchiveBlock/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/ArchiveBlock/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Domain‑специфичный archive блок (posts/categories); оставить app.
@@ -1001,7 +1001,7 @@
 - **Destination:** apps/<app>/src/blocks/Banner/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Banner/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Banner/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер banner; оставить app (тема/классы).
@@ -1014,7 +1014,7 @@
 - **Destination:** packages/cms-blocks/src/blocks/Banner.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Banner/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/Banner/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный блок banner; перенесено в `packages/cms-blocks/src/blocks/Banner.ts`. Структура изменена: `blocks/Banner/config.ts` → `blocks/Banner.ts`. В app `apps/<app>/src/blocks/Banner/config.ts` — wrapper re-export.
@@ -1027,7 +1027,7 @@
 - **Destination:** apps/<app>/src/blocks/CallToAction/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/CallToAction/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/CallToAction/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер CTA, зависит от CMSLink и RichText.
@@ -1040,7 +1040,7 @@
 - **Destination:** packages/cms-blocks/src/blocks/CallToAction.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/CallToAction/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/CallToAction/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный CTA блок; перенесено в `packages/cms-blocks/src/blocks/CallToAction.ts`. Структура изменена: `blocks/CallToAction/config.ts` → `blocks/CallToAction.ts`. В app `apps/<app>/src/blocks/CallToAction/config.ts` — wrapper re-export.
@@ -1053,7 +1053,7 @@
 - **Destination:** apps/<app>/src/blocks/Code/Component.client.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Code/Component.client.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Code/Component.client.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Client‑часть code block (копировать/хайлайт); оставляем app.
@@ -1066,7 +1066,7 @@
 - **Destination:** apps/<app>/src/blocks/Code/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Code/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Code/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Server‑часть code block; оставляем app.
@@ -1079,7 +1079,7 @@
 - **Destination:** apps/<app>/src/blocks/Code/CopyButton.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Code/CopyButton.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Code/CopyButton.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑кнопка копирования, остаётся в app (тема/стили).
@@ -1092,7 +1092,7 @@
 - **Destination:** packages/cms-blocks/src/blocks/Code.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Code/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/Code/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный code блок; перенесено в `packages/cms-blocks/src/blocks/Code.ts`. Структура изменена: `blocks/Code/config.ts` → `blocks/Code.ts`. В app `apps/<app>/src/blocks/Code/config.ts` — wrapper re-export.
@@ -1105,7 +1105,7 @@
 - **Destination:** apps/<app>/src/blocks/Content/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Content/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Content/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер content блока; зависит от RichText и CMSLink.
@@ -1118,7 +1118,7 @@
 - **Destination:** packages/cms-blocks/src/blocks/Content.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Content/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/Content/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный content блок; перенесено в `packages/cms-blocks/src/blocks/Content.ts`. Структура изменена: `blocks/Content/config.ts` → `blocks/Content.ts`. В app `apps/<app>/src/blocks/Content/config.ts` — wrapper re-export.
@@ -1131,7 +1131,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Checkbox/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Checkbox/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Checkbox/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы; зависит от UI слоя и формы.
@@ -1144,7 +1144,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер form block; доменно и UI‑специфичен.
@@ -1157,7 +1157,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Country/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Country/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Country/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы (страны); доменно.
@@ -1170,7 +1170,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Country/options.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Country/options.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Country/options.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Список стран; оставить локально.
@@ -1183,7 +1183,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Email/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Email/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Email/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы; доменно.
@@ -1196,7 +1196,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Error/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Error/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Error/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑компонент ошибки формы; локально.
@@ -1209,7 +1209,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Message/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Message/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Message/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы (message); локально.
@@ -1222,7 +1222,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Number/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Number/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Number/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы; локально.
@@ -1235,7 +1235,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Select/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Select/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Select/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы; локально.
@@ -1248,7 +1248,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/State/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/State/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/State/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы (штаты); локально.
@@ -1261,7 +1261,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/State/options.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/State/options.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/State/options.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Список штатов; локально.
@@ -1274,7 +1274,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Text/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Text/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Text/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы; локально.
@@ -1287,7 +1287,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Textarea/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Textarea/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Textarea/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы; локально.
@@ -1300,7 +1300,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/Width/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/Width/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/Width/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑поле формы (width); локально.
@@ -1313,7 +1313,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/config.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Form block зависит от forms collection (plugin); доменно.
@@ -1326,7 +1326,7 @@
 - **Destination:** apps/<app>/src/blocks/Form/fields.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/Form/fields.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/Form/fields.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Сопоставление полей form builder; локально.
@@ -1339,7 +1339,7 @@
 - **Destination:** apps/<app>/src/blocks/MediaBlock/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/MediaBlock/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/MediaBlock/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер media block; зависит от Media компонент.
@@ -1352,7 +1352,7 @@
 - **Destination:** packages/cms-blocks/src/blocks/MediaBlock.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/MediaBlock/config.ts
+- **Source Path:** upstream/payload/templates/website/src/blocks/MediaBlock/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный mediaBlock; перенесено в `packages/cms-blocks/src/blocks/MediaBlock.ts`. Структура изменена: `blocks/MediaBlock/config.ts` → `blocks/MediaBlock.ts`. В app `apps/<app>/src/blocks/MediaBlock/config.ts` — wrapper re-export.
@@ -1365,7 +1365,7 @@
 - **Destination:** apps/<app>/src/blocks/RelatedPosts/Component.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/RelatedPosts/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/RelatedPosts/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Рендерер related posts; доменно и UI‑специфично.
@@ -1378,7 +1378,7 @@
 - **Destination:** apps/<app>/src/blocks/RenderBlocks.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/blocks/RenderBlocks.tsx
+- **Source Path:** upstream/payload/templates/website/src/blocks/RenderBlocks.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Переведено на общий renderer `@synestra/blocks-renderer` + app‑registry (`blocks/registry.ts`).
@@ -1430,7 +1430,7 @@
 - **Destination:** packages/cms-core/src/collections/Categories.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Categories.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Categories.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовая taxonomy коллекция; перенесено в `packages/cms-core/src/collections/Categories.ts`.
@@ -1443,7 +1443,7 @@
 - **Destination:** packages/cms-core/src/collections/Media.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Media.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Media.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Общая media‑коллекция; перенесено в `packages/cms-core/src/collections/Media.ts`. `staticDir` теперь считается от `process.cwd()/public/media`.
@@ -1456,7 +1456,7 @@
 - **Destination:** apps/<app>/src/collections/Pages/hooks/revalidatePage.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Pages/hooks/revalidatePage.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Pages/hooks/revalidatePage.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Жёстко привязан к маршрутам и Next revalidate; оставляем app‑локально.
@@ -1469,7 +1469,7 @@
 - **Destination:** apps/<app>/src/collections/Pages/index.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Pages/index.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Pages/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Зависит от блоков, hero, SEO и app‑утилит; подключён каталог `PAGE_LAYOUT_BLOCKS`.
@@ -1482,7 +1482,7 @@
 - **Destination:** apps/<app>/src/collections/Posts/hooks/populateAuthors.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Posts/hooks/populateAuthors.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Posts/hooks/populateAuthors.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Использует payload-types; зависит от модели Users и access‑политики, оставить в app.
@@ -1495,7 +1495,7 @@
 - **Destination:** apps/<app>/src/collections/Posts/hooks/revalidatePost.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Posts/hooks/revalidatePost.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Posts/hooks/revalidatePost.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Жёстко привязан к маршрутам и Next revalidate; оставляем app‑локально.
@@ -1508,7 +1508,7 @@
 - **Destination:** apps/<app>/src/collections/Posts/index.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Posts/index.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Posts/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Зависит от blocks/SEO/utility и richtext blocks; подключён каталог `RICH_TEXT_BLOCKS`.
@@ -1521,7 +1521,7 @@
 - **Destination:** packages/cms-core/src/collections/Users.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/collections/Users/index.ts
+- **Source Path:** upstream/payload/templates/website/src/collections/Users/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовая Users коллекция для admin; перенесено в `packages/cms-core/src/collections/Users.ts`. Структура изменена: `Users/index.ts` → `Users.ts` для плоского layout пакета.
@@ -1534,7 +1534,7 @@
 - **Destination:** apps/<app>/src/admin-ui/AdminBar/index.scss
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/AdminBar/index.scss
+- **Source Path:** upstream/payload/templates/website/src/components/AdminBar/index.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Стили админки, завязаны на @payloadcms/ui. Перенесено в `apps/<app>/src/admin-ui/AdminBar/index.scss`.
@@ -1547,7 +1547,7 @@
 - **Destination:** apps/<app>/src/admin-ui/AdminBar/index.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/AdminBar/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/AdminBar/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** AdminBar компонент для frontend preview; перенесено в `apps/<app>/src/admin-ui/AdminBar/index.tsx`.
@@ -1560,7 +1560,7 @@
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.scss
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/BeforeDashboard/SeedButton/index.scss
+- **Source Path:** upstream/payload/templates/website/src/components/BeforeDashboard/SeedButton/index.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Стили seed‑кнопки админки. Перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.scss`.
@@ -1573,7 +1573,7 @@
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/BeforeDashboard/SeedButton/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/BeforeDashboard/SeedButton/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Админ‑кнопка seed; перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/SeedButton/index.tsx`. Требуется соблюдение SEED_KEY (runbook).
@@ -1586,7 +1586,7 @@
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/index.scss
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/BeforeDashboard/index.scss
+- **Source Path:** upstream/payload/templates/website/src/components/BeforeDashboard/index.scss
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Стили блока before-dashboard. Перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/index.scss`.
@@ -1599,7 +1599,7 @@
 - **Destination:** apps/<app>/src/admin-ui/BeforeDashboard/index.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/BeforeDashboard/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/BeforeDashboard/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Админ‑компонент before-dashboard; перенесено в `apps/<app>/src/admin-ui/BeforeDashboard/index.tsx`.
@@ -1612,7 +1612,7 @@
 - **Destination:** apps/<app>/src/admin-ui/BeforeLogin/index.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/BeforeLogin/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/BeforeLogin/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Админ‑вставка перед логином. Перенесено в `apps/<app>/src/admin-ui/BeforeLogin/index.tsx`.
@@ -1625,7 +1625,7 @@
 - **Destination:** apps/<app>/src/components/Card/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Card/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Card/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Карточка поста, завязана на Post тип и Media.
@@ -1638,7 +1638,7 @@
 - **Destination:** apps/<app>/src/components/CollectionArchive/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/CollectionArchive/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/CollectionArchive/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Листинг постов; доменно.
@@ -1651,7 +1651,7 @@
 - **Destination:** apps/<app>/src/components/Link/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Link/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Link/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** CMSLink зависит от payload-types и UI Button; app‑локально.
@@ -1664,7 +1664,7 @@
 - **Destination:** apps/<app>/src/components/LivePreviewListener/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/LivePreviewListener/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/LivePreviewListener/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентский listener live preview; app‑локально.
@@ -1677,7 +1677,7 @@
 - **Destination:** apps/<app>/src/components/Logo/Logo.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Logo/Logo.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Logo/Logo.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Лого Payload (внешний URL); заменить на брендовый.
@@ -1690,7 +1690,7 @@
 - **Destination:** apps/<app>/src/components/Media/ImageMedia/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Media/ImageMedia/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Media/ImageMedia/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** ImageMedia зависит от cssVariables и getMediaUrl; app‑локально.
@@ -1703,7 +1703,7 @@
 - **Destination:** apps/<app>/src/components/Media/VideoMedia/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Media/VideoMedia/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Media/VideoMedia/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** VideoMedia зависит от getMediaUrl; app‑локально.
@@ -1716,7 +1716,7 @@
 - **Destination:** apps/<app>/src/components/Media/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Media/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Media/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Media wrapper; app‑локально.
@@ -1729,7 +1729,7 @@
 - **Destination:** apps/<app>/src/components/Media/types.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Media/types.ts
+- **Source Path:** upstream/payload/templates/website/src/components/Media/types.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Типы Media завязаны на payload-types; app‑локально.
@@ -1742,7 +1742,7 @@
 - **Destination:** apps/<app>/src/components/PageRange/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/PageRange/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/PageRange/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Пейдж‑рендж для списков; app‑локально.
@@ -1755,7 +1755,7 @@
 - **Destination:** apps/<app>/src/components/Pagination/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/Pagination/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/Pagination/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Клиентский пагинатор, завязан на маршруты /posts/page/*.
@@ -1768,7 +1768,7 @@
 - **Destination:** apps/<app>/src/components/PayloadRedirects/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/PayloadRedirects/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/PayloadRedirects/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** SSR redirect helper; зависит от getDocument/getRedirects.
@@ -1781,7 +1781,7 @@
 - **Destination:** apps/<app>/src/components/RichText/index.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/RichText/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/RichText/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** RichText renderer с embedded blocks; converters вынесены в `components/RichText/converters.tsx`.
@@ -1807,7 +1807,7 @@
 - **Destination:** packages/ui/src/button.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/button.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/button.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовая кнопка; перенесено в `packages/ui/src/button.tsx` (этап 4.5).
@@ -1820,7 +1820,7 @@
 - **Destination:** packages/ui/src/card.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/card.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/card.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовые Card компоненты; перенесено в `packages/ui/src/card.tsx` (этап 4.5).
@@ -1833,7 +1833,7 @@
 - **Destination:** packages/ui/src/checkbox.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/checkbox.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/checkbox.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовый checkbox; перенесено в `packages/ui/src/checkbox.tsx` (этап 4.5).
@@ -1846,7 +1846,7 @@
 - **Destination:** packages/ui/src/input.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/input.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/input.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовый input; перенесено в `packages/ui/src/input.tsx` (этап 4.5).
@@ -1859,7 +1859,7 @@
 - **Destination:** packages/ui/src/label.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/label.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/label.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Label базовый; перенесено в `packages/ui/src/label.tsx` (этап 4.5).
@@ -1872,7 +1872,7 @@
 - **Destination:** packages/ui/src/pagination.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/pagination.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/pagination.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑компоненты пагинации; перенесено в `packages/ui/src/pagination.tsx` (этап 4.5).
@@ -1885,7 +1885,7 @@
 - **Destination:** packages/ui/src/select.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/select.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/select.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Select компонент; перенесено в `packages/ui/src/select.tsx` (этап 4.5).
@@ -1898,7 +1898,7 @@
 - **Destination:** packages/ui/src/textarea.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/components/ui/textarea.tsx
+- **Source Path:** upstream/payload/templates/website/src/components/ui/textarea.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Textarea базовый; перенесено в `packages/ui/src/textarea.tsx` (этап 4.5).
@@ -1911,7 +1911,7 @@
 - **Destination:** apps/<app>/src/cssVariables.js
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/cssVariables.js
+- **Source Path:** upstream/payload/templates/website/src/cssVariables.js
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Брейкпоинты для Media/Image; держать в app или перенести в shared tokens.
@@ -1924,7 +1924,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/contact-form.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/contact-form.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/contact-form.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑данные формы; app‑локально.
@@ -1937,7 +1937,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/contact-page.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/contact-page.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/contact-page.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑страница contact; app‑локально.
@@ -1950,7 +1950,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/home-static.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/home-static.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/home-static.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Минимальный home, используется до seed; app‑локально.
@@ -1963,7 +1963,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/home.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/home.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/home.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed home; app‑локально.
@@ -1976,7 +1976,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-1.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-1.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-1.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑описание media.
@@ -1989,7 +1989,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-2.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-2.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-2.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑описание media.
@@ -2002,7 +2002,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-3.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-3.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-3.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑описание media.
@@ -2015,7 +2015,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-hero-1.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-hero-1.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-hero-1.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑описание media (hero).
@@ -2028,7 +2028,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-hero1.webp
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-hero1.webp
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-hero1.webp
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Локальный seed‑ассет (без сетевого fetch).
@@ -2041,7 +2041,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-post1.webp
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-post1.webp
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-post1.webp
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Локальный seed‑ассет (без сетевого fetch).
@@ -2054,7 +2054,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-post2.webp
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-post2.webp
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-post2.webp
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Локальный seed‑ассет (без сетевого fetch).
@@ -2067,7 +2067,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/image-post3.webp
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/image-post3.webp
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/image-post3.webp
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Локальный seed‑ассет (без сетевого fetch).
@@ -2080,7 +2080,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/index.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/index.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed orchestrator; сетевой fetch заменён на локальные webp из `src/endpoints/seed`.
@@ -2093,7 +2093,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/post-1.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/post-1.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/post-1.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑пост; app‑локально.
@@ -2106,7 +2106,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/post-2.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/post-2.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/post-2.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑пост; app‑локально.
@@ -2119,7 +2119,7 @@
 - **Destination:** apps/<app>/src/endpoints/seed/post-3.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/endpoints/seed/post-3.ts
+- **Source Path:** upstream/payload/templates/website/src/endpoints/seed/post-3.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Seed‑пост; app‑локально.
@@ -2132,7 +2132,7 @@
 - **Destination:** apps/<app>/src/environment.d.ts (или src/env.ts в web-core)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/environment.d.ts
+- **Source Path:** upstream/payload/templates/website/src/environment.d.ts
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** В web-core используем packages/env + Zod; этот файл может быть заменён.
@@ -2145,7 +2145,7 @@
 - **Destination:** packages/cms-fields/src/defaultLexical.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/fields/defaultLexical.ts
+- **Source Path:** upstream/payload/templates/website/src/fields/defaultLexical.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовый конфиг Lexical editor с LinkFeature и валидацией URL; подходит для shared. Перенесено в `packages/cms-fields/src/defaultLexical.ts` (этап 4.2).
@@ -2158,7 +2158,7 @@
 - **Destination:** packages/cms-fields/src/link.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/fields/link.ts
+- **Source Path:** upstream/payload/templates/website/src/fields/link.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Field builder для ссылок; требует deepMerge и relationTo (pages/posts). Перенесено в `packages/cms-fields/src/link.ts` (этап 4.2).
@@ -2171,7 +2171,7 @@
 - **Destination:** packages/cms-fields/src/linkGroup.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/fields/linkGroup.ts
+- **Source Path:** upstream/payload/templates/website/src/fields/linkGroup.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Группировка ссылок на базе link(); shared. Перенесено в `packages/cms-fields/src/linkGroup.ts` (этап 4.2).
@@ -2184,7 +2184,7 @@
 - **Destination:** apps/<app>/src/heros/HighImpact/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/heros/HighImpact/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/heros/HighImpact/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Hero renderer; завязан на HeaderTheme и Media.
@@ -2197,7 +2197,7 @@
 - **Destination:** apps/<app>/src/heros/LowImpact/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/heros/LowImpact/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/heros/LowImpact/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Hero renderer; app‑локально.
@@ -2210,7 +2210,7 @@
 - **Destination:** apps/<app>/src/heros/MediumImpact/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/heros/MediumImpact/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/heros/MediumImpact/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Hero renderer; app‑локально.
@@ -2223,7 +2223,7 @@
 - **Destination:** apps/<app>/src/heros/PostHero/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/heros/PostHero/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/heros/PostHero/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Hero для поста; завязан на formatAuthors/formatDateTime.
@@ -2236,7 +2236,7 @@
 - **Destination:** apps/<app>/src/heros/RenderHero.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/heros/RenderHero.tsx
+- **Source Path:** upstream/payload/templates/website/src/heros/RenderHero.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Router hero‑рендерер; app‑локально.
@@ -2249,7 +2249,7 @@
 - **Destination:** packages/cms-fields/src/hero.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/heros/config.ts
+- **Source Path:** upstream/payload/templates/website/src/heros/config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Schema‑поле hero; логично жить в cms-fields. Перенесено в `packages/cms-fields/src/hero.ts` (этап 4.2). В app `apps/<app>/src/heros/config.ts` — wrapper re-export.
@@ -2262,7 +2262,7 @@
 - **Destination:** packages/cms-core/src/hooks/populatePublishedAt.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/hooks/populatePublishedAt.ts
+- **Source Path:** upstream/payload/templates/website/src/hooks/populatePublishedAt.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный hook для publishedAt. Перенесено в `packages/cms-core/src/hooks/populatePublishedAt.ts`.
@@ -2275,7 +2275,7 @@
 - **Destination:** apps/<app>/src/hooks/revalidateRedirects.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/hooks/revalidateRedirects.ts
+- **Source Path:** upstream/payload/templates/website/src/hooks/revalidateRedirects.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Next revalidateTag('redirects'); app‑локально.
@@ -2288,7 +2288,7 @@
 - **Destination:** apps/<app>/src/payload-types.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/payload-types.ts
+- **Source Path:** upstream/payload/templates/website/src/payload-types.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Генерируемый файл; обновляется через payload generate:types.
@@ -2301,7 +2301,7 @@
 - **Destination:** apps/<app>/src/payload.config.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/payload.config.ts
+- **Source Path:** upstream/payload/templates/website/src/payload.config.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** `payload-core`: Postgres adapter + migrations dir + i18n; admin UI через `@/admin-ui/*`. `synestra-io`: mongoose adapter.
@@ -2314,7 +2314,7 @@
 - **Destination:** apps/<app>/src/plugins/index.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/plugins/index.ts
+- **Source Path:** upstream/payload/templates/website/src/plugins/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Базовая конфигурация из upstream; в payload-core добавлен S3 storage plugin (env‑guard).
@@ -2327,7 +2327,7 @@
 - **Destination:** apps/<app>/src/providers/HeaderTheme/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/HeaderTheme/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/providers/HeaderTheme/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Контекст темы для хедера; app‑локально.
@@ -2340,7 +2340,7 @@
 - **Destination:** apps/<app>/src/providers/Theme/InitTheme/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/Theme/InitTheme/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/InitTheme/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Inline theme bootstrap script; app‑локально.
@@ -2353,7 +2353,7 @@
 - **Destination:** apps/<app>/src/providers/Theme/ThemeSelector/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/Theme/ThemeSelector/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/ThemeSelector/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑селектор темы; зависит от UI Select.
@@ -2366,7 +2366,7 @@
 - **Destination:** apps/<app>/src/providers/Theme/ThemeSelector/types.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/Theme/ThemeSelector/types.ts
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/ThemeSelector/types.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Типы и дефолты темы; app‑локально.
@@ -2379,7 +2379,7 @@
 - **Destination:** apps/<app>/src/providers/Theme/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/Theme/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** ThemeProvider; app‑локально.
@@ -2392,7 +2392,7 @@
 - **Destination:** apps/<app>/src/providers/Theme/shared.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/Theme/shared.ts
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/shared.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Shared helpers темы; app‑локально.
@@ -2405,7 +2405,7 @@
 - **Destination:** apps/<app>/src/providers/Theme/types.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/Theme/types.ts
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/types.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Типы темы; app‑локально.
@@ -2418,7 +2418,7 @@
 - **Destination:** apps/<app>/src/providers/index.tsx
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/providers/index.tsx
+- **Source Path:** upstream/payload/templates/website/src/providers/index.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Комбинация провайдеров; app‑локально.
@@ -2431,7 +2431,7 @@
 - **Destination:** apps/<app>/src/search/Component.tsx
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/search/Component.tsx
+- **Source Path:** upstream/payload/templates/website/src/search/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** UI‑компонент поиска, импорты переведены на `@/ui/*` (facade).
@@ -2444,7 +2444,7 @@
 - **Destination:** apps/<app>/src/search/beforeSync.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/search/beforeSync.ts
+- **Source Path:** upstream/payload/templates/website/src/search/beforeSync.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на categories collection и search plugin; app‑локально.
@@ -2457,7 +2457,7 @@
 - **Destination:** apps/<app>/src/search/fieldOverrides.ts
 - **Date:** 2025-12-21
 - **Owner:** codex
-- **Source Path:** for_cute/src/search/fieldOverrides.ts
+- **Source Path:** upstream/payload/templates/website/src/search/fieldOverrides.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Overrides полей search коллекции; app‑локально.
@@ -2470,7 +2470,7 @@
 - **Destination:** packages/utils/src/canUseDOM.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/canUseDOM.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/canUseDOM.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный helper для проверки DOM. Перенесено в `packages/utils/src/canUseDOM.ts` (этап 4.1).
@@ -2483,7 +2483,7 @@
 - **Destination:** packages/utils/src/deepMerge.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/deepMerge.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/deepMerge.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Общий deepMerge; убрать @ts-nocheck и привести типы при переносе. Перенесено в `packages/utils/src/deepMerge.ts` (этап 4.1).
@@ -2496,7 +2496,7 @@
 - **Destination:** apps/<app>/src/utilities/formatAuthors.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/formatAuthors.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/formatAuthors.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на Post types; app‑локально.
@@ -2509,7 +2509,7 @@
 - **Destination:** packages/utils/src/formatDateTime.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/formatDateTime.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/formatDateTime.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный форматтер даты. Перенесено в `packages/utils/src/formatDateTime.ts` (этап 4.1).
@@ -2522,7 +2522,7 @@
 - **Destination:** apps/<app>/src/utilities/generateMeta.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/generateMeta.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/generateMeta.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Зависит от payload-types и OG ассета; app‑локально.
@@ -2535,7 +2535,7 @@
 - **Destination:** apps/<app>/src/utilities/generatePreviewPath.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/generatePreviewPath.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/generatePreviewPath.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на preview роут и PREVIEW_SECRET; app‑локально.
@@ -2548,7 +2548,7 @@
 - **Destination:** apps/<app>/src/utilities/getDocument.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/getDocument.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/getDocument.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на Config types и cache tags; app‑локально.
@@ -2561,7 +2561,7 @@
 - **Destination:** apps/<app>/src/utilities/getGlobals.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/getGlobals.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/getGlobals.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на Config types и cache tags; app‑локально.
@@ -2574,7 +2574,7 @@
 - **Destination:** apps/<app>/src/utilities/getMeUser.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/getMeUser.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/getMeUser.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на payload-types и /api/users/me; app‑локально.
@@ -2587,7 +2587,7 @@
 - **Destination:** packages/utils/src/getMediaUrl.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/getMediaUrl.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/getMediaUrl.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальная нормализация media URL; зависит от getClientSideURL. Перенесено в `packages/utils/src/getMediaUrl.ts` (этап 4.1).
@@ -2600,7 +2600,7 @@
 - **Destination:** apps/<app>/src/utilities/getRedirects.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/getRedirects.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/getRedirects.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Завязан на redirects collection и cache tags; app‑локально.
@@ -2613,7 +2613,7 @@
 - **Destination:** packages/utils/src/getURL.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/getURL.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/getURL.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальные getServerSideURL/getClientSideURL; привязка к env. Перенесено в `packages/utils/src/getURL.ts` (этап 4.1).
@@ -2626,7 +2626,7 @@
 - **Destination:** apps/<app>/src/utilities/mergeOpenGraph.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/mergeOpenGraph.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/mergeOpenGraph.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Привязан к OG ассету и брендингу; app‑локально.
@@ -2639,7 +2639,7 @@
 - **Destination:** packages/utils/src/toKebabCase.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/toKebabCase.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/toKebabCase.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальная утилита. Перенесено в `packages/utils/src/toKebabCase.ts` (этап 4.1).
@@ -2652,7 +2652,7 @@
 - **Destination:** packages/utils/src/ui.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/ui.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/ui.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** cn helper; заменить tailwind-merge на token‑friendly стратегию при необходимости. Перенесено в `packages/utils/src/ui.ts` (этап 4.1).
@@ -2665,7 +2665,7 @@
 - **Destination:** apps/<app>/src/utilities/useClickableCard.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/useClickableCard.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/useClickableCard.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** React hook, завязан на next/navigation; app‑локально.
@@ -2678,7 +2678,7 @@
 - **Destination:** packages/utils/src/useDebounce.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/src/utilities/useDebounce.ts
+- **Source Path:** upstream/payload/templates/website/src/utilities/useDebounce.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Универсальный React‑hook; использовать в UI/форме. Перенесено в `packages/utils/src/useDebounce.ts` (этап 4.1).
@@ -2691,7 +2691,7 @@
 - **Destination:** apps/<app>/tailwind.config.mjs
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/tailwind.config.mjs
+- **Source Path:** upstream/payload/templates/website/tailwind.config.mjs
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Tailwind v3 config; учитывать несовместимость с Tailwind 4.
@@ -2704,7 +2704,7 @@
 - **Destination:** n/a
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/test.env
+- **Source Path:** upstream/payload/templates/website/test.env
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Тестовая переменная NODE_OPTIONS; используем корневые настройки тестов.
@@ -2717,7 +2717,7 @@
 - **Destination:** apps/<app>/tests/e2e/frontend.e2e.spec.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/tests/e2e/frontend.e2e.spec.ts
+- **Source Path:** upstream/payload/templates/website/tests/e2e/frontend.e2e.spec.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** E2E smoke для фронта; адаптировать baseURL.
@@ -2730,7 +2730,7 @@
 - **Destination:** apps/<app>/tests/int/api.int.spec.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/tests/int/api.int.spec.ts
+- **Source Path:** upstream/payload/templates/website/tests/int/api.int.spec.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
 - **Notes:** Интеграционный тест Payload; адаптировать под monorepo.
@@ -2743,7 +2743,7 @@
 - **Destination:** apps/<app>/tsconfig.json (extends root tsconfig)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/tsconfig.json
+- **Source Path:** upstream/payload/templates/website/tsconfig.json
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Содержит paths и базовые опции; в web-core используем shared tsconfig.base.json.
@@ -2756,7 +2756,7 @@
 - **Destination:** apps/<app>/vitest.config.mts (если оставляем unit/integration)
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/vitest.config.mts
+- **Source Path:** upstream/payload/templates/website/vitest.config.mts
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Конфиг vitest для integration tests; согласовать с monorepo testing strategy.
@@ -2769,7 +2769,7 @@
 - **Destination:** apps/<app>/vitest.setup.ts
 - **Date:** 2025-12-20
 - **Owner:** codex
-- **Source Path:** for_cute/vitest.setup.ts
+- **Source Path:** upstream/payload/templates/website/vitest.setup.ts
 - **Checked in payload-dev:** n/a
 - **Promoted to payload-core/prod:** n/a
 - **Notes:** Загружает dotenv/config; сохранить при сохранении vitest.

@@ -9,12 +9,12 @@ Shared schema/collections/globals/access/hooks для Payload (без домен
 - Globals: `Header`, `Footer`.
 - Hooks: `populatePublishedAt`.
 
-## Источники (for_cute)
-- `for_cute/src/access/*`
-- `for_cute/src/collections/Users|Media|Categories`
-- `for_cute/src/Header/config.ts`
-- `for_cute/src/Footer/config.ts`
-- `for_cute/src/hooks/populatePublishedAt.ts`
+## Источники (upstream/payload/templates/website)
+- `upstream/payload/templates/website/src/access/*`
+- `upstream/payload/templates/website/src/collections/Users|Media|Categories`
+- `upstream/payload/templates/website/src/Header/config.ts`
+- `upstream/payload/templates/website/src/Footer/config.ts`
+- `upstream/payload/templates/website/src/hooks/populatePublishedAt.ts`
 
 ## Зависимости
 - `payload`

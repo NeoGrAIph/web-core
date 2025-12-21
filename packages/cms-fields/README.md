@@ -8,11 +8,11 @@ Shared field builders и связанные типы для Payload schema (бе
 - `link` / `linkGroup` — builders для ссылок.
 - `hero` — поле hero (schema) для reuse в коллекциях/глобалах.
 
-## Источники (for_cute)
-- `for_cute/src/fields/defaultLexical.ts`
-- `for_cute/src/fields/link.ts`
-- `for_cute/src/fields/linkGroup.ts`
-- `for_cute/src/heros/config.ts`
+## Источники (upstream/payload/templates/website)
+- `upstream/payload/templates/website/src/fields/defaultLexical.ts`
+- `upstream/payload/templates/website/src/fields/link.ts`
+- `upstream/payload/templates/website/src/fields/linkGroup.ts`
+- `upstream/payload/templates/website/src/heros/config.ts`
 
 ## Зависимости
 - `@payloadcms/richtext-lexical`

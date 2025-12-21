@@ -13,15 +13,15 @@ Shared утилиты (не UI, не CMS), пригодные для повто�
 - `cn` — helper для объединения классов (clsx + tailwind-merge).
 - `useDebounce` — React hook.
 
-## Источники (for_cute)
-- `for_cute/src/utilities/canUseDOM.ts`
-- `for_cute/src/utilities/deepMerge.ts`
-- `for_cute/src/utilities/formatDateTime.ts`
-- `for_cute/src/utilities/getMediaUrl.ts`
-- `for_cute/src/utilities/getURL.ts`
-- `for_cute/src/utilities/toKebabCase.ts`
-- `for_cute/src/utilities/ui.ts`
-- `for_cute/src/utilities/useDebounce.ts`
+## Источники (upstream/payload/templates/website)
+- `upstream/payload/templates/website/src/utilities/canUseDOM.ts`
+- `upstream/payload/templates/website/src/utilities/deepMerge.ts`
+- `upstream/payload/templates/website/src/utilities/formatDateTime.ts`
+- `upstream/payload/templates/website/src/utilities/getMediaUrl.ts`
+- `upstream/payload/templates/website/src/utilities/getURL.ts`
+- `upstream/payload/templates/website/src/utilities/toKebabCase.ts`
+- `upstream/payload/templates/website/src/utilities/ui.ts`
+- `upstream/payload/templates/website/src/utilities/useDebounce.ts`
 
 ## Зависимости
 - `clsx`

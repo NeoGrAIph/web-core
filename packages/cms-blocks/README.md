@@ -3,12 +3,12 @@
 ## Назначение
 Shared schema для Payload Blocks (без React‑рендера).
 
-## Источники (for_cute)
-- `for_cute/src/blocks/Banner/config.ts`
-- `for_cute/src/blocks/CallToAction/config.ts`
-- `for_cute/src/blocks/Content/config.ts`
-- `for_cute/src/blocks/Code/config.ts`
-- `for_cute/src/blocks/MediaBlock/config.ts`
+## Источники (upstream/payload/templates/website)
+- `upstream/payload/templates/website/src/blocks/Banner/config.ts`
+- `upstream/payload/templates/website/src/blocks/CallToAction/config.ts`
+- `upstream/payload/templates/website/src/blocks/Content/config.ts`
+- `upstream/payload/templates/website/src/blocks/Code/config.ts`
+- `upstream/payload/templates/website/src/blocks/MediaBlock/config.ts`
 
 ## Зависимости
 - `@payloadcms/richtext-lexical`

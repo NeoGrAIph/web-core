@@ -7,18 +7,18 @@ Shared UI primitives, пригодные для переиспользовани
 - button, card, checkbox, input, label, pagination, select, textarea
 - `styles.css` — базовые стили (пока из старого пакета)
 
-## Источники (for_cute)
-- `for_cute/src/components/ui/button.tsx`
-- `for_cute/src/components/ui/card.tsx`
-- `for_cute/src/components/ui/checkbox.tsx`
-- `for_cute/src/components/ui/input.tsx`
-- `for_cute/src/components/ui/label.tsx`
-- `for_cute/src/components/ui/pagination.tsx`
-- `for_cute/src/components/ui/select.tsx`
-- `for_cute/src/components/ui/textarea.tsx`
+## Источники (upstream/payload/templates/website)
+- `upstream/payload/templates/website/src/components/ui/button.tsx`
+- `upstream/payload/templates/website/src/components/ui/card.tsx`
+- `upstream/payload/templates/website/src/components/ui/checkbox.tsx`
+- `upstream/payload/templates/website/src/components/ui/input.tsx`
+- `upstream/payload/templates/website/src/components/ui/label.tsx`
+- `upstream/payload/templates/website/src/components/ui/pagination.tsx`
+- `upstream/payload/templates/website/src/components/ui/select.tsx`
+- `upstream/payload/templates/website/src/components/ui/textarea.tsx`
 
 Дополнительно:
-- `styles.css` — из `old_packages/ui/src/styles.css` (в for_cute отсутствует).
+- `styles.css` — из `old_packages/ui/src/styles.css` (в upstream/payload/templates/website отсутствует).
 
 ## Зависимости
 - `@synestra/utils`

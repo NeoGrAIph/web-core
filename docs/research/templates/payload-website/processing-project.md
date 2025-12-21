@@ -48,10 +48,9 @@
 
 ## Входные данные
 - Перечень файлов: `upstream-payload-website.tree.json`.
-- Исходники: `upstream/payload/templates/website/**`.
+- Исходники: `upstream/payload/templates/website/**` (read-only).
 - Детальный журнал решений: `processing-progress.md`.
-- Копия upstream‑шаблона для анализа: `for_cute/**` (рабочая копия, допускаются правки, вырезания и переносы).
-- `upstream/payload/templates/website/**` используем только для сверки (не изменяем).
+- Текущий шаблон реализован на базе обработки upstream‑шаблона `website`.
 
 ## Выходные артефакты
 - Shared‑пакеты: `packages/ui`, `packages/cms-blocks`, `packages/cms-fields`, `packages/utils` (по решению).
@@ -96,7 +95,7 @@
     - Prod-образы: web-payload-core, web-synestra-io; теги в values.prod.yaml.                                                                                                                                                                             
     - Проверка перед любым sync: helm template + kubeconform изменённых values.                                                                                                                                                                            
 2. Разбор upstream и классификация (завершено)                                                                                                                                                                                                                        
-    - Пройден весь `for_cute/**` и сопоставлен с upstream tree; разбивка по группам выполнена.                                                                 
+    - Пройден весь `upstream/payload/templates/website/**` и сопоставлен с upstream tree; разбивка по группам выполнена.                                                                 
     - Последовательный анализ файлов проведён, записи внесены в `processing-progress.md`.                                                                                                                         
     - У каждой записи заполнены: статус, дата, ответственный, целевой модуль и путь‑источник.                                                                                                                        
 3. Каркас shared и фасадов (завершено)                                                                                                                                                                                                                                 
@@ -107,7 +106,7 @@
     Перед началом этапа 4 обязательно ознакомиться с документами ниже (обязательные и рекомендованные).
 
     **Рекомендованные для выполнения этапа 4**
-    - `AGENTS.md` — рабочие правила, фасады `@/ui/*`, admin‑слой `@/admin-ui/*`, `for_cute/**` как рабочая копия.
+    - `AGENTS.md` — рабочие правила, фасады `@/ui/*`, admin‑слой `@/admin-ui/*`, `upstream/payload/templates/website/**` как источник (read‑only).
     - `docs/development/01-app-facade.md` — канон фасада и override boundary (UI‑слой).
     - `docs/development/02-payload-dev-workbench.md` — работа через `payload-dev` и эталон `payload-core`.
     - `docs/development/04-workflow-shared-changes.md` — перенос shared‑изменений.
@@ -136,40 +135,40 @@
     Порядок выбран так, чтобы сначала закрыть **ядро schema/fields**, затем **shared‑блоки**, затем **UI‑примитивы**, и только после этого **app‑рендеры и роуты**. Это минимизирует переработки и даёт устойчивый контракт.
     4.1. **packages/utils**  
       - Причина: утилиты нужны в cms-fields и UI (deepMerge, cn, getURL, useDebounce).  
-      - Источники: for_cute/src/utilities/*.  
+      - Источники: upstream/payload/templates/website/src/utilities/*.  
     4.2. **packages/cms-fields**  
       - Причина: поля используются в cms-blocks, Header/Footer globals и Pages/Posts.  
-      - Источники: for_cute/src/fields/*, for_cute/src/heros/config.ts.  
+      - Источники: upstream/payload/templates/website/src/fields/*, upstream/payload/templates/website/src/heros/config.ts.  
     4.3. **packages/cms-core**  
       - Причина: базовые коллекции/глобалы/access/hooks — фундамент для payload.config.  
-      - Источники: for_cute/src/access/*, for_cute/src/collections/{Users,Media,Categories}, for_cute/src/Header/config.ts, for_cute/src/Footer/config.ts, for_cute/src/hooks/populatePublishedAt.ts.  
+      - Источники: upstream/payload/templates/website/src/access/*, upstream/payload/templates/website/src/collections/{Users,Media,Categories}, upstream/payload/templates/website/src/Header/config.ts, upstream/payload/templates/website/src/Footer/config.ts, upstream/payload/templates/website/src/hooks/populatePublishedAt.ts.  
     4.4. **packages/cms-blocks**  
       - Причина: блок‑schema нужны для Pages/Posts и seed; рендеры остаются в app.  
-      - Источники: for_cute/src/blocks/*/config.ts (Banner, CallToAction, Content, Code, MediaBlock).  
+      - Источники: upstream/payload/templates/website/src/blocks/*/config.ts (Banner, CallToAction, Content, Code, MediaBlock).  
     4.5. **packages/ui**  
       - Причина: общий слой UI (button, input, select, pagination) нужен для app‑компонентов, search и form UI.  
-      - Источники: for_cute/src/components/ui/*.  
+      - Источники: upstream/payload/templates/website/src/components/ui/*.  
     4.5b. **packages/next-config, packages/eslint-config, packages/typescript-config**  
       - Причина: убрать копипаст конфигов и обеспечить единый toolchain для apps/packages (см. old_packages).  
       - Источники: old_packages/*/README.md (референсы по структуре/назначению).  
     4.6. **apps/*/src/admin-ui**  
       - Причина: admin‑компоненты требуются для import map и Payload Admin; UI слой уже готов.  
-      - Источники: for_cute/src/components/BeforeLogin, BeforeDashboard, AdminBar, Header/Footer RowLabel.  
+      - Источники: upstream/payload/templates/website/src/components/BeforeLogin, BeforeDashboard, AdminBar, Header/Footer RowLabel.  
     4.7. **apps/*/src/blocks (renderers + registry)**  
       - Причина: зависит от cms-blocks и UI; формирует frontend‑рендер.  
-      - Источники: for_cute/src/blocks/** + for_cute/src/blocks/RenderBlocks.tsx.  
+      - Источники: upstream/payload/templates/website/src/blocks/** + upstream/payload/templates/website/src/blocks/RenderBlocks.tsx.  
     4.8. **apps/*/src/components + providers + heros + Header/Footer**  
       - Причина: завязаны на UI, blocks, cms‑globals и utils.  
-      - Источники: for_cute/src/components/**, src/providers/**, src/heros/**, src/Header/**, src/Footer/**.  
+      - Источники: upstream/payload/templates/website/src/components/**, src/providers/**, src/heros/**, src/Header/**, src/Footer/**.  
     4.9. **apps/*/src/search + endpoints/seed**  
       - Причина: search зависит от UI/input; seed зависит от schema/blocks и локальных ассетов.  
-      - Источники: for_cute/src/search/**, for_cute/src/endpoints/**.  
+      - Источники: upstream/payload/templates/website/src/search/**, upstream/payload/templates/website/src/endpoints/**.  
     4.10. **apps/*/src/app (routes)**  
       - Причина: маршруты используют все предыдущие слои (blocks, providers, seed, search).  
-      - Источники: for_cute/src/app/**.  
+      - Источники: upstream/payload/templates/website/src/app/**.  
     4.11. **payload.config.ts + plugins + generated files**  
       - Причина: финальная сборка зависит от всех модулей.  
-      - Источники: for_cute/src/payload.config.ts, for_cute/src/plugins/index.ts, payload generate:types/importmap.  
+      - Источники: upstream/payload/templates/website/src/payload.config.ts, upstream/payload/templates/website/src/plugins/index.ts, payload generate:types/importmap.  
     - При формировании модулей сохранять имена файлов и их относительное расположение (если возможно) относительно исходной структуры.                                                                                                                     
     - Если структуру/имена пришлось изменить — фиксировать причину в processing-progress.md.                                                                                                                                                              
     - Каждый модуль снабжать `README.md` (уже создано на этапе 3, актуализируем по ходу).                                                                                                                                   
@@ -234,7 +233,7 @@
 - **Smoke‑проверки**: `/`, `/admin`, `/admin/login` работают на dev.
 
 ## Текущее состояние (на 2025-12-20)
-- **Анализ for_cute/** завершён по основным группам файлов; записи внесены в `processing-progress.md`.
+- **Анализ upstream/payload/templates/website/** завершён по основным группам файлов; записи внесены в `processing-progress.md`.
 - **Решения по модульности сформированы**:
   - shared (кандидаты): `packages/ui`, `packages/cms-core`, `packages/cms-blocks`, `packages/cms-fields`, `packages/utils`;
   - app‑локально: блок‑рендереры, routes, providers, search, seed, plugins, payload config;
@@ -242,7 +241,7 @@
 - **Перенос/рефакторинг модулей ещё не выполнен** (идёт этап подготовки решений и фиксации).
 
 ## Полученные артефакты (фактические изменения)
-- **AGENTS.md**: обновлены правила работы (for_cute как рабочая копия, живой список модулей, обязательная фиксация прогресса).
+- **AGENTS.md**: обновлены правила работы (upstream/payload/templates/website как рабочая копия, живой список модулей, обязательная фиксация прогресса).
 - **processing-project.md**: добавлен живой список планируемых модулей; уточнены правила и шаги.
 - **processing-progress.md**: заполнены решения по:
   - root configs, public assets, access helpers;
