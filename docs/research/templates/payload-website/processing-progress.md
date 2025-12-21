@@ -2000,12 +2000,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/endpoints/seed/index.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/endpoints/seed/index.ts
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** Seed orchestrator; убрать сетевой fetch (использовать локальные webp).
+- **Notes:** Seed orchestrator; сетевой fetch заменён на локальные webp из `src/endpoints/seed`.
 - **Dependencies / Blockers:** seed policy, local assets
 
 ### `src/endpoints/seed/post-1.ts`
@@ -2351,12 +2351,12 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/search/Component.tsx
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/search/Component.tsx
 - **Checked in payload-dev:** no
 - **Promoted to payload-core/prod:** no
-- **Notes:** UI‑компонент поиска, завязан на router и UI input/label.
+- **Notes:** UI‑компонент поиска, импорты переведены на `@/ui/*` (facade).
 - **Dependencies / Blockers:** UI input/label, useDebounce
 
 ### `src/search/beforeSync.ts`
@@ -2364,7 +2364,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/search/beforeSync.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/search/beforeSync.ts
 - **Checked in payload-dev:** no
@@ -2377,7 +2377,7 @@
 - **Status:** done
 - **Decision:** app
 - **Destination:** apps/<app>/src/search/fieldOverrides.ts
-- **Date:** 2025-12-20
+- **Date:** 2025-12-21
 - **Owner:** codex
 - **Source Path:** for_cute/src/search/fieldOverrides.ts
 - **Checked in payload-dev:** no

@@ -1,5 +1,9 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
 
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { readFile } from 'node:fs/promises'
+
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
@@ -23,6 +27,9 @@ const collections: CollectionSlug[] = [
 const globals: GlobalSlug[] = ['header', 'footer']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -84,18 +91,10 @@ export const seed = async ({
   payload.logger.info(`— Seeding media...`)
 
   const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
-    ),
+    fetchLocalFile('image-post1.webp'),
+    fetchLocalFile('image-post2.webp'),
+    fetchLocalFile('image-post3.webp'),
+    fetchLocalFile('image-hero1.webp'),
   ])
 
   const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
@@ -277,22 +276,15 @@ export const seed = async ({
   payload.logger.info('Seeded database successfully!')
 }
 
-async function fetchFileByURL(url: string): Promise<File> {
-  const res = await fetch(url, {
-    credentials: 'include',
-    method: 'GET',
-  })
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch file from ${url}, status: ${res.status}`)
-  }
-
-  const data = await res.arrayBuffer()
+async function fetchLocalFile(relativePath: string): Promise<File> {
+  const filePath = path.resolve(dirname, relativePath)
+  const data = await readFile(filePath)
+  const ext = path.extname(filePath).replace('.', '')
 
   return {
-    name: url.split('/').pop() || `file-${Date.now()}`,
+    name: path.basename(filePath),
     data: Buffer.from(data),
-    mimetype: `image/${url.split('.').pop()}`,
+    mimetype: `image/${ext || 'webp'}`,
     size: data.byteLength,
   }
 }
