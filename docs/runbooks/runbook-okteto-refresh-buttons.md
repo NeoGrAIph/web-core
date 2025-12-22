@@ -12,6 +12,7 @@
 
 Кнопка для `web-payload-dev`:
 - **Refresh DB** (dev DB ← prod DB)
+- **Refresh (DB+Media)** (dev DB ← prod DB + dev media bucket ← prod media bucket)
 
 Канон: используем Okteto **Catalog Items** (CRD `catalogitems.git.okteto.com/v1`) как GitOps‑управляемые, read‑only entries в UI.
 
@@ -27,11 +28,13 @@
 
 2) One-off Job для refresh media:
 - `deploy/jobs/media-mirror-dev-from-prod.yaml`
+- `deploy/jobs/media-mirror-payload-dev-from-prod.yaml`
 
 3) “deploy-only” Okteto manifest’ы, которые запускают эти Job’ы:
 - `.okteto/refresh-db.yml`
 - `.okteto/refresh-db-media.yml`
 - `.okteto/refresh-db-payload.yml`
+- `.okteto/refresh-db-media-payload.yml`
 
 ## 2) Что должно быть в `synestra-platform` (GitOps)
 
@@ -74,6 +77,8 @@ echo | openssl s_client -connect kubernetes.services.synestra.tech:6443 -servern
 
 3) Secret для mirror job в namespace `web-synestra-io-dev`:
 - `web-synestra-io-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
+4) Secret для mirror job в namespace `web-payload-dev`:
+- `web-payload-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
 
 4) CatalogItem ресурсы в namespace `okteto`, которые появятся в UI как отдельные пункты каталога.
 
@@ -87,6 +92,7 @@ echo | openssl s_client -connect kubernetes.services.synestra.tech:6443 -servern
    - `synestra-io: Refresh DB`
    - `synestra-io: Refresh (DB+Media)`
    - `payload: Refresh DB`
+   - `payload: Refresh (DB+Media)`
 4) Нажать `Deploy` и дождаться `Success`.
 
 ## 4) Что делать, если refresh не сработал
