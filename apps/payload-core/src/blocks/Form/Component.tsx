@@ -7,28 +7,21 @@ import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/ui/button'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 
 export const FormBlock: React.FC<FormBlockProps> = (props) => {
-  const {
-    enableIntro,
-    form,
-    introContent,
-  } = props
+  const { enableIntro, form, introContent } = props
 
   const formFromProps: PayloadForm | null = typeof form === 'object' && form !== null ? form : null
-
-  if (!formFromProps) {
-    return null
-  }
-
-  const { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = formFromProps
+  const formID = formFromProps?.id
+  const confirmationMessage = formFromProps?.confirmationMessage
+  const confirmationType = formFromProps?.confirmationType
+  const redirect = formFromProps?.redirect
+  const submitButtonLabel = formFromProps?.submitButtonLabel
 
   const formMethods = useForm({
-    defaultValues: formFromProps.fields,
+    defaultValues: formFromProps?.fields ?? [],
   })
   const {
     control,
@@ -108,6 +101,10 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
     },
     [router, formID, redirect, confirmationType],
   )
+
+  if (!formFromProps) {
+    return null
+  }
 
   return (
     <div className="container lg:max-w-[48rem]">
