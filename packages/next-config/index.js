@@ -74,6 +74,7 @@ export function createSynestraNextConfig({
   payloadOptions,
 } = {}) {
   const userWebpack = nextConfig.webpack
+  const standaloneOutput = process.env.NEXT_OUTPUT === 'standalone'
 
   const resolvedTranspile = uniq([
     ...(includeWorkspaceTranspilePackages
@@ -89,6 +90,12 @@ export function createSynestraNextConfig({
   const mergedConfig = {
     reactStrictMode: true,
     ...nextConfig,
+    ...(standaloneOutput
+      ? {
+          output: 'standalone',
+          outputFileTracingRoot: path.join(appDir, '../..'),
+        }
+      : {}),
     transpilePackages: resolvedTranspile,
     webpack: (webpackConfig, options) => {
       const config = userWebpack ? userWebpack(webpackConfig, options) : webpackConfig
