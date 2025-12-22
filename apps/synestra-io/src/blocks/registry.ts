@@ -19,7 +19,7 @@ export const PAGE_BLOCK_COMPONENTS = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-} satisfies Record<PageBlockType, React.ComponentType<any>>
+} satisfies Record<PageBlockType, React.ComponentType<unknown>>
 
 export const PAGE_BLOCK_CATALOG = defineBlockCatalog({
   name: 'page layout blocks',
