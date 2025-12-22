@@ -32,4 +32,3 @@ export {
   SelectValue,
 } from './select'
 export { Textarea } from './textarea'
-export * from './nnm-newyear'
