@@ -1,0 +1,8 @@
+ignore: |
+  charts/**/templates/*
+
+extends: default
+
+rules:
+  line-length:
+    max: 100

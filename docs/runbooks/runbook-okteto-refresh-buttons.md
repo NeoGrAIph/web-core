@@ -2,9 +2,16 @@
 
 Статус: актуально на **2025-12-18**.
 
-Цель: дать разработчикам две “кнопки” в Okteto UI для dev‑окружения `web-synestra-io-dev`:
+Цель: дать разработчикам “кнопки” в Okteto UI для dev‑окружений:
+- `web-synestra-io-dev`
+- `web-payload-dev`
+
+Кнопки для `web-synestra-io-dev`:
 - **Refresh DB** (dev DB ← prod DB)
 - **Refresh (DB+Media)** (dev DB ← prod DB + dev media bucket ← prod media bucket)
+
+Кнопка для `web-payload-dev`:
+- **Refresh DB** (dev DB ← prod DB)
 
 Канон: используем Okteto **Catalog Items** (CRD `catalogitems.git.okteto.com/v1`) как GitOps‑управляемые, read‑only entries в UI.
 
@@ -16,13 +23,15 @@
 
 1) One-off Job для refresh DB:
 - `deploy/jobs/db-refresh-synestra-io-dev-from-prod.yaml`
+- `deploy/jobs/db-refresh-payload-dev-from-prod.yaml`
 
 2) One-off Job для refresh media:
 - `deploy/jobs/media-mirror-dev-from-prod.yaml`
 
-3) Два “deploy-only” Okteto manifest’а, которые запускают эти Job’ы:
+3) “deploy-only” Okteto manifest’ы, которые запускают эти Job’ы:
 - `.okteto/refresh-db.yml`
 - `.okteto/refresh-db-media.yml`
+- `.okteto/refresh-db-payload.yml`
 
 ## 2) Что должно быть в `synestra-platform` (GitOps)
 
@@ -66,15 +75,18 @@ echo | openssl s_client -connect kubernetes.services.synestra.tech:6443 -servern
 3) Secret для mirror job в namespace `web-synestra-io-dev`:
 - `web-synestra-io-dev-media-mirror-env` (с `SRC_*`/`DST_*`)
 
-4) Два CatalogItem ресурса в namespace `okteto`, которые появятся в UI как отдельные пункты каталога.
+4) CatalogItem ресурсы в namespace `okteto`, которые появятся в UI как отдельные пункты каталога.
 
 ## 3) Как запускать из Okteto UI
 
-1) Открыть Okteto UI → `Namespaces` → выбрать `web-synestra-io-dev`.
+1) Открыть Okteto UI → `Namespaces` → выбрать нужный namespace:
+   - `web-synestra-io-dev`
+   - `web-payload-dev`
 2) Нажать `Deploy Dev Environment` → вкладка `Catalog`.
 3) Выбрать один из пунктов:
    - `synestra-io: Refresh DB`
    - `synestra-io: Refresh (DB+Media)`
+   - `payload: Refresh DB`
 4) Нажать `Deploy` и дождаться `Success`.
 
 ## 4) Что делать, если refresh не сработал
