@@ -142,7 +142,7 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
                   })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
+              <Button form={formIdAttr} type="submit" variant="default">
                 {submitButtonLabel}
               </Button>
             </form>
