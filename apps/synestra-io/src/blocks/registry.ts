@@ -12,6 +12,10 @@ import { PAGE_LAYOUT_BLOCKS } from '@/blocks/pageBuilder'
 
 type PageBlock = Page['layout'][number]
 type PageBlockType = PageBlock['blockType']
+type PageBlockByType<TBlockType extends PageBlockType> = Extract<PageBlock, { blockType: TBlockType }>
+type PageBlockComponentMap = {
+  [TBlockType in PageBlockType]: React.ComponentType<PageBlockByType<TBlockType>>
+}
 
 export const PAGE_BLOCK_COMPONENTS = {
   archive: ArchiveBlock,
@@ -19,7 +23,7 @@ export const PAGE_BLOCK_COMPONENTS = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-} satisfies Record<PageBlockType, React.ComponentType<unknown>>
+} satisfies PageBlockComponentMap
 
 export const PAGE_BLOCK_CATALOG = defineBlockCatalog({
   name: 'page layout blocks',

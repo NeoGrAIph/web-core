@@ -1,5 +1,6 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
+import type { FormBlock as FormBlockProps, Form as PayloadForm } from '@/payload-types'
 
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
@@ -11,25 +12,20 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 
-export type FormBlockType = {
-  blockName?: string
-  blockType?: 'formBlock'
-  enableIntro: boolean
-  form: FormType
-  introContent?: DefaultTypedEditorState
-}
-
-export const FormBlock: React.FC<
-  {
-    id?: string
-  } & FormBlockType
-> = (props) => {
+export const FormBlock: React.FC<FormBlockProps> = (props) => {
   const {
     enableIntro,
-    form: formFromProps,
-    form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
+    form,
     introContent,
   } = props
+
+  const formFromProps: PayloadForm | null = typeof form === 'object' && form !== null ? form : null
+
+  if (!formFromProps) {
+    return null
+  }
+
+  const { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = formFromProps
 
   const formMethods = useForm({
     defaultValues: formFromProps.fields,
