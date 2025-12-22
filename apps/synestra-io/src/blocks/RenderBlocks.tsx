@@ -10,7 +10,12 @@ type Props = {
 }
 
 export const RenderBlocks: React.FC<Props> = ({ blocks }) => {
-  return renderBlocks(blocks, PAGE_BLOCK_CATALOG.components, {
+  const normalizedBlocks = blocks?.map((block) => ({
+    ...block,
+    id: block.id ?? undefined,
+  }))
+
+  return renderBlocks(normalizedBlocks, PAGE_BLOCK_CATALOG.components, {
     componentProps: { disableInnerContainer: true },
     wrap: ({ children }) => <div className="my-16">{children}</div>,
   })

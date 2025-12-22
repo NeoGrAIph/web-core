@@ -12,7 +12,12 @@ import { PAGE_LAYOUT_BLOCKS } from '@/blocks/pageBuilder'
 
 type PageBlock = Page['layout'][number]
 type PageBlockType = PageBlock['blockType']
-type PageBlockByType<TBlockType extends PageBlockType> = Extract<PageBlock, { blockType: TBlockType }>
+type NormalizeId<T> = T extends { id?: infer TId }
+  ? Omit<T, 'id'> & { id?: Exclude<TId, null> }
+  : T
+type PageBlockByType<TBlockType extends PageBlockType> = NormalizeId<
+  Extract<PageBlock, { blockType: TBlockType }>
+>
 type PageBlockComponentMap = {
   [TBlockType in PageBlockType]: React.ComponentType<PageBlockByType<TBlockType>>
 }
