@@ -35,6 +35,7 @@
       "tsx": "4.20.6"
     },
     "onlyBuiltDependencies": [
+      "core-js-pure",
       "esbuild",
       "sharp",
       "unrs-resolver"
