@@ -91,6 +91,9 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
+  .wrap {
+    @apply min-h-[100vh] flex flex-col;
+  }
 }
 
 html {

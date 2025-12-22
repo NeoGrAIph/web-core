@@ -12,6 +12,7 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { NnmNewYear } from '@synestra/ui'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -28,6 +29,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
+        <NnmNewYear />
+        <div className="wrap">
         <Providers>
           <SharePreviewBar />
           <AdminBar
@@ -40,6 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
           <Footer />
         </Providers>
+        </div>
       </body>
     </html>
   )
