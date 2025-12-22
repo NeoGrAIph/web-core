@@ -103,6 +103,9 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
   )
 
   if (!formFromProps) {
+    if (process.env.NODE_ENV !== 'production') {
+      throw new Error('FormBlock requires populated form data')
+    }
     return null
   }
 
