@@ -67,6 +67,38 @@ apps/synestra-io/
 - `payload-core` — “чистый” upstream‑шаблон без доменных оверрайдов, поэтому на нём проще отлавливать регрессии shared‑слоя;
 - `payload-dev` — быстрый контур, где проверяем изменения прежде чем переносить их в доменные сайты.
 
+## Канон типизации блоков
+
+`PAGE_BLOCK_COMPONENTS` **обязан** быть типобезопасным относительно `Page['layout']`.
+Правило: маппинг строится по `blockType`, а компоненты принимают соответствующий блок‑тип.
+
+Минимальный шаблон:
+
+```ts
+type PageBlock = Page['layout'][number]
+type PageBlockType = PageBlock['blockType']
+type PageBlockByType<TBlockType extends PageBlockType> = Extract<PageBlock, { blockType: TBlockType }>
+type PageBlockComponentMap = {
+  [TBlockType in PageBlockType]: React.ComponentType<PageBlockByType<TBlockType>>
+}
+
+export const PAGE_BLOCK_COMPONENTS = {
+  archive: ArchiveBlock,
+  content: ContentBlock,
+  cta: CallToActionBlock,
+  formBlock: FormBlock,
+  mediaBlock: MediaBlock,
+} satisfies PageBlockComponentMap
+```
+
+Это устраняет `any`, гарантирует соответствие схемы и ловит рассинхрон при изменениях в Payload schema.
+
+## FormBlock: populated форма
+
+`FormBlock` типизируется через `payload-types` и ожидает **populated** `form`.
+Если приходит только `id`, компонент возвращает `null`, чтобы избежать runtime‑ошибок.
+Убедитесь, что запросы/queries пополняют `form` в блоке, когда нужен рендер.
+
 ## Индекс этой папки
 
 - `docs/development/01-app-facade.md` — детальный канон фасада `@/ui/*` и overrides.
