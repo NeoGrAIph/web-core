@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 
 type NnmNewYearProps = {
   assetsBase?: string
+  newYearAssetsBase?: string
   className?: string
 }
 
@@ -20,15 +21,20 @@ function loadScript(src: string): Promise<void> {
   })
 }
 
-export function NnmNewYear({ assetsBase = defaultAssetsBase, className }: NnmNewYearProps) {
+export function NnmNewYear({
+  assetsBase = defaultAssetsBase,
+  newYearAssetsBase,
+  className,
+}: NnmNewYearProps) {
   useEffect(() => {
     const anchorId = 'nnm-newyear-anchor'
+    const resolvedNewYearAssetsBase = newYearAssetsBase ?? `${assetsBase}/nnmclub_to-new_year`
 
     if (!document.getElementById(styleId)) {
       const link = document.createElement('link')
       link.id = styleId
       link.rel = 'stylesheet'
-      link.href = `${assetsBase}/forum/new_year/style2022.css`
+      link.href = `${resolvedNewYearAssetsBase}/style2022.css`
       if (className) link.className = className
       document.head.appendChild(link)
     }
@@ -76,8 +82,10 @@ export function NnmNewYear({ assetsBase = defaultAssetsBase, className }: NnmNew
       document.head.appendChild(styleTag)
     }
 
-    // Ensure ASSETS is set for the legacy script
+    // Ensure legacy script has access to the audio base
     ;(window as unknown as { ASSETS?: string }).ASSETS = assetsBase
+    ;(window as unknown as { NNM_NEWYEAR_ASSETS?: string }).NNM_NEWYEAR_ASSETS =
+      resolvedNewYearAssetsBase
 
     const originalWrite = document.write.bind(document)
     document.write = (html: string) => {
@@ -91,7 +99,7 @@ export function NnmNewYear({ assetsBase = defaultAssetsBase, className }: NnmNew
 
     const jquery = `${assetsBase}/forum/misc/js/jquery-3.4.0.min.js`
     const migrate = `${assetsBase}/forum/misc/js/jquery-migrate-3.0.1.min.js`
-    const newYear = `${assetsBase}/forum/new_year/newyear2024.js`
+    const newYear = `${resolvedNewYearAssetsBase}/newyear2024.js`
 
     const hasJQ = typeof (window as unknown as { $?: unknown }).$ !== 'undefined'
     const chain = hasJQ ? Promise.resolve() : loadScript(jquery).then(() => loadScript(migrate))
@@ -112,7 +120,7 @@ export function NnmNewYear({ assetsBase = defaultAssetsBase, className }: NnmNew
     return () => {
       document.write = originalWrite
     }
-  }, [assetsBase])
+  }, [assetsBase, newYearAssetsBase, className])
 
   return null
 }

@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
-        <NnmNewYear />
+        <NnmNewYear newYearAssetsBase="/nnmclub_to-new_year" />
         <Providers>
           <SharePreviewBar />
           <AdminBar
