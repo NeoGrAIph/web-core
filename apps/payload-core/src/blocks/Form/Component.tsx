@@ -20,7 +20,7 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
   const redirect = formFromProps?.redirect
   const submitButtonLabel = formFromProps?.submitButtonLabel
 
-  const formMethods = useForm({
+  const formMethods = useForm<FormFieldBlock[]>({
     defaultValues: formFromProps?.fields ?? [],
   })
   const {
