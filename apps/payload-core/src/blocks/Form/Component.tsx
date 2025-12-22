@@ -1,6 +1,6 @@
 'use client'
-import type { FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
-import type { FormBlock as FormBlockProps, Form as PayloadForm } from '@/payload-types'
+import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { FormBlock as FormBlockProps } from '@/payload-types'
 
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
@@ -13,7 +13,7 @@ import { getClientSideURL } from '@/utilities/getURL'
 export const FormBlock: React.FC<FormBlockProps> = (props) => {
   const { enableIntro, form, introContent } = props
 
-  const formFromProps: PayloadForm | null = typeof form === 'object' && form !== null ? form : null
+  const formFromProps: FormType | null = typeof form === 'object' && form !== null ? (form as FormType) : null
   const formID = formFromProps?.id
   const confirmationMessage = formFromProps?.confirmationMessage
   const confirmationType = formFromProps?.confirmationType

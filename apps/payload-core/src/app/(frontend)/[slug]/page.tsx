@@ -115,6 +115,7 @@ const queryPageBySlug = cache(async ({ slug, draft }: { slug: string; draft: boo
 
   const result = await payload.find({
     collection: 'pages',
+    depth: 1,
     draft,
     limit: 1,
     pagination: false,
