@@ -19,6 +19,15 @@ export const SeedButton: React.FC = () => {
   const [seeded, setSeeded] = useState(false)
   const [error, setError] = useState<null | string>(null)
 
+  const runSeed = useCallback(async (seedKey?: string): Promise<Response> => {
+    const headers = seedKey ? { 'x-seed-key': seedKey } : undefined
+    return fetch('/next/seed', {
+      method: 'POST',
+      credentials: 'include',
+      headers,
+    })
+  }, [])
+
   const handleClick = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
@@ -41,22 +50,30 @@ export const SeedButton: React.FC = () => {
       try {
         toast.promise(
           new Promise((resolve, reject) => {
-            try {
-              fetch('/next/seed', { method: 'POST', credentials: 'include' })
-                .then((res) => {
-                  if (res.ok) {
-                    resolve(true)
-                    setSeeded(true)
-                  } else {
-                    reject('An error occurred while seeding.')
+            const attempt = async () => {
+              try {
+                let res = await runSeed()
+                if (res.status === 403) {
+                  const providedKey = window.prompt('Enter seed key to continue:')
+                  if (!providedKey) {
+                    reject('Seed key is required.')
+                    return
                   }
-                })
-                .catch((error) => {
-                  reject(error)
-                })
-            } catch (error) {
-              reject(error)
+                  res = await runSeed(providedKey)
+                }
+
+                if (res.ok) {
+                  resolve(true)
+                  setSeeded(true)
+                } else {
+                  reject('An error occurred while seeding.')
+                }
+              } catch (error) {
+                reject(error)
+              }
             }
+
+            void attempt()
           }),
           {
             loading: 'Seeding with data....',
@@ -69,7 +86,7 @@ export const SeedButton: React.FC = () => {
         setError(error)
       }
     },
-    [loading, seeded, error],
+    [loading, seeded, error, runSeed],
   )
 
   let message = ''

@@ -66,7 +66,7 @@ Upstream templates часто подтягивают картинки seed’а 
 - `stage/prod`: `SEED_KEY` обязателен, иначе `/next/seed` закрыт.
 
 Технически ключ передаётся как HTTP header: `x-seed-key: <SEED_KEY>`.
-В админке `web-core` рядом с кнопкой seed есть поле ввода для этого ключа.
+В админке `web-core` при попытке seed в `stage/prod` появляется запрос ключа.
 
 Хранение:
 - локально: `apps/<app>/.env.local` (в git не коммитим),
