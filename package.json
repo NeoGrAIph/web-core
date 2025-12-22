@@ -2,7 +2,7 @@
   "name": "web-core",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@10.0.0",
+  "packageManager": "pnpm@10.26.1",
   "engines": {
     "node": ">=22.0.0"
   },
