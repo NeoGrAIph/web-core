@@ -1,6 +1,6 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
-import type { FormBlock as FormBlockProps } from '@/payload-types'
+import type { FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
+import type { FormBlock as FormBlockProps, Form as PayloadForm } from '@/payload-types'
 
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
@@ -13,15 +13,15 @@ import { getClientSideURL } from '@/utilities/getURL'
 export const FormBlock: React.FC<FormBlockProps> = (props) => {
   const { enableIntro, form, introContent } = props
 
-  const formFromProps: FormType | null = typeof form === 'object' && form !== null ? (form as FormType) : null
-  const formID = formFromProps?.id
-  const confirmationMessage = formFromProps?.confirmationMessage
-  const confirmationType = formFromProps?.confirmationType
-  const redirect = formFromProps?.redirect
-  const submitButtonLabel = formFromProps?.submitButtonLabel
+  const formFromProps = form as PayloadForm
+  const formID = formFromProps.id
+  const confirmationMessage = formFromProps.confirmationMessage
+  const confirmationType = formFromProps.confirmationType
+  const redirect = formFromProps.redirect
+  const submitButtonLabel = formFromProps.submitButtonLabel
 
   const formMethods = useForm<FormFieldBlock[]>({
-    defaultValues: formFromProps?.fields ?? [],
+    defaultValues: (formFromProps.fields ?? []) as FormFieldBlock[],
   })
   const {
     control,
@@ -101,13 +101,6 @@ export const FormBlock: React.FC<FormBlockProps> = (props) => {
     },
     [router, formID, redirect, confirmationType],
   )
-
-  if (!formFromProps) {
-    if (process.env.NODE_ENV !== 'production') {
-      throw new Error('FormBlock requires populated form data')
-    }
-    return null
-  }
 
   return (
     <div className="container lg:max-w-[48rem]">
