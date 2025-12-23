@@ -20,6 +20,10 @@ TLS по умолчанию:
 - в кластере Synestra Traefik использует `TLSStore default` с wildcard‑сертификатами (на стороне `synestra-platform`), поэтому для большинства хостов `ingress.tls` можно не задавать;
 - важно: `Ingress.spec.tls[].secretName` не может ссылаться на Secret из другого namespace → поэтому мы и опираемся на `TLSStore default`, а не на per‑namespace TLS secrets.
 
+HTTP → HTTPS:
+- если нужно принудительно редиректить HTTP на HTTPS, включите `ingress.redirectToHttps=true`;
+- chart создаст дополнительный HTTP Ingress + Traefik Middleware `redirectScheme` (https).
+
 Где смотреть шаблоны:
 - `deploy/charts/web-app/templates/_README.md`
 

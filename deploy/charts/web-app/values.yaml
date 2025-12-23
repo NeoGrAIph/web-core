@@ -21,6 +21,8 @@ ingress:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
+  redirectToHttps: false
+  redirectPermanent: true
   hosts: []
   # - host: corporate.dev.example.com
   #   paths:

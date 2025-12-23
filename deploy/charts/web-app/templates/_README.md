@@ -10,6 +10,8 @@
 - `deployment.yaml` — `Deployment` приложения (образ, env, `envFrom`, PVC‑mount для media).
 - `service.yaml` — `Service` (ClusterIP по умолчанию).
 - `ingress.yaml` — `Ingress` (hosts/paths/tls).
+- `ingress-redirect.yaml` — HTTP Ingress для редиректа на HTTPS (Traefik middleware).
+- `middleware-redirect-https.yaml` — Traefik Middleware `redirectScheme` (https).
 - `pvc-media.yaml` — `PersistentVolumeClaim` для `public/media` (актуально для Payload templates).
 - `cnpg-cluster.yaml` — `postgresql.cnpg.io/Cluster` (CloudNativePG), опционально (включается `values.postgres.enabled`).
 - `migrations-job.yaml` — `Job` для миграций Payload как ArgoCD hook (опционально, `values.migrations.enabled`).
