@@ -31,10 +31,10 @@
 - `deploy/jobs/media-mirror-payload-dev-from-prod.yaml`
 
 3) “deploy-only” Okteto manifest’ы, которые запускают эти Job’ы:
-- `.okteto/refresh-db.yml`
-- `.okteto/refresh-db-media.yml`
-- `.okteto/refresh-db-payload.yml`
-- `.okteto/refresh-db-media-payload.yml`
+- `.okteto/refresh-db.yml` (name: `web-core-synestra-io-dev-refresh-db`)
+- `.okteto/refresh-db-media.yml` (name: `web-core-synestra-io-dev-refresh-db-media`)
+- `.okteto/refresh-db-payload.yml` (name: `web-core-payload-dev-refresh-db`)
+- `.okteto/refresh-db-media-payload.yml` (name: `web-core-payload-dev-refresh-db-media`)
 
 ## 2) Что должно быть в `synestra-platform` (GitOps)
 

@@ -1,5 +1,5 @@
 ---
-name: web-core-refresh-db-payload
+name: web-core-payload-dev-refresh-db
 
 # Okteto Deploy-only manifest.
 # Purpose: run dev-only maintenance tasks from Okteto UI (Catalog) without

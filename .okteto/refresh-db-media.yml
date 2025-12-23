@@ -1,4 +1,4 @@
-name: web-core-refresh-db-media
+name: web-core-synestra-io-dev-refresh-db-media
 
 # Okteto Deploy-only manifest.
 # Purpose: run dev-only maintenance tasks from Okteto UI (Catalog) without `okteto up`.
