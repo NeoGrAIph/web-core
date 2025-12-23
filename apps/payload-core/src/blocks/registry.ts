@@ -22,11 +22,14 @@ type PageBlockComponentMap = {
   [TBlockType in PageBlockType]: React.ComponentType<PageBlockByType<TBlockType>>
 }
 
+const FormBlockComponent =
+  FormBlockDynamic as unknown as React.ComponentType<PageBlockByType<'formBlock'>>
+
 export const PAGE_BLOCK_COMPONENTS = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
-  formBlock: FormBlockDynamic,
+  formBlock: FormBlockComponent,
   mediaBlock: MediaBlock,
 } satisfies PageBlockComponentMap
 
