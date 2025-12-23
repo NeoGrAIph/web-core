@@ -2777,3 +2777,185 @@
 
 ## Блокеры / вопросы (общие)
 - (заполняется по мере работы)
+
+### `apps/synestra-io/src/app/(frontend)/layout.tsx`
+- **Group:** app/layout
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/app/(frontend)/layout.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/layout.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Добавлены lazy/gate для AdminBar и SharePreviewBar, AdminBar рендерится только при наличии `payload-token` cookie.
+- **Dependencies / Blockers:** next/dynamic, next/headers cookies
+
+### `apps/synestra-io/src/providers/Theme/ThemeSelector/index.tsx`
+- **Group:** app/ui
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/providers/Theme/ThemeSelector/index.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/ThemeSelector/index.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** ThemeSelector упрощён до кнопок (без Radix Select) для снижения веса layout.js в dev.
+- **Dependencies / Blockers:** none
+
+### `apps/synestra-io/src/blocks/registry.ts`
+- **Group:** app/blocks
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/blocks/registry.ts
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/blocks/registry.ts
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** FormBlock переведён на dynamic import (ssr:false) + lightweight loading placeholder.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/synestra-io/src/blocks/Code/Component.tsx`
+- **Group:** app/blocks
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/blocks/Code/Component.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/blocks/Code/Component.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** prism-react-renderer вынесен в отдельный клиентский чанк через next/dynamic.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/synestra-io/src/components/SharePreviewBar/SharePreviewBar.tsx`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/components/SharePreviewBar/SharePreviewBar.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/components/SharePreviewBar/index.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Перенесён в отдельный файл для возможности lazy/gate.
+- **Dependencies / Blockers:** none
+
+### `apps/synestra-io/src/components/SharePreviewBar/SharePreviewBarGate.tsx`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/components/SharePreviewBar/SharePreviewBarGate.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (new app-only optimization)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Gate-компонент грузит SharePreviewBar только при наличии `?sp=`.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/synestra-io/src/components/SharePreviewBar/index.ts`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/components/SharePreviewBar/index.ts
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (wrapper)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Re-export SharePreviewBar + SharePreviewBarGate.
+- **Dependencies / Blockers:** none
+
+### `apps/payload-core/src/app/(frontend)/layout.tsx`
+- **Group:** app/layout
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/app/(frontend)/layout.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/app/(frontend)/layout.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Добавлены lazy/gate для AdminBar и SharePreviewBar, AdminBar рендерится только при наличии `payload-token` cookie.
+- **Dependencies / Blockers:** next/dynamic, next/headers cookies
+
+### `apps/payload-core/src/providers/Theme/ThemeSelector/index.tsx`
+- **Group:** app/ui
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/providers/Theme/ThemeSelector/index.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/providers/Theme/ThemeSelector/index.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** ThemeSelector упрощён до кнопок (без Radix Select) для снижения веса layout.js в dev.
+- **Dependencies / Blockers:** none
+
+### `apps/payload-core/src/blocks/registry.ts`
+- **Group:** app/blocks
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/blocks/registry.ts
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/blocks/registry.ts
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** FormBlock переведён на dynamic import (ssr:false) + lightweight loading placeholder.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/payload-core/src/blocks/Code/Component.tsx`
+- **Group:** app/blocks
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/blocks/Code/Component.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/blocks/Code/Component.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** prism-react-renderer вынесен в отдельный клиентский чанк через next/dynamic.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/payload-core/src/components/SharePreviewBar/SharePreviewBar.tsx`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/components/SharePreviewBar/SharePreviewBar.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** upstream/payload/templates/website/src/components/SharePreviewBar/index.tsx
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Перенесён в отдельный файл для возможности lazy/gate.
+- **Dependencies / Blockers:** none
+
+### `apps/payload-core/src/components/SharePreviewBar/SharePreviewBarGate.tsx`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/components/SharePreviewBar/SharePreviewBarGate.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (new app-only optimization)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Gate-компонент грузит SharePreviewBar только при наличии `?sp=`.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/payload-core/src/components/SharePreviewBar/index.ts`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/components/SharePreviewBar/index.ts
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (wrapper)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Re-export SharePreviewBar + SharePreviewBarGate.
+- **Dependencies / Blockers:** none

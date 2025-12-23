@@ -1,25 +1,34 @@
 import type { Metadata } from 'next'
 
-import { cn } from '@/utilities/ui'
+import dynamic from 'next/dynamic'
+import { cookies, draftMode } from 'next/headers'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
-import { AdminBar } from '@/admin-ui/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
+import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
+import { cn } from '@/utilities/ui'
 import { NnmNewYear } from '@/ui/nnm-newyear'
 
 import './globals.css'
-import { getServerSideURL } from '@/utilities/getURL'
-import { SharePreviewBar } from '@/components/SharePreviewBar'
+
+const AdminBar = dynamic(() => import('@/admin-ui/AdminBar').then((mod) => mod.AdminBar), {
+  ssr: false,
+})
+const SharePreviewBarGate = dynamic(
+  () => import('@/components/SharePreviewBar').then((mod) => mod.SharePreviewBarGate),
+  { ssr: false },
+)
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const cookieStore = await cookies()
+  const hasAdminToken = Boolean(cookieStore.get('payload-token')?.value)
 
   return (
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
@@ -31,12 +40,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <NnmNewYear newYearAssetsBase="/nnmclub_to-new_year" />
         <Providers>
-          <SharePreviewBar />
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <SharePreviewBarGate />
+          {hasAdminToken && (
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
+          )}
 
           <Header />
           {children}
