@@ -2959,3 +2959,55 @@
 - **Promoted to payload-core/prod:** no
 - **Notes:** Re-export SharePreviewBar + SharePreviewBarGate.
 - **Dependencies / Blockers:** none
+
+### `apps/synestra-io/src/components/AdminBarGate/index.tsx`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/components/AdminBarGate/index.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (new app-only optimization)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Client gate для AdminBar; динамический импорт внутри client компонента, без ssr:false в server layout.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/payload-core/src/components/AdminBarGate/index.tsx`
+- **Group:** app/components
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/components/AdminBarGate/index.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (new app-only optimization)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Client gate для AdminBar; динамический импорт внутри client компонента, без ssr:false в server layout.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/synestra-io/src/blocks/Form/FormBlock.dynamic.tsx`
+- **Group:** app/blocks
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/synestra-io/src/blocks/Form/FormBlock.dynamic.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (new app-only optimization)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Client wrapper для динамической загрузки FormBlock; выведен из server registry.
+- **Dependencies / Blockers:** next/dynamic
+
+### `apps/payload-core/src/blocks/Form/FormBlock.dynamic.tsx`
+- **Group:** app/blocks
+- **Status:** done
+- **Decision:** app
+- **Destination:** apps/payload-core/src/blocks/Form/FormBlock.dynamic.tsx
+- **Date:** 2025-12-23
+- **Owner:** codex
+- **Source Path:** n/a (new app-only optimization)
+- **Checked in payload-dev:** no
+- **Promoted to payload-core/prod:** no
+- **Notes:** Client wrapper для динамической загрузки FormBlock; выведен из server registry.
+- **Dependencies / Blockers:** next/dynamic

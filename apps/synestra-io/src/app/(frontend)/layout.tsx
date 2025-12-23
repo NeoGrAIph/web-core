@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 
-import dynamic from 'next/dynamic'
 import { cookies, draftMode } from 'next/headers'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
+import { AdminBarGate } from '@/components/AdminBarGate'
+import { SharePreviewBarGate } from '@/components/SharePreviewBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -16,14 +17,6 @@ import { cn } from '@/utilities/ui'
 import { NnmNewYear } from '@/ui/nnm-newyear'
 
 import './globals.css'
-
-const AdminBar = dynamic(() => import('@/admin-ui/AdminBar').then((mod) => mod.AdminBar), {
-  ssr: false,
-})
-const SharePreviewBarGate = dynamic(
-  () => import('@/components/SharePreviewBar').then((mod) => mod.SharePreviewBarGate),
-  { ssr: false },
-)
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -41,13 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NnmNewYear newYearAssetsBase="/nnmclub_to-new_year" />
         <Providers>
           <SharePreviewBarGate />
-          {hasAdminToken && (
-            <AdminBar
-              adminBarProps={{
-                preview: isEnabled,
-              }}
-            />
-          )}
+          <AdminBarGate enabled={hasAdminToken} preview={isEnabled} />
 
           <Header />
           {children}
