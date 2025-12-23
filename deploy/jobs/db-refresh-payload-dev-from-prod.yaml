@@ -20,6 +20,7 @@ metadata:
     app.kubernetes.io/name: refresh-payload-dev-db-from-prod
 spec:
   backoffLimit: 0
+  ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never

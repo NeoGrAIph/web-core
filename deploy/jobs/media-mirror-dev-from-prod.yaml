@@ -19,6 +19,7 @@ metadata:
   name: media-mirror-dev-from-prod
 spec:
   backoffLimit: 1
+  ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never

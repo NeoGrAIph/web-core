@@ -18,6 +18,7 @@ metadata:
     app.kubernetes.io/name: refresh-synestra-io-dev-db-from-prod
 spec:
   backoffLimit: 0
+  ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never

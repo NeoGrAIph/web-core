@@ -19,6 +19,7 @@ metadata:
   name: media-mirror-payload-dev-from-prod
 spec:
   backoffLimit: 1
+  ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never
@@ -71,4 +72,3 @@ spec:
               mc mirror $args "src/${SRC_BUCKET}" "dst/${DST_BUCKET}"
 
               echo "Done."
-
