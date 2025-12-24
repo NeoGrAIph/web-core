@@ -1,4 +1,4 @@
-# apps/synestra-io/src/Header
+# apps/payload-core/src/Header
 
 ## Назначение
 Header UI и hooks.

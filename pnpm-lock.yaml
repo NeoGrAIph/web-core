@@ -294,6 +294,9 @@ importers:
       '@synestra/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@synestra/payload-plugin-ai':
+        specifier: workspace:*
+        version: link:../../packages/plugins/payload-plugin-ai
       '@synestra/ui':
         specifier: workspace:*
         version: link:../../packages/ui

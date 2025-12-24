@@ -9,6 +9,7 @@ import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997e
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { LexicalEditorFeatureClient as LexicalEditorFeatureClient_8fbcf9013e644d9122aa53feb1ecef87 } from '@synestra/payload-plugin-ai/client'
 import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -22,6 +23,8 @@ import { FolderTableCell as FolderTableCell_ab83ff7e88da8d3530831f296ec4756a } f
 import { FolderField as FolderField_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
+import { SelectField as SelectField_626e753c2dd8f5cfe62a9dc979e3420a } from '@synestra/payload-plugin-ai/fields'
+import { PromptEditorField as PromptEditorField_626e753c2dd8f5cfe62a9dc979e3420a } from '@synestra/payload-plugin-ai/fields'
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { RowLabel as RowLabel_40ae173eb7fbca068fd5209d499d9edd } from '@/admin-ui/Header/RowLabel'
 import { RowLabel as RowLabel_3bbc2c7b88b6852363ee679a84331a7d } from '@/admin-ui/Footer/RowLabel'
@@ -41,6 +44,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@synestra/payload-plugin-ai/client#LexicalEditorFeatureClient": LexicalEditorFeatureClient_8fbcf9013e644d9122aa53feb1ecef87,
   "@payloadcms/richtext-lexical/client#LinkFeatureClient": LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
@@ -54,6 +58,8 @@ export const importMap = {
   "@payloadcms/ui/rsc#FolderField": FolderField_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
+  "@synestra/payload-plugin-ai/fields#SelectField": SelectField_626e753c2dd8f5cfe62a9dc979e3420a,
+  "@synestra/payload-plugin-ai/fields#PromptEditorField": PromptEditorField_626e753c2dd8f5cfe62a9dc979e3420a,
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
   "@/admin-ui/Header/RowLabel#RowLabel": RowLabel_40ae173eb7fbca068fd5209d499d9edd,
   "@/admin-ui/Footer/RowLabel#RowLabel": RowLabel_3bbc2c7b88b6852363ee679a84331a7d,

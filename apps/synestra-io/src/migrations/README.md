@@ -1,4 +1,4 @@
-# apps/synestra-io/src/migrations
+# apps/payload-core/src/migrations
 
 ## Назначение
 Миграции базы данных Payload для конкретного приложения.

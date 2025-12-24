@@ -1,4 +1,4 @@
-# apps/synestra-io/src/blocks
+# apps/payload-core/src/blocks
 
 ## Назначение
 App‑локальные renderers и registry для blocks.

@@ -4,6 +4,7 @@ import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { payloadAiPlugin } from '@synestra/payload-plugin-ai'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -132,5 +133,15 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  payloadAiPlugin({
+    collections: {
+      pages: true,
+      posts: true,
+    },
+    debugging: process.env.NODE_ENV !== 'production',
+    disableSponsorMessage: true,
+    generatePromptOnInit: process.env.NODE_ENV !== 'production',
+    uploadCollectionSlug: MEDIA_SLUG,
   }),
 ]

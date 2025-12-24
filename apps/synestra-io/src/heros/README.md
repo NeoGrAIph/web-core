@@ -1,4 +1,4 @@
-# apps/synestra-io/src/heros
+# apps/payload-core/src/heros
 
 ## Назначение
 Hero renderers и router.

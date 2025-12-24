@@ -1,4 +1,4 @@
-# apps/synestra-io/src/providers
+# apps/payload-core/src/providers
 
 ## Назначение
 App providers (Theme, HeaderTheme, InitTheme).

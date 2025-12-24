@@ -1,4 +1,4 @@
-# apps/synestra-io/src/Footer
+# apps/payload-core/src/Footer
 
 ## Назначение
 Footer UI и hooks.

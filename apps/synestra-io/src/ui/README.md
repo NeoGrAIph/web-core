@@ -1,4 +1,4 @@
-# apps/synestra-io/src/ui
+# apps/payload-core/src/ui
 
 ## Назначение
 Facade для UI‑импортов приложения.

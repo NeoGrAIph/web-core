@@ -1,4 +1,4 @@
-# apps/synestra-io/src/admin-ui
+# apps/payload-core/src/admin-ui
 
 ## Назначение
 Facade для Payload Admin компонентов (import map).
