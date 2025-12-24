@@ -1,5 +1,5 @@
 import type { CollectionConfig, GroupField } from 'payload'
-import type { PluginConfig } from 'src/types.js'
+import type { PluginConfig } from '../types.js'
 
 import { PLUGIN_INSTRUCTIONS_TABLE } from '../defaults.js'
 import { getGenerationModels } from '../utilities/getGenerationModels.js'
