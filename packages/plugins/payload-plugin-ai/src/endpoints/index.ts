@@ -219,7 +219,7 @@ export const endpoints: (pluginConfig: PluginConfig) => Endpoints = (pluginConfi
 
           const { collections } = req.payload.config
           const collection = collections.find(
-            (collection) => collection.slug === PLUGIN_INSTRUCTIONS_TABLE,
+            (collection) => collection.slug === PLUGIN_INSTRUCTIONS_COLLECTION,
           )
 
           if (!collection) {
