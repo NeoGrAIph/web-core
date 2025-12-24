@@ -13,7 +13,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
-import { Media } from '@/collections/Media'
+import { MEDIA_SLUG } from '@/collections/Media'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -49,7 +49,7 @@ const s3MediaStoragePlugin: Plugin = (incomingConfig) => {
   return s3Storage({
     enabled: s3Enabled,
     collections: {
-      [Media.slug]: true,
+      [MEDIA_SLUG]: true,
     },
     bucket: process.env.S3_BUCKET || 'payload-media',
     config: s3Enabled
