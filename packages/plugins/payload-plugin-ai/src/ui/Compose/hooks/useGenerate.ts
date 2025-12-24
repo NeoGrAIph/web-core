@@ -9,7 +9,7 @@ import type { ActionMenuItems, GenerateTextarea } from '../../../types.js'
 import {
   PLUGIN_API_ENDPOINT_GENERATE,
   PLUGIN_API_ENDPOINT_GENERATE_UPLOAD,
-  PLUGIN_INSTRUCTIONS_TABLE,
+  PLUGIN_INSTRUCTIONS_COLLECTION,
   PLUGIN_NAME,
 } from '../../../defaults.js'
 import { useFieldProps } from '../../../providers/FieldProvider/useFieldProps.js'
@@ -54,7 +54,9 @@ export const useGenerate = ({ instructionId }: { instructionId: string }) => {
     config: { collections },
   } = useConfig()
 
-  const collection = collections.find((collection) => collection.slug === PLUGIN_INSTRUCTIONS_TABLE)
+  const collection = collections.find(
+    (collection) => collection.slug === PLUGIN_INSTRUCTIONS_COLLECTION,
+  )
   const { custom: { [PLUGIN_NAME]: { editorConfig = {} } = {} } = {} } = collection?.admin ?? {}
   const { schema: editorSchema = {} } = editorConfig
 

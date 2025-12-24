@@ -4,7 +4,7 @@ import { InstructionsContext } from '@synestra/payload-plugin-ai/client'
 import { useDocumentInfo } from '@payloadcms/ui'
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { PLUGIN_INSTRUCTIONS_TABLE } from '../../defaults.js'
+import { PLUGIN_INSTRUCTIONS_COLLECTION, PLUGIN_INSTRUCTIONS_TABLE } from '../../defaults.js'
 import { handlebarsHelpers, handlebarsHelpersMap } from '../../libraries/handlebars/helpersMap.js'
 
 
@@ -37,7 +37,7 @@ export const useInstructions = (
   useEffect(() => {
     if (
       activeCollection !== collectionSlug &&
-      collectionSlug !== PLUGIN_INSTRUCTIONS_TABLE &&
+      collectionSlug !== PLUGIN_INSTRUCTIONS_COLLECTION &&
       typeof setActiveCollection === 'function'
     ) {
       setActiveCollection(collectionSlug ?? '')
