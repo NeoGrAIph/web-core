@@ -2,7 +2,7 @@ import type { CollectionSlug } from 'payload'
 
 export const PLUGIN_NAME = 'plugin-ai'
 export const PLUGIN_INSTRUCTIONS_TABLE = `${PLUGIN_NAME}-instructions` as const
-export const PLUGIN_INSTRUCTIONS_COLLECTION = PLUGIN_INSTRUCTIONS_TABLE as CollectionSlug
+export const PLUGIN_INSTRUCTIONS_COLLECTION = PLUGIN_INSTRUCTIONS_TABLE satisfies CollectionSlug
 export const PLUGIN_LEXICAL_EDITOR_FEATURE = `${PLUGIN_NAME}-actions-feature`
 
 // Endpoint defaults

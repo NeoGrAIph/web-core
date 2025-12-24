@@ -30,7 +30,7 @@ export const init = async (
     select: {
       'field-type': true,
       'schema-path': true,
-    } as any,
+    },
   })
   const instructionsList = allInstructions as unknown as Record<string, any>[]
 
