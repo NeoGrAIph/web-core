@@ -14,6 +14,7 @@ import { filterEditorSchemaByNodes } from '../ai/utils/filterEditorSchemaByNodes
 import {
   PLUGIN_API_ENDPOINT_GENERATE,
   PLUGIN_API_ENDPOINT_GENERATE_UPLOAD,
+  PLUGIN_INSTRUCTIONS_COLLECTION,
   PLUGIN_INSTRUCTIONS_TABLE,
   PLUGIN_NAME,
 } from '../defaults.js'
@@ -212,7 +213,7 @@ export const endpoints: (pluginConfig: PluginConfig) => Endpoints = (pluginConfi
           // Verify user has access to the specific instruction
           const instructions = await req.payload.findByID({
             id: instructionId,
-            collection: PLUGIN_INSTRUCTIONS_TABLE,
+            collection: PLUGIN_INSTRUCTIONS_COLLECTION,
             req, // Pass req to ensure access control is applied
           })
 
@@ -377,7 +378,7 @@ export const endpoints: (pluginConfig: PluginConfig) => Endpoints = (pluginConfi
             // Verify user has access to the specific instruction
             instructions = await req.payload.findByID({
               id: instructionId,
-              collection: PLUGIN_INSTRUCTIONS_TABLE,
+              collection: PLUGIN_INSTRUCTIONS_COLLECTION,
               req, // Pass req to ensure access control is applied
             })
           }

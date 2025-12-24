@@ -2,14 +2,14 @@ import type { Endpoint, PayloadRequest } from 'payload'
 
 import type { PluginConfig, SerializedPromptField } from '../types.js'
 
-import { PLUGIN_FETCH_FIELDS_ENDPOINT, PLUGIN_INSTRUCTIONS_TABLE } from '../defaults.js'
+import { PLUGIN_FETCH_FIELDS_ENDPOINT, PLUGIN_INSTRUCTIONS_COLLECTION } from '../defaults.js'
 
 export const fetchFields: (config: PluginConfig) => Endpoint = (config) => {
   const { access, options = {}, promptFields = [] } = config
   return {
     handler: async (req: PayloadRequest) => {
       const { docs = [] } = await req.payload.find({
-        collection: PLUGIN_INSTRUCTIONS_TABLE,
+        collection: PLUGIN_INSTRUCTIONS_COLLECTION,
         pagination: false,
       })
 

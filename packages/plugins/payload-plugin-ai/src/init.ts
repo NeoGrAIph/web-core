@@ -4,7 +4,7 @@ import type { PluginConfig } from './types.js'
 
 import { defaultSeedPrompts } from './ai/prompts.js'
 import { systemGenerate } from './ai/utils/systemGenerate.js'
-import { PLUGIN_INSTRUCTIONS_TABLE } from './defaults.js'
+import { PLUGIN_INSTRUCTIONS_COLLECTION, PLUGIN_INSTRUCTIONS_TABLE } from './defaults.js'
 import { getGenerationModels } from './utilities/getGenerationModels.js'
 
 export const init = async (
@@ -24,7 +24,7 @@ export const init = async (
 
   // Get all instructions for faster initialization
   const { docs: allInstructions } = await payload.find({
-    collection: PLUGIN_INSTRUCTIONS_TABLE,
+    collection: PLUGIN_INSTRUCTIONS_COLLECTION,
     depth: 0,
     pagination: false,
     select: {
@@ -100,7 +100,7 @@ export const init = async (
 
       instructions = (await payload
         .create({
-          collection: PLUGIN_INSTRUCTIONS_TABLE,
+          collection: PLUGIN_INSTRUCTIONS_COLLECTION,
           data,
         })
         .catch((err) => {
@@ -120,7 +120,7 @@ export const init = async (
         )
         await payload.update({
           id: instructions.id,
-          collection: PLUGIN_INSTRUCTIONS_TABLE,
+          collection: PLUGIN_INSTRUCTIONS_COLLECTION,
           data: {
             'field-type': fieldType,
           },
