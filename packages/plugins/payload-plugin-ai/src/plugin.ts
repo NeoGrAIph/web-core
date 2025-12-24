@@ -80,31 +80,34 @@ const payloadAiPlugin =
     let updatedConfig: Config = { ...incomingConfig }
     let collectionsFieldPathMap = {}
 
-    if (isActivated) {
-      const Instructions = instructionsCollection(pluginConfig)
-      // Inject editor schema to config, so that it can be accessed when /textarea endpoint will hit
-      const lexicalSchema = lexicalJsonSchema(pluginConfig.editorConfig?.nodes)
+    const Instructions = instructionsCollection(pluginConfig)
+    // Inject editor schema to config, so that it can be accessed when /textarea endpoint will hit
+    const lexicalSchema = lexicalJsonSchema(pluginConfig.editorConfig?.nodes)
 
-      Instructions.admin = {
-        ...Instructions.admin,
-      }
+    Instructions.admin = {
+      ...Instructions.admin,
+    }
 
-      if (pluginConfig.debugging) {
-        Instructions.admin.hidden = false
-      }
+    if (pluginConfig.debugging) {
+      Instructions.admin.hidden = false
+    } else if (!isActivated) {
+      Instructions.admin.hidden = true
+    }
 
-      Instructions.admin.custom = {
-        ...(Instructions.admin.custom || {}),
-        [PLUGIN_NAME]: {
-          editorConfig: {
-            // Used in admin client for useObject hook
-            schema: lexicalSchema,
-          },
+    Instructions.admin.custom = {
+      ...(Instructions.admin.custom || {}),
+      [PLUGIN_NAME]: {
+        editorConfig: {
+          // Used in admin client for useObject hook
+          schema: lexicalSchema,
         },
-      }
+      },
+    }
 
-      const collections = [...(incomingConfig.collections ?? []), Instructions]
-      const globals = [...(incomingConfig.globals ?? [])]
+    const collections = [...(incomingConfig.collections ?? []), Instructions]
+    const globals = [...(incomingConfig.globals ?? [])]
+
+    if (isActivated) {
       const collectionSlugs = pluginConfig.collections as Record<string, boolean>
       const globalsSlugs = pluginConfig.globals as Record<string, boolean> | undefined
 
@@ -116,17 +119,16 @@ const payloadAiPlugin =
         },
       ]
 
-      incomingConfig.admin = {
-        ...(incomingConfig.admin || {}),
-        components: {
-          ...(incomingConfig.admin?.components ?? {}),
-          providers: updatedProviders,
-        },
-      }
-
       const pluginEndpoints = endpoints(pluginConfig)
       updatedConfig = {
         ...incomingConfig,
+        admin: {
+          ...(incomingConfig.admin || {}),
+          components: {
+            ...(incomingConfig.admin?.components ?? {}),
+            providers: updatedProviders,
+          },
+        },
         collections: collections.map((collection) => {
           if (collectionSlugs[collection.slug]) {
             const { schemaPathMap, updatedCollectionConfig } = updateFieldsConfig(collection)
@@ -163,6 +165,12 @@ const payloadAiPlugin =
             ...deepMerge(translations, incomingConfig.i18n?.translations ?? {}),
           },
         },
+      }
+    } else {
+      updatedConfig = {
+        ...incomingConfig,
+        collections,
+        globals,
       }
     }
 
