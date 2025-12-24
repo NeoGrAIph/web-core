@@ -12,6 +12,7 @@
 1) Сделать изменение в `packages/*` (чаще всего `packages/ui`).
 2) Подтянуть/обновить фасад в `apps/payload-core/src/ui/*` (если добавлялся новый компонент).
 2.1) Убедиться, что `payload-types.ts` сгенерирован и подключён в `tsconfig.json` (нужен для корректного `CollectionSlug` в shared‑коде).
+2.2) В shared‑пакетах не завязываться на app‑level `CollectionSlug`: держим slug как литерал, а строгую проверку — в app (shared код может использовать `as CollectionSlug` у границы).
 3) Проверить локально (`pnpm --filter @synestra/payload-core build` и/или `dev`).
 4) Выложить в кластер и проверить на `https://payload.dev.synestra.tech`.
 5) После стабилизации переносить/подключать в доменных приложениях (и добавлять overrides только там, где реально нужно).
