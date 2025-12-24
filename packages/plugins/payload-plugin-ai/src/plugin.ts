@@ -105,7 +105,8 @@ const payloadAiPlugin =
 
       const collections = [...(incomingConfig.collections ?? []), Instructions]
       const globals = [...(incomingConfig.globals ?? [])]
-      const { collections: collectionSlugs, globals: globalsSlugs } = pluginConfig
+      const collectionSlugs = pluginConfig.collections as Record<string, boolean>
+      const globalsSlugs = pluginConfig.globals as Record<string, boolean> | undefined
 
       const { components: { providers = [] } = {} } = incomingConfig.admin || {}
       const updatedProviders = [

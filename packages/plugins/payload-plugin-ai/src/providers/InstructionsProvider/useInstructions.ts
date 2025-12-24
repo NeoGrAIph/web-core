@@ -1,3 +1,5 @@
+import type { CollectionSlug } from 'payload'
+
 import { InstructionsContext } from '@synestra/payload-plugin-ai/client'
 import { useDocumentInfo } from '@payloadcms/ui'
 import { useContext, useEffect, useMemo, useState } from 'react'
@@ -90,7 +92,7 @@ export const useInstructions = (
     promptFields.forEach(({ name, collections }) => {
       if (!activeCollection) {return}
 
-      if (!collections || collections.includes(activeCollection)) {
+      if (!collections || collections.includes(activeCollection as CollectionSlug)) {
         suggestions.push(name)
       }
     })

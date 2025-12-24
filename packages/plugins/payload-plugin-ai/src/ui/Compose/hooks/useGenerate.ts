@@ -170,9 +170,13 @@ export const useGenerate = ({ instructionId }: { instructionId: string }) => {
     const doc = getData()
     const currentInstructionId = instructionIdRef.current
 
+    if (!collectionSlug) {
+      return Promise.reject(new Error('Missing collection slug'))
+    }
+
     return fetch(`${serverURL}${api}${PLUGIN_API_ENDPOINT_GENERATE_UPLOAD}`, {
       body: JSON.stringify({
-        collectionSlug: collectionSlug ?? '',
+        collectionSlug,
         doc,
         documentId,
         locale: localFromContext?.code,

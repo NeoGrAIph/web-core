@@ -211,11 +211,11 @@ export const endpoints: (pluginConfig: PluginConfig) => Endpoints = (pluginConfi
           }
 
           // Verify user has access to the specific instruction
-          const instructions = await req.payload.findByID({
+          const instructions = (await req.payload.findByID({
             id: instructionId,
             collection: PLUGIN_INSTRUCTIONS_COLLECTION,
             req, // Pass req to ensure access control is applied
-          })
+          })) as Record<string, any>
 
           const { collections } = req.payload.config
           const collection = collections.find(
@@ -278,7 +278,7 @@ export const endpoints: (pluginConfig: PluginConfig) => Endpoints = (pluginConfi
           const prompts = await assignPrompt(action, {
             type: String(instructions['field-type']),
             actionParams,
-            collection: collectionName,
+            collection: collectionName as CollectionSlug,
             context: contextData,
             field: fieldName || '',
             layout: instructions.layout,
@@ -467,20 +467,20 @@ export const endpoints: (pluginConfig: PluginConfig) => Endpoints = (pluginConfi
           }
 
           const result = await model.handler?.(text, modelOptions)
-          let assetData: { alt?: string; id: number | string }
+          let assetData: { alt?: string | null; id: number | string }
 
           if (typeof pluginConfig.mediaUpload === 'function') {
-            assetData = await pluginConfig.mediaUpload(result, {
+            assetData = (await pluginConfig.mediaUpload(result, {
               collection: uploadCollectionSlug,
               request: req,
-            })
+            })) as { alt?: string | null; id: number | string }
           } else {
-            assetData = await req.payload.create({
+            assetData = (await req.payload.create({
               collection: uploadCollectionSlug,
               data: result.data,
               file: result.file,
               req, // Pass req to ensure access control is applied
-            })
+            })) as { alt?: string | null; id: number | string }
           }
 
           if (!assetData.id) {

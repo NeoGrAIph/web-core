@@ -32,13 +32,14 @@ export const init = async (
       'schema-path': true,
     },
   })
+  const instructionsList = allInstructions as unknown as Record<string, any>[]
 
   const fieldInstructionsMap: Record<string, { fieldType: any; id: any }> = {}
 
   for (let i = 0; i < paths.length; i++) {
     const path = paths[i]
     const { type: fieldType, label: fieldLabel, relationTo } = fieldSchemaPaths[path]
-    let instructions = allInstructions.find((entry) => entry['schema-path'] === path)
+    let instructions = instructionsList.find((entry) => entry['schema-path'] === path)
 
     if (!instructions) {
       let seed
@@ -101,7 +102,7 @@ export const init = async (
       instructions = (await payload
         .create({
           collection: PLUGIN_INSTRUCTIONS_COLLECTION,
-          data,
+          data: data as any,
         })
         .catch((err) => {
           payload.logger.error(err, '— AI Plugin: Error creating Compose settings-')
@@ -123,7 +124,7 @@ export const init = async (
           collection: PLUGIN_INSTRUCTIONS_COLLECTION,
           data: {
             'field-type': fieldType,
-          },
+          } as any,
         })
         instructions['field-type'] = fieldType
       }

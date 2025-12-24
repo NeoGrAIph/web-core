@@ -56,18 +56,14 @@ export interface PluginConfig {
    * By default, all AI features require authentication
    */
   access?: PluginConfigAccess
-  collections: {
-    [key: CollectionSlug]: boolean
-  }
+  collections: Partial<Record<CollectionSlug, boolean>>
   debugging?: boolean
   disableSponsorMessage?: boolean
   editorConfig?: { nodes: JSONSchema[] }
   fields?: Field[]
   generatePromptOnInit?: boolean
   generationModels?: ((defaultModels: GenerationModel[]) => GenerationModel[]) | GenerationModel[]
-  globals?: {
-    [key: GlobalConfig['slug']]: boolean
-  }
+  globals?: Partial<Record<GlobalConfig['slug'], boolean>>
   interfaceName?: string
   mediaUpload?: PluginConfigMediaUploadFunction
   options?: PluginOptions

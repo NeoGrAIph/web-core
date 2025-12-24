@@ -27,8 +27,7 @@ export const editorSchemaValidator = (schema: unknown) => {
     return value
   })
 
-  const Ajv = ajvModule.default
-  const ajv = new Ajv()
+  const ajv = new ajvModule()
 
   return ajv.compile(modifiedSchema)
 }
