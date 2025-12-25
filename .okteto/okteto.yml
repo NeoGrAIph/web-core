@@ -25,8 +25,8 @@ dev:
       app.kubernetes.io/name: web-app
       app.kubernetes.io/instance: web-payload-dev
     container: app
-    workdir: /app
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm --filter @synestra/payload-core exec next dev --hostname 0.0.0.0 --port 3000'
+    workdir: /app/apps/payload-core
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
@@ -38,8 +38,8 @@ dev:
       app.kubernetes.io/name: web-app
       app.kubernetes.io/instance: web-payload-dev
     container: app
-    workdir: /app
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm --filter @synestra/payload-core exec next dev --hostname 0.0.0.0 --port 3000'
+    workdir: /app/apps/payload-core
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
@@ -54,8 +54,8 @@ dev:
       app.kubernetes.io/name: web-app
       app.kubernetes.io/instance: web-synestra-io-dev
     container: app
-    workdir: /app
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm --filter @synestra/synestra-io exec next dev --hostname 0.0.0.0 --port 3000'
+    workdir: /app/apps/synestra-io
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
@@ -67,8 +67,8 @@ dev:
       app.kubernetes.io/name: web-app
       app.kubernetes.io/instance: web-synestra-io-dev
     container: app
-    workdir: /app
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm --filter @synestra/synestra-io exec next dev --hostname 0.0.0.0 --port 3000'
+    workdir: /app/apps/synestra-io
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
