@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "web-app.fullname" . }}
+  labels:
+    {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ default "2" .Values.argo.syncWaves.app | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "web-app.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "web-app.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: app
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+          env:
+            {{- range $k, $v := .Values.env }}
+            - name: {{ $k | quote }}
+              value: {{ $v | quote }}
+            {{- end }}
+          {{- $extraEnvSecrets := .Values.envFrom.extraSecretRefs | default (list) }}
+          {{- if or .Values.envFrom.secretRef (gt (len $extraEnvSecrets) 0) }}
+          envFrom:
+            {{- if .Values.envFrom.secretRef }}
+            - secretRef:
+                name: {{ .Values.envFrom.secretRef | quote }}
+            {{- end }}
+            {{- range $extraEnvSecrets }}
+            - secretRef:
+                name: {{ . | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.persistence.media.enabled }}
+          volumeMounts:
+            - name: media
+              mountPath: {{ .Values.persistence.media.mountPath | quote }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.media.enabled }}
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: {{ include "web-app.fullname" . }}-media
+      {{- end }}

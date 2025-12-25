@@ -1,0 +1,10 @@
+# Release values for payload.services.synestra.tech deployment (prod).
+
+env:
+  APP_NAME: "@synestra/payload-core"
+
+image:
+  repository: "registry.gitlab.com/synestra/synestra-platform/web-payload-core"
+  tag: "bb3d2611ff3b-r1"
+  pullSecrets:
+    - name: gitlab-regcred

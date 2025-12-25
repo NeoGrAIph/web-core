@@ -1,0 +1,20 @@
+# Dev values for landings deployment (non-secret only).
+# Один deployment на группу лендингов.
+
+env:
+  SYNESTRA_ENV: "dev"
+  NEXT_PUBLIC_SERVER_URL: "https://landings.dev.synestra.tech"
+
+envFrom:
+  secretRef: "web-landings-dev-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "landings.dev.synestra.tech"
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgres:
+  enabled: false

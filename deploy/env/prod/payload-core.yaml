@@ -1,0 +1,31 @@
+# Prod values for payload.services.synestra.tech deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "prod"
+  NEXT_PUBLIC_SERVER_URL: "https://payload.services.synestra.tech"
+  NODE_ENV: "production"
+  SYNESTRA_MEDIA_STORAGE: "s3"
+  S3_ENDPOINT: "http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000"
+  S3_BUCKET: "payload-media-prod"
+  S3_REGION: "us-east-1"
+  S3_FORCE_PATH_STYLE: "true"
+
+envFrom:
+  secretRef: "web-payload-core-env"
+  extraSecretRefs:
+    - "web-payload-core-s3-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "payload.services.synestra.tech"
+      paths:
+        - path: /
+          pathType: Prefix
+
+persistence:
+  media:
+    enabled: false
+
+postgres:
+  enabled: false

@@ -1,0 +1,67 @@
+{{- if .Values.jobsRunner.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "web-app.fullname" . }}-jobs-runner
+  labels:
+    {{- include "web-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ default "3" .Values.argo.syncWaves.jobsRunner | quote }}
+spec:
+  schedule: {{ .Values.jobsRunner.schedule | quote }}
+  concurrencyPolicy: {{ default "Forbid" .Values.jobsRunner.concurrencyPolicy | quote }}
+  successfulJobsHistoryLimit: {{ default 1 .Values.jobsRunner.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ default 3 .Values.jobsRunner.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "web-app.labels" . | nindent 12 }}
+        spec:
+          restartPolicy: OnFailure
+          {{- if .Values.image.pullSecrets }}
+          imagePullSecrets:
+            {{- toYaml .Values.image.pullSecrets | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: jobs-runner
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+                - sh
+                - -lc
+                - |
+                  set -euo pipefail
+
+                  if [ -z "${CRON_SECRET:-}" ]; then
+                    echo "CRON_SECRET is not set (required to call /api/payload-jobs/run)" >&2
+                    exit 1
+                  fi
+
+                  BASE_URL="http://{{ include "web-app.fullname" . }}:{{ .Values.service.port }}"
+                  ENDPOINT="${BASE_URL}/api/payload-jobs/run"
+
+                  echo "Calling ${ENDPOINT}..."
+
+                  node -e "const url=process.env.ENDPOINT;fetch(url,{headers:{authorization:\`Bearer \${process.env.CRON_SECRET}\`}}).then(async r=>{const t=await r.text();console.log(t);process.exit(r.ok?0:1)}).catch(err=>{console.error(err);process.exit(1)})"
+              env:
+                - name: ENDPOINT
+                  value: {{ printf "http://%s:%v/api/payload-jobs/run" (include "web-app.fullname" .) .Values.service.port | quote }}
+                {{- range $k, $v := .Values.env }}
+                - name: {{ $k | quote }}
+                  value: {{ $v | quote }}
+                {{- end }}
+              {{- $extraEnvSecrets := .Values.envFrom.extraSecretRefs | default (list) }}
+              {{- if or .Values.envFrom.secretRef (gt (len $extraEnvSecrets) 0) }}
+              envFrom:
+                {{- if .Values.envFrom.secretRef }}
+                - secretRef:
+                    name: {{ .Values.envFrom.secretRef | quote }}
+                {{- end }}
+                {{- range $extraEnvSecrets }}
+                - secretRef:
+                    name: {{ . | quote }}
+                {{- end }}
+              {{- end }}
+{{- end }}

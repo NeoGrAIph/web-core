@@ -1,0 +1,33 @@
+# Prod values for synestra.io deployment (non-secret only).
+
+env:
+  SYNESTRA_ENV: "prod"
+  NEXT_PUBLIC_SERVER_URL: "https://synestra.io"
+  SYNESTRA_DB_SOURCE: "cnpg-databases"
+  NODE_ENV: "production"
+  SYNESTRA_MEDIA_STORAGE: "s3"
+  S3_ENDPOINT: "http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000"
+  S3_BUCKET: "payload-media-prod"
+  S3_REGION: "us-east-1"
+  S3_FORCE_PATH_STYLE: "true"
+
+envFrom:
+  secretRef: "web-synestra-io-prod-env"
+  extraSecretRefs:
+    - "web-synestra-io-prod-s3-env"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "synestra.io"
+      paths:
+        - path: /
+          pathType: Prefix
+
+persistence:
+  media:
+    enabled: false
+    mountPath: /repo/apps/synestra-io/public/media
+
+postgres:
+  enabled: false
