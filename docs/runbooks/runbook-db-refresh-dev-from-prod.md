@@ -3,7 +3,6 @@
 Статус: актуально на **2025-12-16**.  
 Связанные каноны:
 - `docs/runbooks/runbook-database-cnpg.md`
-- `docs/runbooks/runbook-database-cnpg.md`
 
 Цель: получить dev‑окружение, где **данные максимально соответствуют prod**, чтобы:
 - воспроизводить баги на реальных данных,
@@ -84,11 +83,11 @@
 Если `barmanObjectStore` уже включён на prod‑кластере, on-demand backup запускается созданием CR `Backup`.
 
 Для `synestra.io` шаблон лежит в `synestra-platform` и **не подключён** в GitOps kustomization:
-- `synestra-platform/infra/databases/cloudnativepg/synestra-io/backup-manual.yaml`
+- `synestra-platform/infra/databases/cloudnativepg-web/web-synestra-io-prod/backup-manual.yaml`
 
 Запуск (пример):
 ```bash
-kubectl apply -f /home/neograiph/synestra-platform/infra/databases/cloudnativepg/synestra-io/backup-manual.yaml
+kubectl apply -f /home/neograiph/repo/synestra-platform/infra/databases/cloudnativepg-web/web-synestra-io-prod/backup-manual.yaml
 kubectl -n databases get backups.postgresql.cnpg.io -o wide
 ```
 
@@ -119,12 +118,12 @@ kubectl -n databases get backups.postgresql.cnpg.io -o wide
 ### 2.2. Пример для `synestra.io` (prod → dev)
 
 Job‑манифест лежит в платформенном репо (GitOps/infra):
-- `synestra-platform/infra/databases/cloudnativepg/synestra-io-dev/refresh-dev-from-prod-job.yaml`
+- `synestra-platform/infra/databases/cloudnativepg-web/web-synestra-io-dev/refresh-dev-from-prod-job.yaml`
 
 Запуск:
 
 ```bash
-kubectl apply -f /home/neograiph/synestra-platform/infra/databases/cloudnativepg/synestra-io-dev/refresh-dev-from-prod-job.yaml
+kubectl apply -f /home/neograiph/repo/synestra-platform/infra/databases/cloudnativepg-web/web-synestra-io-dev/refresh-dev-from-prod-job.yaml
 kubectl -n databases wait --for=condition=complete job/refresh-synestra-io-dev-db-from-prod --timeout=30m
 kubectl -n databases logs job/refresh-synestra-io-dev-db-from-prod
 ```
