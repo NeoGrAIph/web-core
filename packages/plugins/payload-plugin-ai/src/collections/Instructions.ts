@@ -56,8 +56,8 @@ const defaultAdminConfig = {
 export const instructionsCollection = (pluginConfig: PluginConfig) =>
   <CollectionConfig>{
     labels: {
-      plural: 'Compose Settings',
-      singular: 'Compose Setting',
+      plural: 'AI Plugin settings',
+      singular: 'AI Plugin setting',
     },
     ...pluginConfig.overrideInstructions,
     slug: PLUGIN_INSTRUCTIONS_TABLE,
