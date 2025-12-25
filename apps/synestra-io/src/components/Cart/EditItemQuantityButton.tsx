@@ -8,6 +8,8 @@ import React, { useMemo } from 'react'
 
 export function EditItemQuantityButton({ type, item }: { item: CartItem; type: 'minus' | 'plus' }) {
   const { decrementItem, incrementItem, isLoading } = useCart()
+  const itemId = Number(item.id)
+  const canUpdate = Number.isFinite(itemId)
 
   const disabled = useMemo(() => {
     if (!item.id) return true
@@ -48,11 +50,11 @@ export function EditItemQuantityButton({ type, item }: { item: CartItem; type: '
         onClick={(e: React.FormEvent<HTMLButtonElement>) => {
           e.preventDefault()
 
-          if (item.id) {
+          if (canUpdate) {
             if (type === 'plus') {
-              incrementItem(item.id)
+              incrementItem(itemId)
             } else {
-              decrementItem(item.id)
+              decrementItem(itemId)
             }
           }
         }}
