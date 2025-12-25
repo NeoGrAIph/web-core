@@ -69,7 +69,7 @@ export const OpenAIConfig: GenerationConfig = {
           {
             name: 'model',
             type: 'select',
-            defaultValue: 'gpt-4o-mini',
+            defaultValue: 'gpt-5-mini',
             label: 'Model',
             options: MODELS,
           },
@@ -358,7 +358,7 @@ export const OpenAIConfig: GenerationConfig = {
           {
             name: 'model',
             type: 'select',
-            defaultValue: 'gpt-4o',
+            defaultValue: 'gpt-5-mini',
             label: 'Model',
             options: MODELS,
           },
