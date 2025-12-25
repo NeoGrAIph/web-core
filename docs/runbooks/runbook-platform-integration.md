@@ -64,15 +64,18 @@ ArgoCD должен читать **оба** репозитория:
   - `argocd/apps/web-synestra-io-dev.yaml`
   - `argocd/apps/web-synestra-io-prod.yaml`
 
-Паттерн: single-source Helm (values лежат в `web-core`)
+Паттерн: multi-source Helm (values лежат в `web-core`, но вынесены из chart‑директории)
 ```
 sources:
   - repoURL: https://github.com/NeoGrAIph/web-core.git
     path: deploy/charts/web-app
     helm:
       valueFiles:
-        - ../env/<env>/<app>.yaml
-        - ../env/release-<env>/<app>.yaml
+        - $values/deploy/env/<env>/<app>.yaml
+        - $values/deploy/env/release-<env>/<app>.yaml
+  - repoURL: https://github.com/NeoGrAIph/web-core.git
+    targetRevision: main
+    ref: values
 ```
 Таким образом, **chart и values живут в web-core**, а **Applications — в synestra-platform**.
 
