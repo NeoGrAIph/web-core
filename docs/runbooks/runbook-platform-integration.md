@@ -6,8 +6,8 @@ Runbook: какие шаги нужны в `synestra-platform`, чтобы **п�
 - `prod` (GitOps‑строго) на прод‑домене `*.synestra.io`
 
 Этот документ стыкует два репозитория:
-- `~/repo/web-core` — код приложений и Helm‑чарт `deploy/charts/web-app`.
-- `~/repo/synestra-platform` — инфраструктура (Traefik, cert-manager, Okteto, ArgoCD, SOPS) **и единственный источник deploy‑values/Applications** для web‑core.
+- `~/repo/web-core` — код приложений, Helm‑чарт `deploy/charts/web-app` и все **deploy‑values** в `deploy/env/*`.
+- `~/repo/synestra-platform` — инфраструктура (Traefik, cert-manager, Okteto, ArgoCD, SOPS) и **ArgoCD Applications** для web‑core.
 
 ## 0) Что уже есть в `synestra-platform` (важно знать)
 
@@ -50,8 +50,8 @@ Okteto Self‑Hosted уже развернут GitOps’ом:
 ## 2) Доступ ArgoCD к репозиториям
 
 ArgoCD должен читать **оба** репозитория:
-- `web-core` (Helm chart `deploy/charts/web-app`)
-- `synestra-platform` (values и ArgoCD Applications)
+- `web-core` (Helm chart `deploy/charts/web-app` + values в `deploy/env/*`)
+- `synestra-platform` (ArgoCD Applications)
 
 Если `web-core` приватный — добавьте repo credentials в ArgoCD (`argo` ns, SOPS‑секрет). `synestra-platform` уже подключён как git@gitlab.com:synestra/synestra-platform.git.
 
@@ -64,20 +64,17 @@ ArgoCD должен читать **оба** репозитория:
   - `argocd/apps/web-synestra-io-dev.yaml`
   - `argocd/apps/web-synestra-io-prod.yaml`
 
-Паттерн: multi-source Helm
+Паттерн: single-source Helm (values лежат в `web-core`)
 ```
 sources:
   - repoURL: https://github.com/NeoGrAIph/web-core.git
     path: deploy/charts/web-app
-  - repoURL: git@gitlab.com:synestra/synestra-platform.git
-    ref: values
-    targetRevision: main
     helm:
       valueFiles:
-        - $values/infra/web-core/<app>/values.yaml
-        - $values/infra/web-core/<app>/values.<env>.yaml
+        - ../env/<env>/<app>.yaml
+        - ../env/release-<env>/<app>.yaml
 ```
-Таким образом, **chart живёт в web-core**, а **values и Applications — в synestra-platform**.
+Таким образом, **chart и values живут в web-core**, а **Applications — в synestra-platform**.
 
 Dev‑namespaces создаём через Okteto; в Applications включён `CreateNamespace=true` только где это безопасно.
 
@@ -119,10 +116,11 @@ Runbook: `docs/runbooks/runbook-database-cnpg.md`.
 
 ## 6) Values и образы (где лежат)
 
-- Общие и средовые values: `synestra-platform/infra/web-core/<app>/values.yaml|values.dev.yaml|values.prod.yaml`.
-- Образы для prod: собираются в `synestra-platform/docker/web-*/` (CI `build_web_*`), теги пишутся в `values.prod.yaml`.
-- Dev образ Payload: `synestra-platform/docker/payload/dev/Dockerfile`, тег `docker/payload/VERSION`; используется в `values.dev.yaml`, команда `next dev --port 3000` и `NODE_ENV=development`.
-- Для обновления тега меняем соответствующий `values.*.yaml`, рендерим `helm template` + `kubeconform`, затем ArgoCD sync.
+- Dev/prod values: `web-core/deploy/env/{dev,prod}/<app>.yaml`.
+- Release‑слои (image tag): `web-core/deploy/env/release-{dev,prod}/<app>.yaml`.
+- Образы для prod: собираются в `synestra-platform/docker/web-*/` (CI `build_web_*`), теги пишутся в `deploy/env/release-prod/<app>.yaml`.
+- Dev‑образы: собираются в `synestra-platform/docker/web-*/` (CI `build_web_*`), теги пишутся в `deploy/env/release-dev/<app>.yaml`.
+- Для обновления тега меняем соответствующий `release-*.yaml`, рендерим `helm template` + `kubeconform`, затем ArgoCD sync.
 
 ### Dev‑режим payload.dev
 - `payload.dev.synestra.tech` работает на Next.js 15 в **`next dev`** (горячая перезагрузка, HMR, без standalone build).

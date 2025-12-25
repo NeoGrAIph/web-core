@@ -14,18 +14,20 @@ Runbook: как мы одновременно используем **dev (hot)**
 ## Доменная схема (рекомендация)
 
 - **prod**: `<sitename>.synestra.io`
-- **dev**: `<sitename>.dev.synestra.tech`
+- **dev**: `dev.<sitename>`
 
-Это удобно для TLS, потому что dev можно покрывать wildcard сертификатом `*.dev.synestra.tech`.
+Фактические значения для `synestra-io` сейчас используют `dev.synestra.io`.
+Если вернёмся к схеме `*.dev.synestra.tech`, можно будет покрывать dev wildcard‑сертификатом.
 
-Фактические значения теперь лежат в `synestra-platform/infra/web-core/<app>/values.{dev,prod}.yaml` (ингресс‑хосты, ресурсы, env).
+Фактические значения лежат в `web-core/deploy/env/{dev,prod}/<app>.yaml` (ингресс‑хосты, ресурсы, env) и в `web-core/deploy/env/release-{dev,prod}/<app>.yaml` (image tag).
 
 ## Как устроен GitOps‑контракт (важно)
 
-Слои сведены в одном месте (платформенный репозиторий):
-- `infra/web-core/<app>/values.yaml` — общие настройки (APP_NAME, repo, pullSecrets).
-- `infra/web-core/<app>/values.dev.yaml` — dev: image tag, dev‑команда (`next dev --port 3000`), NODE_ENV=development, dev хосты, ресурсы.
-- `infra/web-core/<app>/values.prod.yaml` — prod: image tag, prod хосты/ресурсы, NODE_ENV=production.
+Слои сведены в `web-core`:
+- `deploy/env/release-dev/<app>.yaml` — dev release: image tag.
+- `deploy/env/release-prod/<app>.yaml` — prod release: image tag.
+- `deploy/env/dev/<app>.yaml` — dev: dev‑команда (`next dev --port 3000`), NODE_ENV=development, dev хосты, ресурсы, env.
+- `deploy/env/prod/<app>.yaml` — prod: prod‑команда (`next start`), NODE_ENV=production, prod хосты/ресурсы, env.
 
 ### Secrets: один или несколько Secret’ов на приложение
 
@@ -41,7 +43,7 @@ Runbook: как мы одновременно используем **dev (hot)**
 
 Это снижает риск “перезатирания” ключей и упрощает ротацию доступов к object storage.
 
-ArgoCD Application (в `synestra-platform/argocd/apps/web-*.yaml`) подключает chart `web-core/deploy/charts/web-app` + values из `synestra-platform/infra/web-core/...`.
+ArgoCD Application (в `synestra-platform/argocd/apps/web-*.yaml`) подключает chart `web-core/deploy/charts/web-app` + values из `web-core/deploy/env/...`.
 
 ## Политика ArgoCD (dev vs prod)
 
@@ -55,7 +57,7 @@ ArgoCD Application (в `synestra-platform/argocd/apps/web-*.yaml`) подклю�
 ### 1) Baseline dev = prod
 
 Когда dev не в hot‑режиме, он равен prod по релизу, если:
-- `infra/web-core/<app>/values.dev.yaml:image.tag` совпадает с `values.prod.yaml:image.tag`.
+- `deploy/env/release-dev/<app>.yaml:image.tag` совпадает с `release-prod/<app>.yaml:image.tag`.
 
 ### 2) Hot‑разработка на dev через Okteto
 
@@ -71,7 +73,7 @@ Runbook: `docs/runbooks/runbook-okteto-dev.md` (дополняется свед�
 
 После того как изменение готово:
 - коммитим код в Git,
-- CI платформы собирает образ (jobs `build_payload_dev` или `build_web_*`) и обновляет тег в `infra/web-core/<app>/values.dev.yaml`,
+- CI платформы собирает образ (jobs `build_payload_dev` или `build_web_*`) и обновляет тег в `deploy/env/release-dev/<app>.yaml`,
 - ArgoCD автоматически выкатывает обновление **в dev**,
 - после проверки dev тот же тег переносится в `values.prod.yaml` (promotion),
 - ArgoCD автоматически выкатывает обновление **в prod**.
@@ -80,7 +82,7 @@ Runbook: `docs/runbooks/runbook-okteto-dev.md` (дополняется свед�
 
 - Dev окружения (`*-dev`) работают на Next.js 15 в `next dev --port 3000`.
 - Payload CMS 3 в dev‑mode (`NODE_ENV=development`): изменения схем/блоков применяются сразу после sync dev‑образа.
-- Dev‑образы собираются в `synestra-platform` (job `build_payload_dev`), теги задаются в `infra/web-core/<app>/values.dev.yaml`.
+- Dev‑образы собираются в `synestra-platform` (job `build_payload_dev`), теги задаются в `deploy/env/release-dev/<app>.yaml`.
 
 ### 4) Dev синхронизировался → продолжаем
 

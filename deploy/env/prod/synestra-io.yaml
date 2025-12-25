@@ -6,7 +6,7 @@ env:
   SYNESTRA_DB_SOURCE: "cnpg-databases"
   NODE_ENV: "production"
   SYNESTRA_MEDIA_STORAGE: "s3"
-  S3_ENDPOINT: "http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000"
+  S3_ENDPOINT: "http://minio-web-cnpg-backups.object-storage-web-core.svc.cluster.local:9000"
   S3_BUCKET: "payload-media-prod"
   S3_REGION: "us-east-1"
   S3_FORCE_PATH_STYLE: "true"
@@ -15,6 +15,34 @@ envFrom:
   secretRef: "web-synestra-io-prod-env"
   extraSecretRefs:
     - "web-synestra-io-prod-s3-env"
+    - "web-payload-ai-keys"
+
+migrations:
+  enabled: true
+  command:
+    - sh
+    - -lc
+    - |
+      set -e
+
+      if [ -z "${DATABASE_URI:-}" ]; then
+        echo "DATABASE_URI is not set" >&2
+        exit 1
+      fi
+
+      echo "Waiting for Postgres to accept TCP connections..."
+      i=0
+      until node -e 'const {URL}=require("url");const net=require("net");const u=new URL(process.env.DATABASE_URI);const host=u.hostname;const port=u.port?Number(u.port):5432;const s=net.connect({host,port,timeout:2000},()=>{s.end();process.exit(0)});s.on("error",()=>process.exit(1));s.on("timeout",()=>{s.destroy();process.exit(1)});' ; do
+        i=$((i+1))
+        if [ "$i" -ge 150 ]; then
+          echo "Postgres is not ready after 300s" >&2
+          exit 1
+        fi
+        sleep 2
+      done
+
+      cd /app/apps/synestra-io
+      NODE_OPTIONS=--no-deprecation pnpm exec payload migrate
 
 ingress:
   enabled: true
@@ -31,3 +59,19 @@ persistence:
 
 postgres:
   enabled: false
+
+resources:
+  requests:
+    cpu: 150m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 4Gi
+
+command:
+  - sh
+  - -lc
+  - |
+    set -e
+    cd /app/apps/synestra-io
+    node node_modules/next/dist/bin/next start --hostname 0.0.0.0 --port 3000

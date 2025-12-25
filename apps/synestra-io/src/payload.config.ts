@@ -48,7 +48,7 @@ export default buildConfig({
         process.env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/synestra_io',
     },
     migrationDir: path.resolve(dirname, 'migrations'),
-    push: process.env.PAYLOAD_DB_PUSH === 'true',
+    push: false,
   }),
   editor: lexicalEditor({
     features: () => {

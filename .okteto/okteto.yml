@@ -54,8 +54,6 @@ dev:
       app.kubernetes.io/name: web-app
       app.kubernetes.io/instance: web-synestra-io-dev
     container: app
-    environment:
-      PAYLOAD_DB_PUSH: "true"
     workdir: /app/apps/synestra-io
     command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install --frozen-lockfile; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
@@ -69,8 +67,6 @@ dev:
       app.kubernetes.io/name: web-app
       app.kubernetes.io/instance: web-synestra-io-dev
     container: app
-    environment:
-      PAYLOAD_DB_PUSH: "true"
     workdir: /app/apps/synestra-io
     command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install --frozen-lockfile; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
