@@ -79,7 +79,7 @@ sources:
 ```
 Таким образом, **chart и values живут в web-core**, а **Applications — в synestra-platform**.
 
-Dev‑namespaces создаём через Okteto; в Applications включён `CreateNamespace=true` только где это безопасно.
+Dev‑namespaces создаём через Okteto; в `web-*-dev` Applications **`CreateNamespace=false`**, чтобы Okteto не терял ownership namespace.
 
 ## 5) Секреты для сайтов (SOPS, `synestra-platform`)
 
@@ -95,7 +95,7 @@ Dev‑namespaces создаём через Okteto; в Applications включё�
    - dev: `web-corporate-dev-env`
    - prod: `web-corporate-prod-env`
 
-   Минимальные ключи (см. `docs/runbooks/runbook-env-contract.md`):
+   Минимальные ключи (см. `docs/architecture/env-contract.md`):
    - `PAYLOAD_SECRET`
    - опционально: `CRON_SECRET`, `PREVIEW_SECRET`
     - для shop: Stripe keys

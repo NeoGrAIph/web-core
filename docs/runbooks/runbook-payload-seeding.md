@@ -9,8 +9,7 @@
 
 Связанные документы:
 - миграции (Postgres): `docs/runbooks/runbook-payload-migrations.md`
-- env‑контракт: `docs/runbooks/runbook-env-contract.md`
-- UX/идентичность блоков: `docs/research/payload/payload-page-builder-admin-ux-best-practices.md`
+- env‑контракт: `docs/architecture/env-contract.md`
 
 Официальные ссылки Payload:
 - Migrations: `https://payloadcms.com/docs/database/migrations`
