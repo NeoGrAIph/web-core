@@ -15,7 +15,7 @@
 ## 0) Предпосылки
 
 - В кластере есть MinIO (S3‑compatible) и он Healthy:
-  - ArgoCD app: `infra-minio-web-synestra-io`
+  - ArgoCD app: `infra-minio-web-cnpg-backups`
   - Namespace: `object-storage-web-core`
 - В `apps/<app>` включён storage plugin Payload для S3 (`@payloadcms/storage-s3`).
 - В `deploy/env/{dev,prod}/<app>.yaml` выставлены:
