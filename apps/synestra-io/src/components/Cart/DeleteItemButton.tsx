@@ -8,7 +8,8 @@ import React from 'react'
 
 export function DeleteItemButton({ item }: { item: CartItem }) {
   const { isLoading, removeItem } = useCart()
-  const itemId = item.id
+  const itemId = Number(item.id)
+  const canRemove = Number.isFinite(itemId)
 
   return (
     <form>
@@ -20,10 +21,10 @@ export function DeleteItemButton({ item }: { item: CartItem }) {
             'cursor-not-allowed px-0': !itemId || isLoading,
           },
         )}
-        disabled={!itemId || isLoading}
+        disabled={!canRemove || isLoading}
         onClick={(e: React.FormEvent<HTMLButtonElement>) => {
           e.preventDefault()
-          if (itemId) removeItem(itemId)
+          if (canRemove) removeItem(itemId)
         }}
         type="button"
       >
