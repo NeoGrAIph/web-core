@@ -30,26 +30,13 @@ Runbook: CI‑контракт для переноса изменений **dev 
 
 Тогда любое изменение, попавшее в `main`, автоматически становится кандидатом для нового `image.tag`.
 
-## 4) Сборка образа из монорепы
+## 4) Сборка образа (канон для `web-core`)
 
-Есть два допустимых подхода к сборке (важно: это *реализация* CI, а не GitOps-истина):
+Сборка образов для web‑приложений выполняется **в репозитории `synestra-platform`**:
+- Dockerfiles лежат в `synestra-platform/docker/web-*`.
+- CI берёт ref `web-core` (например, `WEB_CORE_REF=main` или конкретный commit) и собирает immutable tag.
 
-### Вариант A (каноничный для monorepo): `turbo prune` + Docker build
-
-Рекомендуем собирать образы через `turbo prune`:
-
-1) Сформировать pruned workspace (пример для corporate):
-   - `pnpm prune:corp` → `out/corporate-website/`
-2) Собрать образ из pruned output:
-   - `docker build -f docker/Dockerfile.turbo --build-arg APP_NAME=@synestra/corporate-website out/corporate-website`
-
-Dockerfile: `docker/Dockerfile.turbo`.
-
-### Вариант B (platform-driven): сборка в `synestra-platform` по ref `web-core`
-
-Для некоторых образов (например, `web-synestra-io`) сборка может быть реализована в `synestra-platform`, где CI берёт конкретный commit `web-core` и присваивает ему immutable tag.
-
-Канон контракта и примеры путей: `docs/architecture/ci-cd-contract.md`.
+GitOps‑контракт promotion описан в `docs/runbooks/runbook-dev-prod-flow.md`.
 
 ## 5) Как CI должен обновлять GitOps
 
@@ -98,4 +85,4 @@ CI делает commit в `web-core`:
 - smoke‑check URL dev окружения,
 - ручной gate для promotion (если понадобится).
 
-Канон: `docs/architecture/release-promotion.md`.
+Канон: `docs/runbooks/runbook-dev-prod-flow.md`.

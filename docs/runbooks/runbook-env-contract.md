@@ -28,6 +28,7 @@
 - Для логики окружений используем `SYNESTRA_ENV=dev|stage|prod`.
 - В Kubernetes `SYNESTRA_ENV` задаём **обязательно** через Helm values.
 - В локальной разработке (если не задано) считаем `SYNESTRA_ENV=dev`.
+ - Если `stage` не используется — значения ограничиваются `dev|prod`.
 
 Примечание для Okteto hot‑dev:
 - при запуске `next dev` внутри кластера `NODE_ENV` должен быть `development`.
@@ -55,6 +56,7 @@
 - `CRON_SECRET` (secret)
 - `PREVIEW_SECRET` (secret)
 - `SEED_KEY` (secret; если seed endpoint включён)
+- `PAYLOAD_DB_PUSH` (non-secret; только для dev, управляет auto‑push схемы)
 
 **Ecommerce (Stripe):**
 - `STRIPE_SECRET_KEY` (secret)
@@ -62,8 +64,7 @@
 - `STRIPE_WEBHOOKS_SIGNING_SECRET` (secret)
 
 ### 6) Валидация env vars
-- В `apps/<app>/src/env.ts` описываем схему (Zod) и правила обязательности.
-- Общая функция валидации — в `packages/env`.
+- Если используется валидация, описываем схему (например, Zod) в `apps/<app>/src/env.ts` (или эквивалентном месте).
 - Валидационные ошибки не должны выводить значения секретов.
 
 Политика обязательности:
