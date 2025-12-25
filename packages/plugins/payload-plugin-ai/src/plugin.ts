@@ -107,17 +107,17 @@ const payloadAiPlugin =
     const collections = [...(incomingConfig.collections ?? []), Instructions]
     const globals = [...(incomingConfig.globals ?? [])]
 
+    const { components: { providers = [] } = {} } = incomingConfig.admin || {}
+    const updatedProviders = [
+      ...(providers ?? []),
+      {
+        path: '@synestra/payload-plugin-ai/client#InstructionsProvider',
+      },
+    ]
+
     if (isActivated) {
       const collectionSlugs = pluginConfig.collections as Record<string, boolean>
       const globalsSlugs = pluginConfig.globals as Record<string, boolean> | undefined
-
-      const { components: { providers = [] } = {} } = incomingConfig.admin || {}
-      const updatedProviders = [
-        ...(providers ?? []),
-        {
-          path: '@synestra/payload-plugin-ai/client#InstructionsProvider',
-        },
-      ]
 
       const pluginEndpoints = endpoints(pluginConfig)
       updatedConfig = {
@@ -169,6 +169,13 @@ const payloadAiPlugin =
     } else {
       updatedConfig = {
         ...incomingConfig,
+        admin: {
+          ...(incomingConfig.admin || {}),
+          components: {
+            ...(incomingConfig.admin?.components ?? {}),
+            providers: updatedProviders,
+          },
+        },
         collections,
         globals,
       }

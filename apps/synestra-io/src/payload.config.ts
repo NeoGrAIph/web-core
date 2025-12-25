@@ -62,7 +62,7 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   i18n: {
-    fallbackLanguage: 'ru',
+    fallbackLanguage: 'en',
     supportedLanguages: { ru, en },
   },
   db: postgresAdapter({
