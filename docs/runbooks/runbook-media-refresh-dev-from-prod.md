@@ -17,7 +17,7 @@
    - dev: `payload-media-dev`
 
 3) В кластере есть секрет для Job с доступами к обоим bucket’ам (source/destination).
-   - Мы **не коммитим plaintext**. Secret создаётся в `synestra-platform` (SOPS) и затем применяется через `argo/infra-secrets`.
+   - Мы **не коммитим plaintext**. Secret создаётся в `synestra-platform` (SOPS) и затем применяется через Argo CD app `infra-secrets`.
    - Имя секрета (по умолчанию в job): `web-synestra-io-dev-media-mirror-env` в namespace `web-synestra-io-dev`.
 
 Ключи/переменные в Secret:
