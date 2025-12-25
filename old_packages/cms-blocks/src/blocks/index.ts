@@ -1,5 +1,0 @@
-export { Code } from './Code/config'
-export { MediaBlock } from './MediaBlock/config'
-export { Banner } from './Banner/config'
-export { CallToAction } from './CallToAction/config'
-export { Content } from './Content/config'

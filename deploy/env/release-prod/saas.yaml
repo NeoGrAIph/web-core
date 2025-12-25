@@ -1,7 +1,0 @@
-# Release values for saas deployment (prod).
-
-image:
-  repository: "REPLACE_ME_REGISTRY/web-saas"
-  tag: "REPLACE_ME_TAG"
-  pullSecrets:
-    - name: gitlab-regcred

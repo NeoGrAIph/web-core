@@ -2,6 +2,7 @@
 **/.next/**
 **/.turbo/**
 **/dist/**
+**/old/**
 **/coverage/**
 **/.git/**
 **/*.log

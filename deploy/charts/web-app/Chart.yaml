@@ -1,7 +1,0 @@
-apiVersion: v2
-name: web-app
-description: Base Helm chart for a Synestra Next.js + Payload application (one deployment = one namespace + one DB).
-type: application
-version: 0.1.0
-appVersion: "0.1.0"
-
