@@ -26,7 +26,7 @@ dev:
       app.kubernetes.io/instance: web-payload-dev
     container: app
     workdir: /app/apps/payload-core
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install --frozen-lockfile; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
@@ -39,7 +39,7 @@ dev:
       app.kubernetes.io/instance: web-payload-dev
     container: app
     workdir: /app/apps/payload-core
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install --frozen-lockfile; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
@@ -55,7 +55,7 @@ dev:
       app.kubernetes.io/instance: web-synestra-io-dev
     container: app
     workdir: /app/apps/synestra-io
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install --frozen-lockfile; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
@@ -68,7 +68,7 @@ dev:
       app.kubernetes.io/instance: web-synestra-io-dev
     container: app
     workdir: /app/apps/synestra-io
-    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
+    command: sh -lc 'export CI=1 NODE_ENV=development COREPACK_ENABLE_DOWNLOAD_PROMPT=0 PNPM_STORE_DIR=/tmp/.pnpm-store; corepack enable >/dev/null 2>&1 || true; if [ ! -x node_modules/.bin/next ]; then pnpm install --frozen-lockfile; fi; pnpm exec next dev --hostname 0.0.0.0 --port 3000'
     sync:
       - ..:/app
     forward:
