@@ -7,7 +7,7 @@ Runbook по **Okteto dev‑режиму поверх ArgoCD‑деплоя** д
 ## 0) Принципиальная схема
 
 1) Создаём dev namespace как **Okteto namespace** (non‑personal), чтобы Okteto CLI мог работать в нём.
-2) ArgoCD разворачивает baseline‑приложение в этот же namespace (через `deploy/argocd/apps/dev/<app>.yaml` + `deploy/env/dev/<app>.yaml`).
+2) ArgoCD разворачивает baseline‑приложение в этот же namespace (Application в репозитории `synestra-platform`: `argocd/apps/web-<app>-dev.yaml` + значения в `deploy/env/release-dev/<app>.yaml`).
 3) Разработчик запускает Okteto dev‑режим для этого же namespace и workload’а.
 3) Okteto временно патчит workload (команда/контейнер/тома) и синхронизирует код.
 4) По завершении dev‑сессии изменения откатываются (либо вручную, либо командами Okteto).
@@ -98,7 +98,7 @@ okteto namespace web-synestra-io-dev
 Okteto dev‑режим обычно вносит изменения в `Deployment`/`PodSpec`. Если ArgoCD будет активно self-heal’ить, он начнёт откатывать эти изменения.
 
 Поэтому для `dev` окружения у нас выставлено:
-- `selfHeal: false` в `deploy/argocd/apps/dev/*.yaml`
+- `selfHeal: false` в `synestra-platform/argocd/apps/web-*-dev.yaml`
 
 Это осознанно: `dev` допускает временный drift ради удобства разработки. Для `stage/prod` self-heal остаётся желательным.
 
@@ -124,8 +124,8 @@ Okteto dev‑режим обычно вносит изменения в `Deploym
 - namespace был создан ArgoCD (`CreateNamespace=true`) или вручную, без Okteto‑ownership.
 
 Каноничный фикс (в dev, когда нет критичных данных):
-1) В `web-core` убрать `CreateNamespace=true` из `deploy/argocd/apps/dev/<app>.yaml`.
-2) Синхронизировать `apps-web-core`, чтобы ArgoCD Application обновился.
+1) В `synestra-platform` убрать `CreateNamespace=true` из `argocd/apps/web-<app>-dev.yaml`.
+2) Синхронизировать соответствующий ArgoCD Application `web-<app>-dev`.
 3) Удалить dev namespace и дождаться полного удаления.
    - Важно: ArgoCD hook Job может повесить namespace в `Terminating` из‑за `argocd.argoproj.io/hook-finalizer`.
      Тогда:
@@ -149,7 +149,7 @@ Okteto dev‑режим обычно вносит изменения в `Deploym
    - есть Deployment из chart `web-app` (обычно `web-<app>-dev-web-app`)
    - dev домен работает (`/` открывается)
 3) Убедиться, что dev‑Application в ArgoCD допускает drift:
-   - `selfHeal: false` для `deploy/argocd/apps/dev/<app>.yaml`
+   - `selfHeal: false` для `synestra-platform/argocd/apps/web-<app>-dev.yaml`
 4) Убедиться, что внутри pod уже доступны нужные env vars и секреты (Helm `env` + `envFrom.secretRef`).
 5) Добавить/обновить Okteto manifest (см. раздел 6) так, чтобы `okteto up` мог:
    - найти нужный Deployment (через selector/имя),
@@ -244,7 +244,7 @@ ArgoCD/Helm должен уже подать в Pod:
 ## 7) Чеклист перед подключением первого app
 
 - [ ] Приложение развёрнуто ArgoCD в `web-<app>-dev`.
-- [ ] В `deploy/env/dev/<app>.yaml` задан `SYNESTRA_ENV: "dev"`.
+- [ ] В `deploy/env/release-dev/<app>.yaml` задан `SYNESTRA_ENV: "dev"`.
 - [ ] Секреты подключены через `envFrom.secretRef` (Secret создан платформой).
-- [ ] `selfHeal` для dev выключен (у нас уже в `deploy/argocd/apps/dev/*.yaml`).
+- [ ] `selfHeal` для dev выключен (у нас уже в `synestra-platform/argocd/apps/web-*-dev.yaml`).
 - [ ] Есть план по “dev image” или по установке зависимостей в dev‑контейнере.
