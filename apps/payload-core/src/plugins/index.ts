@@ -142,6 +142,11 @@ export const plugins: Plugin[] = [
     debugging: process.env.NODE_ENV !== 'production',
     disableSponsorMessage: true,
     generatePromptOnInit: process.env.NODE_ENV !== 'production',
+    overrideInstructions: {
+      admin: {
+        hidden: false,
+      },
+    },
     uploadCollectionSlug: MEDIA_SLUG,
   }),
 ]
