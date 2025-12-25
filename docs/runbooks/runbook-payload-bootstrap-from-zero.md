@@ -9,9 +9,9 @@
 - дальнейшие изменения схемы катятся через миграции, а не “магией”.
 
 Связанные документы:
-- Канон по БД: `docs/runbooks/runbook-database-cnpg.md`
-- Канон migrations hook Job: `docs/architecture/canon.md` (раздел про миграции)
-- Runbook добавления нового app: `docs/runbooks/runbook-add-app-from-payload-template.md`
+- Канон по БД: `docs/architecture/database-cnpg.md`
+- Канон миграций и hook Job: `docs/runbooks/runbook-payload-migrations.md`
+- Интеграция с платформой: `docs/runbooks/runbook-platform-integration.md`
 
 ---
 
@@ -34,7 +34,7 @@
 
 Минимум для Postgres:
 - `migrationDir: path.resolve(dirname, 'migrations')`
-- `push: process.env.NODE_ENV !== 'production'` (или эквивалентная логика)
+- `push: process.env.PAYLOAD_DB_PUSH === 'true'` (управляемый флаг, по умолчанию выключен)
 
 Почему это важно:
 - в `production` мы не рассчитываем на “автопуш схемы”;
@@ -62,7 +62,7 @@
 
 Рекомендуемый порядок (для нового app):
 
-1) В dev‑режиме (локально или в dev‑контуре) включён `push: true`.
+1) В dev‑режиме (локально или в dev‑контуре) включён `push` через `PAYLOAD_DB_PUSH=true`.
 2) Собираем/меняем коллекции/глобалы/поля до “схема выглядит правильно”.
 3) Генерируем миграцию:
    - `pnpm --filter @synestra/<app> payload migrate:create`

@@ -35,7 +35,7 @@
 
 В `apps/<app>/src/payload.config.ts` обязательно:
 - `db: postgresAdapter({ ... migrationDir: path.resolve(dirname, 'migrations') ... })`
-- `push: process.env.NODE_ENV !== 'production'` (или эквивалент)
+- `push: process.env.PAYLOAD_DB_PUSH === 'true'` (по умолчанию выключен)
 
 Почему:
 - фиксируем место миграций (`src/migrations/**`) и делаем его единообразным;
@@ -60,7 +60,7 @@
 
 Рекомендуемый workflow:
 
-1) В dev работаем в режиме `push` (быстро итеративно меняем коллекции/поля).
+1) В dev работаем в режиме `push` (включаем `PAYLOAD_DB_PUSH=true` и быстро итеративно меняем коллекции/поля).
 2) Когда “схема готова” — генерируем baseline migration file:
    - `pnpm --filter @synestra/<app> payload migrate:create`
 3) Проверяем миграции на пустой БД (локально или в отдельной dev‑БД):
