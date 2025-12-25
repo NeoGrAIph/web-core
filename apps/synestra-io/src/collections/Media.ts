@@ -5,6 +5,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { PayloadAiPluginLexicalEditorFeature } from '@/index'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -30,7 +31,12 @@ export const Media: CollectionConfig = {
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
-          return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+          return [
+            ...rootFeatures,
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+            PayloadAiPluginLexicalEditorFeature(),
+          ]
         },
       }),
     },

@@ -6,6 +6,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { PayloadAiPluginLexicalEditorFeature } from '@/index'
 
 export const Archive: Block = {
   slug: 'archive',
@@ -21,6 +22,7 @@ export const Archive: Block = {
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            PayloadAiPluginLexicalEditorFeature(),
           ]
         },
       }),

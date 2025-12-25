@@ -18,6 +18,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { PayloadAiPluginLexicalEditorFeature } from '@/index'
 import { DefaultDocumentIDType, Where } from 'payload'
 
 export const ProductsCollection: CollectionOverride = ({ defaultCollection }) => ({
@@ -71,6 +72,7 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
+                    PayloadAiPluginLexicalEditorFeature(),
                   ]
                 },
               }),

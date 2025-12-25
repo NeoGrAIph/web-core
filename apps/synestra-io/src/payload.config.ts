@@ -11,6 +11,7 @@ import {
   UnorderedListFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { PayloadAiPluginLexicalEditorFeature } from '@/index'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -48,7 +49,7 @@ export default buildConfig({
         process.env.DATABASE_URI || 'postgresql://user:pass@localhost:5432/synestra_io',
     },
     migrationDir: path.resolve(dirname, 'migrations'),
-    push: false,
+    push: process.env.PAYLOAD_DB_PUSH === 'true',
   }),
   editor: lexicalEditor({
     features: () => {
@@ -82,6 +83,7 @@ export default buildConfig({
         }),
         IndentFeature(),
         EXPERIMENTAL_TableFeature(),
+        PayloadAiPluginLexicalEditorFeature(),
       ]
     },
   }),

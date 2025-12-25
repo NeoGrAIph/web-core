@@ -5,6 +5,7 @@ import { Plugin } from 'payload'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { ecommercePlugin } from '@payloadcms/plugin-ecommerce'
+import { payloadAiPlugin, PayloadAiPluginLexicalEditorFeature } from '@/index'
 
 import { Page, Product } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -98,6 +99,7 @@ export const plugins: Plugin[] = [
                     ...rootFeatures,
                     FixedToolbarFeature(),
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    PayloadAiPluginLexicalEditorFeature(),
                   ]
                 },
               }),
@@ -107,6 +109,20 @@ export const plugins: Plugin[] = [
         })
       },
     },
+  }),
+  payloadAiPlugin({
+    access: {
+      generate: ({ req }) => Array.isArray(req.user?.roles) && req.user.roles.includes('admin'),
+      settings: ({ req }) => Array.isArray(req.user?.roles) && req.user.roles.includes('admin'),
+    },
+    collections: {
+      pages: true,
+      products: true,
+    },
+    debugging: process.env.SYNESTRA_ENV === 'dev',
+    disableSponsorMessage: false,
+    generatePromptOnInit: process.env.SYNESTRA_ENV === 'dev',
+    uploadCollectionSlug: 'media',
   }),
   ecommercePlugin({
     access: {

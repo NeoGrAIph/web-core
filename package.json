@@ -1,0 +1,28 @@
+{
+  "name": "web-core",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.26.1",
+  "workspaces": [
+    "apps/*"
+  ],
+  "pnpm": {
+    "overrides": {
+      "tsx": "4.20.6"
+    },
+    "onlyBuiltDependencies": [
+      "core-js-pure",
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ],
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@types/react": ">=19.0.0",
+        "@types/react-dom": ">=19.0.0",
+        "react": ">=19.0.0",
+        "react-dom": ">=19.0.0"
+      }
+    }
+  }
+}
