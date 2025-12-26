@@ -1046,7 +1046,7 @@ export interface PluginAiInstruction {
    */
   'field-type'?: ('text' | 'textarea' | 'upload' | 'richText') | null;
   'relation-to'?: string | null;
-  'model-id'?: ('Oai-text' | 'dall-e' | 'gpt-image-1' | 'tts' | 'Oai-object' | 'ANTH-C-text' | 'ANTH-C-object') | null;
+  'model-id'?: ('Oai-text' | 'dall-e' | 'gpt-image-1' | 'tts' | 'Oai-object') | null;
   /**
    * Please reload your collection after applying the changes
    */
@@ -1098,38 +1098,6 @@ export interface PluginAiInstruction {
   'Oai-object-settings'?: {
     model?:
       | ('gpt-5' | 'gpt-5-mini' | 'gpt-5-nano' | 'gpt-4.1' | 'gpt-4o' | 'gpt-4-turbo' | 'gpt-4o-mini' | 'gpt-3.5-turbo')
-      | null;
-    maxTokens?: number | null;
-    temperature?: number | null;
-    extractAttachments?: boolean | null;
-  };
-  'ANTH-C-text-settings'?: {
-    model?:
-      | (
-          | 'claude-opus-4-1'
-          | 'claude-opus-4-0'
-          | 'claude-sonnet-4-0'
-          | 'claude-3-opus-latest'
-          | 'claude-3-5-haiku-latest'
-          | 'claude-3-5-sonnet-latest'
-          | 'claude-3-7-sonnet-latest'
-        )
-      | null;
-    maxTokens?: number | null;
-    temperature?: number | null;
-    extractAttachments?: boolean | null;
-  };
-  'ANTH-C-object-settings'?: {
-    model?:
-      | (
-          | 'claude-opus-4-1'
-          | 'claude-opus-4-0'
-          | 'claude-sonnet-4-0'
-          | 'claude-3-opus-latest'
-          | 'claude-3-5-haiku-latest'
-          | 'claude-3-5-sonnet-latest'
-          | 'claude-3-7-sonnet-latest'
-        )
       | null;
     maxTokens?: number | null;
     temperature?: number | null;
@@ -1697,22 +1665,6 @@ export interface PluginAiInstructionsSelect<T extends boolean = true> {
         speed?: T;
       };
   'Oai-object-settings'?:
-    | T
-    | {
-        model?: T;
-        maxTokens?: T;
-        temperature?: T;
-        extractAttachments?: T;
-      };
-  'ANTH-C-text-settings'?:
-    | T
-    | {
-        model?: T;
-        maxTokens?: T;
-        temperature?: T;
-        extractAttachments?: T;
-      };
-  'ANTH-C-object-settings'?:
     | T
     | {
         model?: T;
