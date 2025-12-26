@@ -46,12 +46,12 @@ kubectl -n databases delete pvc -l cnpg.io/cluster=synestra-io-dev-cnpg
 
 ### Переменные приложения (web-core values)
 - **Dev:** `deploy/env/dev/synestra-io.yaml`
-  - `S3_ENDPOINT` = `http://minio-web-cnpg-backups.object-storage-web-core.svc.cluster.local:9000`
+  - `S3_ENDPOINT` = `http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000`
   - `S3_BUCKET` = `payload-media-dev`
   - `S3_REGION` = `us-east-1`
   - `S3_FORCE_PATH_STYLE` = `true`
 - **Prod:** `deploy/env/prod/synestra-io.yaml`
-  - `S3_ENDPOINT` = `http://minio-web-cnpg-backups.object-storage-web-core.svc.cluster.local:9000`
+  - `S3_ENDPOINT` = `http://minio-web-synestra-io.object-storage-web-core.svc.cluster.local:9000`
   - `S3_BUCKET` = `payload-media-prod`
   - `S3_REGION` = `us-east-1`
   - `S3_FORCE_PATH_STYLE` = `true`
