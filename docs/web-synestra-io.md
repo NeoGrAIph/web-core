@@ -2,6 +2,13 @@
 
 Документ для фиксации параметров окружения и инфраструктуры приложения.
 
+## Миграции и сборка образа
+
+- **Prod‑сборка требует готовую схему в БД.** В `Dockerfile.prod` build подключается к БД и выполняет SSG (`pnpm build`). Если таблиц нет, сборка падает с ошибкой `relation "pages" does not exist`.
+- **Файлы миграций должны быть в git.** Их нужно создать заранее, иначе `payload migrate` не сможет поднять схему на пустой БД.
+- **Как создать миграции в dev:** при активной Okteto dev‑сессии запускаем `payload migrate:create` напрямую в dev‑поде (через `kubectl exec`). Файлы появляются в `apps/synestra-io/src/migrations/` и синкаются локально, затем их нужно коммитить в git.
+- **Dev‑режим с пустой БД:** при `okteto up` используется `PAYLOAD_DB_PUSH=true`, поэтому схема создаётся автоматически через **db push** (не через `payload migrate`). Это удобно для dev, но **не заменяет** миграции для prod.
+
 ## Базы данных
 
 ### Dev
@@ -12,6 +19,13 @@
 - **Секрет initdb:** `synestra-io-initdb-secret` (используется в manifest).
 - **Переменная подключения приложения:** `DATABASE_URI`.
 - **Где хранится `DATABASE_URI`:** SOPS‑секрет `synestra-platform/secrets/web-synestra-io-dev/web-synestra-io-dev-env.yaml`.
+
+#### Ручная очистка dev БД (кластер + PVC)
+```bash
+kubectl -n databases delete cluster synestra-io-dev-cnpg
+kubectl -n databases delete pvc -l cnpg.io/cluster=synestra-io-dev-cnpg
+```
+Комментарий: PVC на `local-path` могут переходить в `Terminating` и удаляться с задержкой — это ожидаемо.
 
 ### Prod
 - **Тип:** Postgres (CloudNativePG).
