@@ -40,6 +40,9 @@ Use these tags consistently in local site READMEs and the global page registry.
 - `mongodb` — MongoDB-specific guidance
 - `sqlite` — SQLite-specific guidance
 - `postgres` — Postgres-specific guidance
+- `sql` — SQL language reference and command usage
+- `ddl` — data definition language statements and schema operations
+- `schema-changes` — schema evolution and table alteration workflows
 - `drizzle` — Drizzle ORM usage or integration
 - `relational` — relational database concepts
 - `non-relational` — non-relational database concepts
