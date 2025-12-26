@@ -5,6 +5,6 @@ env:
 
 image:
   repository: "registry.gitlab.com/synestra/synestra-platform/web-synestra-io"
-  tag: "main-r27"
+  tag: "main-r26"
   pullSecrets:
     - name: gitlab-regcred
