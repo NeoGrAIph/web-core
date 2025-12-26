@@ -61,11 +61,17 @@
 Рекомендуемый workflow:
 
 1) В dev работаем в режиме `push` (включаем `PAYLOAD_DB_PUSH=true` и быстро итеративно меняем коллекции/поля).
-2) Когда “схема готова” — генерируем baseline migration file:
-   - `pnpm --filter @synestra/<app> payload migrate:create`
-3) Проверяем миграции на пустой БД (локально или в отдельной dev‑БД):
-   - `pnpm --filter @synestra/<app> payload migrate`
-4) Коммитим `apps/<app>/src/migrations/**`.
+2) Когда “схема готова” — генерируем baseline migration files (из корня репозитория):
+   - `pnpm --filter @synestra/<app> exec payload migrate:create`
+   - Альтернатива (из папки приложения):  
+     `cd apps/<app> && pnpm exec payload migrate:create`
+3) Что именно создаётся:
+   - `apps/<app>/src/migrations/YYYYMMDD_HHMMSS.ts` (SQL `up`/`down`)
+   - `apps/<app>/src/migrations/YYYYMMDD_HHMMSS.json` (Drizzle snapshot)
+   - обновляется `apps/<app>/src/migrations/index.ts` (реестр миграций)
+4) Проверяем миграции на пустой БД (локально или в отдельной dev‑БД):
+   - `pnpm --filter @synestra/<app> exec payload migrate`
+5) Коммитим `apps/<app>/src/migrations/**`.
 
 ---
 

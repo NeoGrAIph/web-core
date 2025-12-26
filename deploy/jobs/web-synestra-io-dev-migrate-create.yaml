@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: web-synestra-io-dev-migrate-create
+  namespace: web-synestra-io-dev
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: gitlab-regcred
+      containers:
+        - name: migrate-create
+          image: registry.gitlab.com/synestra/synestra-platform/web-synestra-io:latest-dev
+          imagePullPolicy: Always
+          workingDir: /repo/apps/synestra-io
+          command:
+            - sh
+            - -lc
+            - |
+              set -e
+              pnpm exec payload migrate:create
+          env:
+            - name: APP_NAME
+              value: "@synestra/synestra-io"
+          envFrom:
+            - secretRef:
+                name: web-synestra-io-dev-env
+            - secretRef:
+                name: web-synestra-io-dev-s3-env
+            - secretRef:
+                name: web-payload-ai-keys

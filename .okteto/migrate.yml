@@ -1,0 +1,10 @@
+name: web-core-synestra-io-dev-migrate
+
+# Okteto Deploy-only manifest.
+# Purpose: run Payload migrations (apply) in dev namespace without `okteto up`.
+
+deploy:
+  - kubectl -n web-synestra-io-dev delete job web-synestra-io-dev-migrate --ignore-not-found
+  - kubectl apply -f deploy/jobs/web-synestra-io-dev-migrate.yaml
+  - kubectl -n web-synestra-io-dev wait --for=condition=complete job/web-synestra-io-dev-migrate --timeout=30m
+  - kubectl -n web-synestra-io-dev logs job/web-synestra-io-dev-migrate
