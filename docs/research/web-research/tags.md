@@ -1,0 +1,125 @@
+# Tags Registry (English)
+
+Use these tags consistently in local site READMEs and the global page registry.
+
+## Tag Format
+- `tag` — short meaning, example usage
+
+## Tags
+- `payload` — Payload CMS; use for any Payload-specific docs
+- `getting-started` — onboarding or introductory material
+- `concepts` — conceptual/architecture overview
+- `config` — project configuration concepts or files
+- `database` — database concepts, requirements, and adapters
+- `collections` — collection models and related patterns
+- `fields` — field types and definitions
+- `api` — REST/GraphQL/local APIs
+- `installation` — installation or setup steps
+- `requirements` — prerequisites, system requirements
+- `create-payload-app` — use of the official starter CLI
+- `nextjs` — Next.js-specific setup or integration
+- `database-adapter` — database adapter selection/configuration
+- `setup` — general setup guidance or bootstrapping
+- `configuration` — configuration section of the docs
+- `globals` — singleton content types (globals)
+- `i18n` — internationalization and UI language settings
+- `localization` — content localization across locales
+- `environment-variables` — environment variable usage and setup
+- `admin-ui` — admin panel and UI-related configuration
+- `access-control` — permissions and access rules
+- `hooks` — lifecycle hooks and side effects
+- `graphql` — GraphQL API configuration or behavior
+- `typescript` — TypeScript-related guidance or settings
+- `translations` — UI translation resources and customization
+- `locales` — locale lists and locale configuration
+- `cors` — cross-origin resource sharing configuration
+- `telemetry` — telemetry and analytics settings
+- `server-client` — server vs client execution context
+- `scripts` — custom scripts or bin commands
+- `env` — environment configuration (general)
+- `mongodb` — MongoDB-specific guidance
+- `sqlite` — SQLite-specific guidance
+- `postgres` — Postgres-specific guidance
+- `drizzle` — Drizzle ORM usage or integration
+- `relational` — relational database concepts
+- `non-relational` — non-relational database concepts
+- `migrations` — schema/data migration workflows and commands
+- `transactions` — transaction behavior and usage
+- `indexes` — database indexing and performance
+- `troubleshooting` — troubleshooting guides and common issues
+- `dependencies` — dependency versioning and duplication issues
+- `monorepo` — monorepo-specific setup or issues
+- `auth` — authentication-related guidance or issues
+- `cookies` — cookie handling and auth cookies
+- `csrf` — CSRF-related configuration or issues
+- `hmr` — hot module replacement and dev server behavior
+- `websockets` — WebSocket and live reload issues
+- `react` — React/React DOM related guidance or issues
+- `pnpm` — pnpm package manager usage or issues
+- `plugins` — plugin system overview and usage
+- `plugin-development` — building or authoring plugins
+- `plugin-template` — plugin template structure and tooling
+- `form-builder` — form builder plugin and form schemas
+- `import-export` — import/export plugin usage
+- `csv` — CSV formats or CSV export options
+- `json` — JSON export options or formats
+- `jobs-queue` — jobs/queue usage for long-running tasks
+- `npm` — npm publishing or package usage
+- `beta` — beta status or unstable features
+- `email` — email configuration or workflows
+- `payments` — payment handling or payment-related workflows
+- `community` — community plugins or ecosystem resources
+- `official-plugins` — official plugin catalog or curated plugins
+- `production` — production build/deploy guidance
+- `ssg` — static site generation and build-time rendering
+- `build` — build process or build flags
+- `docker` — containerized build/deploy guidance
+- `deployment` — deployment options and hosting guidance
+- `hosting` — hosting platforms or hosting strategies
+- `nodejs` — Node.js runtime or server deployment
+- `static-export` — static export deployment model
+- `adapters` — deployment adapters and platform-specific hosting
+- `pages-router` — Pages Router-specific guidance
+- `cli` — command-line interface usage
+- `turbopack` — Turbopack bundler options
+- `webpack` — Webpack-specific options
+- `mangling` — name mangling/debugging options
+- `prerender` — prerendering and prerender debug tooling
+- `app-router` — App Router-specific options
+- `experimental` — experimental features or flags
+- `debug` — debug flags or diagnostics
+- `profiling` — build or runtime profiling
+- `linting` — linting-related options or guidance
+- `custom-server` — custom server deployment model
+- `templates` — deployment templates or provider templates
+- `local-development` — local dev workflow and performance
+- `performance` — performance diagnostics and optimization
+- `dev` — development mode behavior or tooling
+- `tailwind` — Tailwind CSS setup or issues
+- `memory` — memory usage and limits
+- `server-components` — React Server Components guidance
+- `logging` — logging configuration or diagnostics
+- `tracing` — tracing tools or traces
+- `typegen` — type generation and route type tooling
+- `upgrade` — upgrade tooling or version bump workflows
+- `info` — diagnostic or environment info commands
+- `https` — HTTPS configuration or dev HTTPS flags
+- `analysis` — bundle analysis or experimental analyze tooling
+- `architecture` — architecture and runtime behavior
+- `fast-refresh` — Fast Refresh behavior and limitations
+- `error-handling` — error handling or error recovery guidance
+- `instrumentation` — instrumentation hooks and observability integration
+- `observability` — observability and tracing concepts
+- `monitoring` — monitoring integrations
+- `runtime` — runtime targeting (node/edge)
+- `proxy` — proxy file convention and request interception
+- `middleware` — middleware/proxy migration notes
+- `routing` — routing and request handling
+- `redirects` — redirect handling
+- `rewrites` — rewrite handling
+- `static-assets` — static file serving
+- `caching` — caching headers and cache behavior
+- `public-folder` — public folder conventions
+- `favicon` — favicon handling
+- `project-structure` — project folder structure
+- `src-folder` — src directory conventions
