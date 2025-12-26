@@ -40,9 +40,10 @@ kubectl -n databases delete pvc -l cnpg.io/cluster=synestra-io-dev-cnpg
 
 ### Общая инфраструктура
 - **Провайдер:** MinIO (внутри кластера).
-- **Release/namespace:** `minio-web-cnpg-backups` в `object-storage-web-core`.
-- **Манифест MinIO:** `synestra-platform/infra/object-storage/minio/values.web-synestra-io.yaml`.
-- **Buckets:** `cnpg-backups`, `payload-media-prod`, `payload-media-dev`.
+- **Бэкапы CNPG:** `minio-web-cnpg-backups` в `object-storage-web-core` (bucket `cnpg-backups`).
+  - Манифест: `synestra-platform/infra/object-storage/minio/values.web-synestra-io.yaml`.
+- **Медиа:** `minio-web-synestra-io` в `object-storage-web-core` (buckets `payload-media-prod`, `payload-media-dev`).
+  - Манифест: `synestra-platform/infra/object-storage/minio/values.web-synestra-io-media.yaml`.
 
 ### Переменные приложения (web-core values)
 - **Dev:** `deploy/env/dev/synestra-io.yaml`
