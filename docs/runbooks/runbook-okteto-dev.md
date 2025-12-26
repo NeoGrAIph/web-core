@@ -202,6 +202,24 @@ ArgoCD/Helm должен уже подать в Pod:
 
 Контракт и валидация: `docs/architecture/env-contract.md`.
 
+### 5.1) AI plugin и dev‑БД (обязательный push схемы)
+
+Если включён payload‑ai plugin, dev‑под при старте может падать с ошибками:
+- `relation "plugin_ai_instructions" does not exist`
+- `payload_locked_documents_rels ... plugin_ai_instructions_id does not exist`
+
+Это означает, что схема плагина не была создана в dev‑БД.
+Решение для Okteto dev‑сессии — **временно включить `PAYLOAD_DB_PUSH=true` только в dev‑контейнере**, чтобы Payload сам сделал `db push` при старте.
+
+Рекомендуемое место — команда в `.okteto/okteto.yml` для dev‑контейнера `web-synestra-io-dev`:
+```bash
+export PAYLOAD_DB_PUSH=true
+```
+
+Важно:
+- в `deploy/env/*` и боевых env vars `PAYLOAD_DB_PUSH` **не задаём**;
+- в prod схема создаётся миграциями/Job, а не `db push`.
+
 ## 6) Что фиксируем в репозитории
 
 Минимальный “репо‑артефакт” для Okteto (который можно добавить, когда подключаем первый app):

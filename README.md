@@ -43,3 +43,11 @@ GitOps‑источник правды — репозиторий `synestra-plat
 ## Dev‑режим (HMR)
 - Dev использует `next dev` через Okteto; HMR включён.
 - Файлы из `public/` не участвуют в HMR — изменения видны после жёсткого обновления страницы и/или сброса кеша браузера.
+
+## План по dev‑процессу (установлен)
+Для dev‑окружений принят и внедрён план Okteto‑разработки поверх ArgoCD‑деплоя:
+- dev‑namespace создаётся через Okteto;
+- baseline‑деплой делает ArgoCD;
+- `okteto up` запускает `next dev` с синхронизацией кода в том же namespace.
+
+Подробности — в `docs/runbooks/runbook-okteto-dev.md`.

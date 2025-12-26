@@ -50,14 +50,14 @@ const defaultAccessConfig = {
 
 const defaultAdminConfig = {
   group: 'Plugins',
-  hidden: true,
+  hidden: false,
 }
 
 export const instructionsCollection = (pluginConfig: PluginConfig) =>
   <CollectionConfig>{
     labels: {
-      plural: 'Compose Settings',
-      singular: 'Compose Setting',
+      plural: 'AI Plugin Settings',
+      singular: 'AI Plugin Setting',
     },
     ...pluginConfig.overrideInstructions,
     slug: PLUGIN_INSTRUCTIONS_TABLE,

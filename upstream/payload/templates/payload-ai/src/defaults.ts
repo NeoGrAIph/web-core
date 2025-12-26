@@ -9,5 +9,5 @@ export const PLUGIN_API_ENDPOINT_GENERATE_UPLOAD = `${PLUGIN_API_ENDPOINT_GENERA
 export const PLUGIN_FETCH_FIELDS_ENDPOINT = `${PLUGIN_API_ENDPOINT_BASE}/fetch-fields`
 
 // LLM Settings
-export const PLUGIN_DEFAULT_OPENAI_MODEL = `gpt-4o-mini`
-export const PLUGIN_DEFAULT_ANTHROPIC_MODEL = `claude-3-5-sonnet-latest`
+export const PLUGIN_DEFAULT_OPENAI_MODEL = `gpt-5-mini`
+export const PLUGIN_DEFAULT_ANTHROPIC_MODEL = `claude-3-7-sonnet-latest`
